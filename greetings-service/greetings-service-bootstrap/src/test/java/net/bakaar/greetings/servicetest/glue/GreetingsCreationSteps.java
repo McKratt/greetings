@@ -28,7 +28,7 @@ public class GreetingsCreationSteps {
             .withPassword("secret");
 
     private final RequestSpecification request = given()
-            .basePath("/greetings");
+            .basePath("/rest/api/v1/greetings");
     private Response response;
 
     @LocalServerPort
@@ -50,13 +50,13 @@ public class GreetingsCreationSteps {
                 .post();
     }
 
-    @Then("^I get the message \"([^\"]*)\"$")
+    @Then("I get the message {string}")
     public void iGetTheMessage(String message) {
         String returnedMessage = response.body().jsonPath().getString("$.message");
         assertThat(returnedMessage).isEqualTo(message);
     }
 
-    @Then("^I get an error$")
+    @Then("I get an error")
     public void iGetAnError() {
         assertThat(response.statusCode()).isEqualTo(400);
     }

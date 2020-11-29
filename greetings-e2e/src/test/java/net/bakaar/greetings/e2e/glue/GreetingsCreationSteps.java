@@ -28,7 +28,7 @@ public class GreetingsCreationSteps {
             .withEnv("spring.datasource.password", dbContainer.getPassword());
     private final RequestSpecification request = given()
             .baseUri("http://localhost:9080")
-            .basePath("/greetings");
+            .basePath("/rest/api/v1/greetings");
     private Response response;
 
     @Before
@@ -48,13 +48,13 @@ public class GreetingsCreationSteps {
                 .post();
     }
 
-    @Then("^I get the message \"([^\"]*)\"$")
+    @Then("I get the message {string}")
     public void iGetTheMessage(String message) {
         String returnedMessage = response.body().jsonPath().getString("$.message");
         assertThat(returnedMessage).isEqualTo(message);
     }
 
-    @Then("^I get an error$")
+    @Then("I get an error")
     public void iGetAnError() {
         assertThat(response.statusCode()).isEqualTo(400);
     }

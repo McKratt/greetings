@@ -10,5 +10,5 @@ import org.junit.runner.RunWith;
         "../../bdd/features/GreetingsUpdate.feature"
 },
         glue = "net.bakaar.greetings.servicetest.glue")
-public class CucumberLauncher {
+public class CucumberLauncherIT {
 }
