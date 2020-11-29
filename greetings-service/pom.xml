@@ -5,6 +5,8 @@
     <modules>
         <module>greetings-service-bootstrap</module>
         <module>greetings-service-rest</module>
+        <module>greetings-service-application</module>
+        <module>greetings-service-domain</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

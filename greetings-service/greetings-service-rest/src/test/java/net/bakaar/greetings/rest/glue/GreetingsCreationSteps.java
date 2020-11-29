@@ -31,8 +31,8 @@ public class GreetingsCreationSteps {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
-                                  type: %s,
-                                  name: %s
+                                  "type": "%s",
+                                  "name": "%s"
                                 }""".formatted(type, name))
         );
     }

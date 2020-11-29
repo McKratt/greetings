@@ -42,8 +42,8 @@ public class GreetingsCreationSteps {
         response = request
                 .body("""
                         {
-                          type: %s,
-                          name: %s
+                           "type": "%s",
+                           "name": "%s"
                         }""".formatted(type, name))
                 .post();
     }
