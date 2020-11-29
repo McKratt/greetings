@@ -14,7 +14,7 @@
         <testcontainer.version>1.15.0</testcontainer.version>
         <jupiter.version>5.7.0</jupiter.version>
         <assertj.version>3.18.1</assertj.version>
-        <restassured.version>4.3.2</restassured.version>
+        <rest-assured.version>4.3.2</rest-assured.version>
         <logback.version>1.2.3</logback.version>
         <awaitility.version>4.0.3</awaitility.version>
     </properties>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>${restassured.version}</version>
+            <version>${rest-assured.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -59,6 +59,7 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
             <version>${testcontainer.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
