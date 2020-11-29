@@ -1,4 +1,4 @@
 package net.bakaar.grettings.domain;
 
-public class CreateGreetingCommand {
+public record CreateGreetingCommand(String type, String name) {
 }
