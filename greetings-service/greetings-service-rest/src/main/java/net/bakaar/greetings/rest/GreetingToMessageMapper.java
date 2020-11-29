@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class GreetingToMessageMapper {
     public GreetingMessage mapToMessage(Greeting greeting) {
-        return null;
+        return new GreetingMessage(greeting.getMessage());
     }
 }

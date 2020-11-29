@@ -1,4 +1,4 @@
 package net.bakaar.greetings.rest.model;
 
-public class GreetingMessage {
+public record GreetingMessage(String message) {
 }
