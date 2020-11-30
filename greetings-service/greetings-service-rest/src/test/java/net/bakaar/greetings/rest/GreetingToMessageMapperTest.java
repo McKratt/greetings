@@ -1,7 +1,7 @@
 package net.bakaar.greetings.rest;
 
+import net.bakaar.greetings.domain.Greeting;
 import net.bakaar.greetings.rest.model.GreetingMessage;
-import net.bakaar.grettings.domain.Greeting;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

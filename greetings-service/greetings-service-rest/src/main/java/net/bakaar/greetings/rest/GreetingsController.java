@@ -2,8 +2,8 @@ package net.bakaar.greetings.rest;
 
 import lombok.RequiredArgsConstructor;
 import net.bakaar.greetings.application.GreetingApplicationService;
+import net.bakaar.greetings.domain.CreateGreetingCommand;
 import net.bakaar.greetings.rest.model.GreetingMessage;
-import net.bakaar.grettings.domain.CreateGreetingCommand;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

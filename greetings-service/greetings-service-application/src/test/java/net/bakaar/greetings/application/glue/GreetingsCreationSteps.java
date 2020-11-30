@@ -4,8 +4,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import net.bakaar.greetings.application.GreetingApplicationService;
-import net.bakaar.grettings.domain.CreateGreetingCommand;
-import net.bakaar.grettings.domain.Greeting;
+import net.bakaar.greetings.domain.CreateGreetingCommand;
+import net.bakaar.greetings.domain.Greeting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 

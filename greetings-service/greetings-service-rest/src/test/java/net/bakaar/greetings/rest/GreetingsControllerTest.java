@@ -1,9 +1,9 @@
 package net.bakaar.greetings.rest;
 
 import net.bakaar.greetings.application.GreetingApplicationService;
+import net.bakaar.greetings.domain.CreateGreetingCommand;
+import net.bakaar.greetings.domain.Greeting;
 import net.bakaar.greetings.rest.model.GreetingMessage;
-import net.bakaar.grettings.domain.CreateGreetingCommand;
-import net.bakaar.grettings.domain.Greeting;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

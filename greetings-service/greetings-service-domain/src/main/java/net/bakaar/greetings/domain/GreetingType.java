@@ -1,4 +1,4 @@
-package net.bakaar.grettings.domain;
+package net.bakaar.greetings.domain;
 
 public enum GreetingType {
     BIRTHDAY
