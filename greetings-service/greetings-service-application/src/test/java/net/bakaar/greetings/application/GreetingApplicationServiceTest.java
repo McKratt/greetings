@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,7 +29,7 @@ class GreetingApplicationServiceTest {
         // Given
         given(repository.put(any())).willAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
         // When
-        CreateGreetingCommand command = mock(CreateGreetingCommand.class);
+        CreateGreetingCommand command = new CreateGreetingCommand("christmas", "Vivianne");
         Greeting returnedGreeting = service.createGreeting(command);
         // Then
         ArgumentCaptor<Greeting> greetingCaptor = ArgumentCaptor.forClass(Greeting.class);
