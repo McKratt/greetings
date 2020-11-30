@@ -7,12 +7,11 @@ import net.bakaar.greetings.domain.exception.GreetingMissingTypeException;
 
 import java.util.UUID;
 
+@Getter
 public class Greeting {
 
-    @Getter
     private final GreetingType type;
 
-    @Getter
     private final UUID identifier;
 
     private final String name;
@@ -20,7 +19,7 @@ public class Greeting {
     public Greeting(String type, String name) {
         this.identifier = UUID.randomUUID();
         this.name = name;
-        this.type = GreetingType.valueOf(type.toUpperCase());
+        this.type = GreetingType.of(type);
     }
 
     public static TypedBuilder of(String type) {
@@ -66,7 +65,7 @@ public class Greeting {
     }
 
     public String getMessage() {
-        return null;
+        return type.createMessage(name);
     }
 
 }

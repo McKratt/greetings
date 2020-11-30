@@ -3,9 +3,12 @@ package net.bakaar.greetings.domain;
 import net.bakaar.greetings.domain.exception.GreetingMissingNameException;
 import net.bakaar.greetings.domain.exception.GreetingMissingTypeException;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 class GreetingTest {
 
@@ -38,5 +41,19 @@ class GreetingTest {
         Throwable thrown = catchThrowable(() -> Greeting.of(null).to("Theo").build());
         // Then
         assertThat(thrown).isNotNull().isInstanceOf(GreetingMissingTypeException.class);
+    }
+
+    @Test
+    void getMessage_should_call_the_enum_method() {
+        // Given
+        final String name = "Nathan";
+        Greeting greeting = Greeting.of("Christmas").to(name).build();
+        GreetingType spiedType = spy(greeting.getType());
+        ReflectionTestUtils.setField(greeting, "type", spiedType);
+        // When
+        String message = greeting.getMessage();
+        // Then
+        assertThat(message).isNotEmpty().isNotBlank();
+        verify(spiedType).createMessage(name);
     }
 }
