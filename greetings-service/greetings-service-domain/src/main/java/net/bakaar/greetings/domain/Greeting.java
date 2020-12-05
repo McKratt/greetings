@@ -16,8 +16,14 @@ public class Greeting {
 
     private final String name;
 
-    public Greeting(String type, String name) {
+    private Greeting(String type, String name) {
         this.identifier = UUID.randomUUID();
+        this.name = name;
+        this.type = GreetingType.of(type);
+    }
+
+    private Greeting(String type, String name, String identifier) {
+        this.identifier = UUID.fromString(identifier);
         this.name = name;
         this.type = GreetingType.of(type);
     }
@@ -34,19 +40,28 @@ public class Greeting {
     public interface NamedBuilder {
 
         Greeting build();
+
+        NamedBuilder withIdentifier(String identifier);
     }
 
-    public static class Builder implements TypedBuilder, NamedBuilder {
+    private static class Builder implements TypedBuilder, NamedBuilder {
 
         private final String type;
 
         private String name;
+        private String identifier;
 
-        public Builder(String type) {
+        private Builder(String type) {
             if (type == null) {
                 throw new GreetingMissingTypeException();
             }
             this.type = type;
+        }
+
+        @Override
+        public NamedBuilder withIdentifier(String identifier) {
+            this.identifier = identifier;
+            return this;
         }
 
         @Override
@@ -60,7 +75,11 @@ public class Greeting {
 
         @Override
         public Greeting build() {
-            return new Greeting(type, name);
+            if (identifier == null || identifier.isBlank()) {
+                return new Greeting(type, name);
+            } else {
+                return new Greeting(type, name, identifier);
+            }
         }
     }
 

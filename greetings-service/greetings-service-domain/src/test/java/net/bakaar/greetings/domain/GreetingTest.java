@@ -5,6 +5,8 @@ import net.bakaar.greetings.domain.exception.GreetingMissingTypeException;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.spy;
@@ -15,14 +17,25 @@ class GreetingTest {
     @Test
     void builder_should_build_with_mandatory_fields() {
         // Given
-        final String name = "Anna";
+        var name = "Anna";
         // When
-        Greeting greeting = Greeting.of("birthday").to(name).build();
+        var greeting = Greeting.of("birthday").to(name).build();
         // Then
         assertThat(greeting).isNotNull();
         assertThat(greeting.getType()).isSameAs(GreetingType.BIRTHDAY);
         assertThat(greeting.getMessage()).contains(name);
         assertThat(greeting.getIdentifier()).isNotNull();
+    }
+
+    @Test
+    void should_not_set_identifier_if_set_in_builder() {
+        // Given
+        var identifier = UUID.randomUUID();
+        // When
+        var greeting = Greeting.of("anniversary").to("Chouquette").withIdentifier(identifier.toString()).build();
+        // Then
+        assertThat(greeting).isNotNull();
+        assertThat(greeting.getIdentifier()).isEqualTo(identifier);
     }
 
     @Test
