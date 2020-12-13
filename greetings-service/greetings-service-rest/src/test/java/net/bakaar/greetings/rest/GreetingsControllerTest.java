@@ -3,7 +3,6 @@ package net.bakaar.greetings.rest;
 import net.bakaar.greetings.application.GreetingApplicationService;
 import net.bakaar.greetings.domain.CreateGreetingCommand;
 import net.bakaar.greetings.domain.Greeting;
-import net.bakaar.greetings.rest.model.GreetingMessage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -36,7 +35,7 @@ class GreetingsControllerTest {
         GreetingMessage message = mock(GreetingMessage.class);
         given(mapper.mapToMessage(greeting)).willReturn(message);
         // When
-        GreetingMessage receivedMessage = controller.createGreeting(command);
+        GreetingMessage receivedMessage = controller.createGreeting(command).getBody();
         // Then
         verify(mapper).mapToMessage(greeting);
         assertThat(receivedMessage).isSameAs(message);

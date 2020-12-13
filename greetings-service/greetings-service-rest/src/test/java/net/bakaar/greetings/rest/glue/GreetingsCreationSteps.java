@@ -3,17 +3,22 @@ package net.bakaar.greetings.rest.glue;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
+import net.bakaar.greetings.domain.CreateGreetingCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
+
+import static java.lang.String.format;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @CucumberContextConfiguration
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -21,32 +26,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class GreetingsCreationSteps {
 
     @Autowired
-    private MockMvc mockMvc;
-    private ResultActions response;
+    private TestRestTemplate restTemplate;
+
+    @LocalServerPort
+    private int port;
+    private ResponseEntity<String> response;
+
 
     @When("I create a(n) {word} greeting for {word}")
-    public void iCreateAGreetingForName(String type, String name) throws Exception {
-        response = mockMvc.perform(
-                post("/rest/api/v1/greetings")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                  "type": "%s",
-                                  "name": "%s"
-                                }""".formatted(type, name))
-        );
+    public void iCreateAGreetingForName(String type, String name) {
+        CreateGreetingCommand command = new CreateGreetingCommand(type, name);
+        RequestEntity<CreateGreetingCommand> request = RequestEntity
+                .post(URI.create(format("http://localhost:%s/rest/api/v1/greetings", port)))
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .body(command);
+        response = restTemplate.exchange(request, String.class);
     }
 
     @Then("I get the message {string}")
-    public void iGetTheMessage(String message) throws Exception {
-        response.andExpect(status().isCreated())
-                .andExpect(jsonPath("$.message").isString())
-                .andExpect(jsonPath("$.message").value(message));
+    public void iGetTheMessage(String message) {
+        assertThat(response.getStatusCode()).isSameAs(HttpStatus.CREATED);
+        assertThat(response.getBody()).isNotNull().contains(message);
     }
 
     @Then("I get an error")
-    public void iGetAnError() throws Exception {
-        response.andExpect(status().is4xxClientError())
-                .andExpect(status().is(400));
+    public void iGetAnError() {
+        assertThat(response.getStatusCode()).isSameAs(HttpStatus.BAD_REQUEST);
     }
 }
