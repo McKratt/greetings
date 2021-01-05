@@ -3,11 +3,17 @@ package net.bakaar.greetings.rest;
 import net.bakaar.greetings.application.GreetingApplicationService;
 import net.bakaar.greetings.domain.CreateGreetingCommand;
 import net.bakaar.greetings.domain.Greeting;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -26,16 +32,22 @@ class GreetingsControllerTest {
     @InjectMocks
     private GreetingsController controller;
 
+    @BeforeEach
+    void setUp() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+    }
+
     @Test
     void createGreeting_should_map_greeting_to_message() {
         // Given
-        CreateGreetingCommand command = mock(CreateGreetingCommand.class);
-        Greeting greeting = mock(Greeting.class);
+        var command = mock(CreateGreetingCommand.class);
+        var greeting = mock(Greeting.class);
         given(service.createGreeting(command)).willReturn(greeting);
-        GreetingMessage message = mock(GreetingMessage.class);
+        var message = mock(GreetingMessage.class);
         given(mapper.mapToMessage(greeting)).willReturn(message);
         // When
-        GreetingMessage receivedMessage = controller.createGreeting(command).getBody();
+        var receivedMessage = controller.createGreeting(command).getBody();
         // Then
         verify(mapper).mapToMessage(greeting);
         assertThat(receivedMessage).isSameAs(message);
@@ -44,10 +56,15 @@ class GreetingsControllerTest {
     @Test
     void createGreeting_should_call_application_service() {
         // Given
-        CreateGreetingCommand command = mock(CreateGreetingCommand.class);
+        var command = mock(CreateGreetingCommand.class);
+        var greeting = mock(Greeting.class);
+        given(service.createGreeting(command)).willReturn(greeting);
+        var identifier = UUID.randomUUID();
+        given(greeting.getIdentifier()).willReturn(identifier);
         // When
-        controller.createGreeting(command);
+        var response = controller.createGreeting(command);
         // Then
-        verify(service).createGreeting(command);
+        verify(mapper).mapToMessage(greeting);
+        assertThat(response.getHeaders().getLocation().toString()).contains(identifier.toString());
     }
 }
