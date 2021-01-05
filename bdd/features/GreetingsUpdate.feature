@@ -14,7 +14,7 @@ Feature: Update an existing Greeting
     Scenario Template: Cannot change christmas greeting
       Given an existing christmas greeting
       When I change the type to <type>
-      Then I got an error
+      Then I get an error
       Examples:
         | type        |
         | anniversary |
