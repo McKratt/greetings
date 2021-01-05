@@ -14,6 +14,7 @@ public class GreetingRepositoryJPAAdapter implements GreetingRepository {
 
     @Override
     public Greeting put(Greeting greeting) {
+        //TODO look if the greeting already exist to handle update operation
         return mapper.mapToDomain(repository.save(mapper.mapToEntity(greeting)));
     }
 }
