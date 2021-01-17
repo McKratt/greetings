@@ -33,9 +33,9 @@ class GreetingTest {
     @Test
     void builder_should_build_with_mandatory_fields() {
         // Given
-        String name = "Anna";
+        var name = "Anna";
         // When
-        Greeting greeting = Greeting.of("birthday").to(name).build();
+        var greeting = Greeting.of("birthday").to(name).build();
         // Then
         assertThat(greeting).isNotNull();
         assertThat(greeting.getType()).isSameAs(BIRTHDAY);
@@ -46,9 +46,9 @@ class GreetingTest {
     @Test
     void should_not_set_identifier_if_set_in_builder() {
         // Given
-        UUID identifier = UUID.randomUUID();
+        var identifier = UUID.randomUUID();
         // When
-        Greeting greeting = Greeting.of("anniversary").to("Chouquette").withIdentifier(identifier.toString()).build();
+        var greeting = Greeting.of("anniversary").to("Chouquette").withIdentifier(identifier.toString()).build();
         // Then
         assertThat(greeting).isNotNull();
         assertThat(greeting.getIdentifier()).isEqualTo(identifier);
@@ -59,7 +59,7 @@ class GreetingTest {
     void builder_should_set_identifier_if_empty(String identifier) {
         // Given
         // When
-        Greeting greeting = Greeting.of("anniversary").to("Chouquette").withIdentifier(identifier).build();
+        var greeting = Greeting.of("anniversary").to("Chouquette").withIdentifier(identifier).build();
         // Then
         assertThat(greeting).isNotNull();
         assertThat(greeting.getIdentifier()).isNotNull();
@@ -69,7 +69,7 @@ class GreetingTest {
     void builder_should_throw_exception_if_name_null() {
         // Given
         // When
-        Throwable thrown = catchThrowable(() -> Greeting.of("christmas").to(null).build());
+        var thrown = catchThrowable(() -> Greeting.of("christmas").to(null).build());
         // Then
         assertThat(thrown).isNotNull().isInstanceOf(GreetingMissingNameException.class);
     }
@@ -78,7 +78,7 @@ class GreetingTest {
     void builder_should_throw_exception_if_type_null() {
         // Given
         // When
-        Throwable thrown = catchThrowable(() -> Greeting.of(null).to("Theo").build());
+        var thrown = catchThrowable(() -> Greeting.of(null).to("Theo").build());
         // Then
         assertThat(thrown).isNotNull().isInstanceOf(GreetingMissingTypeException.class);
     }
@@ -86,12 +86,12 @@ class GreetingTest {
     @Test
     void getMessage_should_call_the_enum_method() {
         // Given
-        String name = "Nathan";
-        Greeting greeting = Greeting.of("Christmas").to(name).build();
-        GreetingType spiedType = spy(greeting.getType());
+        var name = "Nathan";
+        var greeting = Greeting.of("Christmas").to(name).build();
+        var spiedType = spy(greeting.getType());
         ReflectionTestUtils.setField(greeting, "type", spiedType);
         // When
-        String message = greeting.getMessage();
+        var message = greeting.getMessage();
         // Then
         assertThat(message).isNotEmpty().isNotBlank();
         verify(spiedType).createMessage(name);
@@ -101,7 +101,7 @@ class GreetingTest {
     @MethodSource
     void updateType_should_change_the_type(String firstType, String newType, GreetingType updatedType) {
         // Given
-        Greeting greeting = Greeting.of(firstType).to("Chouquette").build();
+        var greeting = Greeting.of(firstType).to("Chouquette").build();
         // When
         greeting.updateTypeFor(newType);
         // Then
@@ -112,9 +112,9 @@ class GreetingTest {
     @ValueSource(strings = {"birthday", "anniversary"})
     void updateType_should_not_change_the_type_if_previous_type_is_not_correct(String newType) {
         // Given
-        Greeting greeting = Greeting.of("christmas").to("Babette").build();
+        var greeting = Greeting.of("christmas").to("Babette").build();
         // When
-        Throwable thrown = catchThrowable(() -> greeting.updateTypeFor(newType));
+        var thrown = catchThrowable(() -> greeting.updateTypeFor(newType));
         // Then
         assertThat(thrown).isNotNull().isInstanceOf(GreetingUnmodifiableTypeException.class);
     }

@@ -58,7 +58,7 @@ class GreetingTypeTest {
     void of_should_return_type(String type, GreetingType expected) {
         // Given
         // When
-        GreetingType returnedType = GreetingType.of(type);
+        var returnedType = GreetingType.of(type);
         // Then
         assertThat(returnedType).isSameAs(expected);
     }
@@ -68,7 +68,7 @@ class GreetingTypeTest {
     void of_should_throw_exception_if_type_unknown(String type) {
         // Given
         // When
-        Throwable thrown = catchThrowable(() -> GreetingType.of(type));
+        var thrown = catchThrowable(() -> GreetingType.of(type));
         // Then
         assertThat(thrown).isNotNull().isInstanceOf(GreetingWrongTypeException.class).extracting(Throwable::getMessage).asString().contains(type);
     }
@@ -78,7 +78,7 @@ class GreetingTypeTest {
     void createMessage_should_return_the_correct_message(GreetingType type, String name, String expectedMessage) {
         // Given
         // When
-        String message = type.createMessage(name);
+        var message = type.createMessage(name);
         // Then
         assertThat(message).isEqualTo(expectedMessage);
     }
