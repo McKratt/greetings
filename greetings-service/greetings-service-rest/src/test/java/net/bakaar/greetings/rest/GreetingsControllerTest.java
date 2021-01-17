@@ -79,10 +79,10 @@ class GreetingsControllerTest {
     void updateGreeting_should_map_greeting_to_message() {
         // Given
         var type = "type";
-        var greeting = mock(Greeting.class);
         var identifier = UUID.randomUUID();
         var command = new UpdateGreetingCommandDTO();
         command.setNewType(type);
+        var greeting = mock(Greeting.class);
         given(service.changeType(any())).willReturn(greeting);
         var message = mock(GreetingMessage.class);
         given(mapper.mapToMessage(greeting)).willReturn(message);

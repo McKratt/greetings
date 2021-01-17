@@ -10,10 +10,6 @@ public class GreetingWrongTypeException extends IllegalArgumentException {
         super(format(ERROR_MESSAGE_PATTERN, type));
     }
 
-    public GreetingWrongTypeException() {
-        throw new UnsupportedOperationException();
-    }
-
     public GreetingWrongTypeException(String type, Throwable cause) {
         super(format(ERROR_MESSAGE_PATTERN, type), cause);
     }

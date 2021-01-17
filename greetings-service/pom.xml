@@ -25,6 +25,8 @@
         <java.version>15</java.version>
         <cucumber.version>6.8.1</cucumber.version>
         <testcontainer.version>1.15.0</testcontainer.version>
+        <argLine>--enable-preview</argLine>
+        <spring-boot.run.jvmArguments>--enable-preview</spring-boot.run.jvmArguments>
     </properties>
     <dependencies>
         <dependency>

@@ -40,7 +40,7 @@ public class Greeting {
         GreetingType newType = GreetingType.of(type);
         // If the current Type is not modifiable so you don't have the right to change
         if (!this.type.canBeChangedFor(newType)) {
-            throw new GreetingUnmodifiableTypeException();
+            throw new GreetingUnmodifiableTypeException(type, newType.name());
         }
         // Change the type in all the other cases
         this.type = newType;
