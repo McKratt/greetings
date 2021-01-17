@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -20,6 +17,7 @@ public class GreetingJpaEntity {
     @Id
     @Column(name = "PK_T_GREETINGS")
     @GeneratedValue(strategy = SEQUENCE, generator = "SEQ_PK_T_GREETINGS")
+    @SequenceGenerator(name = "SEQ_PK_T_GREETINGS", allocationSize = 1)
     private Long id;
 
     @Column(name = "S_IDENTIFIER", nullable = false, updatable = false)
