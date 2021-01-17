@@ -7,6 +7,7 @@ import io.cucumber.spring.CucumberContextConfiguration;
 import net.bakaar.greetings.application.GreetingApplicationService;
 import net.bakaar.greetings.domain.CreateGreetingCommand;
 import net.bakaar.greetings.domain.Greeting;
+import net.bakaar.greetings.domain.UpdateGreetingCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -39,7 +40,7 @@ public class GreetingsCreationSteps {
 
     @When("I change the type to {word}")
     public void i_change_the_type_to(String type) {
-        thrown = catchThrowable(() -> updatedGreeting = service.changeType(createdGreeting.getIdentifier(), type));
+        thrown = catchThrowable(() -> updatedGreeting = service.changeType(new UpdateGreetingCommand(createdGreeting.getIdentifier(), type)));
     }
 
     @Then("I get the message {string}")

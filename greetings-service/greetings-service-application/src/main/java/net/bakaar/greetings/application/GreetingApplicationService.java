@@ -5,10 +5,9 @@ import net.bakaar.greetings.application.exception.GreetingNotFoundException;
 import net.bakaar.greetings.domain.CreateGreetingCommand;
 import net.bakaar.greetings.domain.Greeting;
 import net.bakaar.greetings.domain.GreetingRepository;
+import net.bakaar.greetings.domain.UpdateGreetingCommand;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 import static java.lang.String.format;
 
@@ -23,12 +22,12 @@ public class GreetingApplicationService {
     }
 
     @Transactional
-    public Greeting changeType(UUID identifier, String newType) {
-        Greeting greeting = repository.find(identifier)
+    public Greeting changeType(UpdateGreetingCommand command) {
+        Greeting greeting = repository.find(command.identifier())
                 .orElseThrow(() ->
-                        new GreetingNotFoundException(format("Greeting with identifier %s not found", identifier.toString()))
+                        new GreetingNotFoundException(format("Greeting with identifier %s not found", command.identifier()))
                 );
-        greeting.updateTypeFor(newType);
+        greeting.updateTypeFor(command.newType());
         return repository.put(greeting);
     }
 }

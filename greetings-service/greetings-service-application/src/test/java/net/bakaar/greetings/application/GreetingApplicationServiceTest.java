@@ -4,6 +4,7 @@ import net.bakaar.greetings.application.exception.GreetingNotFoundException;
 import net.bakaar.greetings.domain.CreateGreetingCommand;
 import net.bakaar.greetings.domain.Greeting;
 import net.bakaar.greetings.domain.GreetingRepository;
+import net.bakaar.greetings.domain.UpdateGreetingCommand;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -35,10 +36,10 @@ class GreetingApplicationServiceTest {
         // Given
         given(repository.put(any())).willAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
         // When
-        CreateGreetingCommand command = new CreateGreetingCommand("christmas", "Vivianne");
-        Greeting returnedGreeting = service.createGreeting(command);
+        var command = new CreateGreetingCommand("christmas", "Vivianne");
+        var returnedGreeting = service.createGreeting(command);
         // Then
-        ArgumentCaptor<Greeting> greetingCaptor = ArgumentCaptor.forClass(Greeting.class);
+        var greetingCaptor = ArgumentCaptor.forClass(Greeting.class);
         verify(repository).put(greetingCaptor.capture());
         final Greeting expected = greetingCaptor.getValue();
         assertThat(returnedGreeting).isSameAs(expected);
@@ -47,13 +48,14 @@ class GreetingApplicationServiceTest {
     @Test
     void changeType_should_read_repo() {
         // Given
-        Greeting greeting = mock(Greeting.class);
-        UUID identifier = UUID.randomUUID();
+        var greeting = mock(Greeting.class);
+        var identifier = UUID.randomUUID();
         given(repository.find(identifier)).willReturn(Optional.of(greeting));
         given(repository.put(any())).willAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
-        String type = "type";
+        var type = "type";
+        var command = new UpdateGreetingCommand(identifier, type);
         // When
-        Greeting returnedGreeting = service.changeType(identifier, type);
+        var returnedGreeting = service.changeType(command);
         // Then
         assertThat(returnedGreeting).isSameAs(greeting);
         verify(greeting).updateTypeFor(type);
@@ -62,10 +64,11 @@ class GreetingApplicationServiceTest {
     @Test
     void changeType_should_send_exception_if_not_found() {
         // Given
-        UUID identifier = UUID.randomUUID();
+        var identifier = UUID.randomUUID();
         given(repository.find(identifier)).willReturn(Optional.empty());
+        var command = new UpdateGreetingCommand(identifier, "birthday");
         // When
-        Throwable thrown = catchThrowable(() -> service.changeType(identifier, "birthday"));
+        var thrown = catchThrowable(() -> service.changeType(command));
         // Then
         assertThat(thrown).isNotNull().isInstanceOf(GreetingNotFoundException.class);
     }

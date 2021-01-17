@@ -1,9 +1,11 @@
 package net.bakaar.greetings.rest.glue;
 
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import net.bakaar.greetings.domain.CreateGreetingCommand;
+import net.bakaar.greetings.rest.UpdateGreetingCommandDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,14 +35,37 @@ public class GreetingsCreationSteps {
     private ResponseEntity<String> response;
 
 
-    @When("I create a(n) {word} greeting for {word}")
-    public void iCreateAGreetingForName(String type, String name) {
-        CreateGreetingCommand command = new CreateGreetingCommand(type, name);
-        RequestEntity<CreateGreetingCommand> request = RequestEntity
+    @Given("an existing {word} greeting")
+    public void an_existing_greeting(String type) {
+        var command = new CreateGreetingCommand(type, "George");
+        var request = RequestEntity
                 .post(URI.create(format("http://localhost:%s/rest/api/v1/greetings", port)))
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
                 .body(command);
+        response = restTemplate.exchange(request, String.class);
+    }
+
+    @When("I create a(n) {word} greeting for {word}")
+    public void iCreateAGreetingForName(String type, String name) {
+        var command = new CreateGreetingCommand(type, name);
+        var request = RequestEntity
+                .post(URI.create(format("http://localhost:%s/rest/api/v1/greetings", port)))
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .body(command);
+        response = restTemplate.exchange(request, String.class);
+    }
+
+    @When("I change the type to {word}")
+    public void i_change_the_type_to(String type) {
+        UpdateGreetingCommandDTO updateGreetingCommand = new UpdateGreetingCommandDTO();
+        updateGreetingCommand.setNewType(type);
+        var request = RequestEntity
+                .put(URI.create(response.getHeaders().getLocation().getPath()))
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .body(updateGreetingCommand);
         response = restTemplate.exchange(request, String.class);
     }
 
@@ -52,6 +77,13 @@ public class GreetingsCreationSteps {
 
     @Then("I get an error")
     public void iGetAnError() {
-        assertThat(response.getStatusCode()).isSameAs(HttpStatus.BAD_REQUEST);
+        // Here pop up a 500 because the error propagation interceptor is only there in the bootstrap project.
+        assertThat(response.getStatusCode()).isSameAs(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Then("the greeting is now a {word} one")
+    public void the_greeting_is_now_a_new_type_one(String type) {
+        assertThat(response.getStatusCode()).isSameAs(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull().containsIgnoringCase(type);
     }
 }
