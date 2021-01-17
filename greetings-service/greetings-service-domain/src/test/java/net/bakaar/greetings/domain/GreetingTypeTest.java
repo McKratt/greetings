@@ -15,8 +15,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class GreetingTypeTest {
 
-
-    private static Stream<Arguments> of_should_return_Type() {
+    private static Stream<Arguments> of_should_return_type() {
         return Stream.of(
                 arguments("birthday", BIRTHDAY),
                 arguments("Birthday", BIRTHDAY),
@@ -39,9 +38,24 @@ class GreetingTypeTest {
         );
     }
 
+    private static Stream<Arguments> canBeChangedFor_should_tell_us_if_type_are_compatible() {
+        return Stream.of(
+                arguments(BIRTHDAY, ANNIVERSARY, true),
+                arguments(BIRTHDAY, BIRTHDAY, true),
+                arguments(BIRTHDAY, CHRISTMAS, false),
+                arguments(ANNIVERSARY, ANNIVERSARY, true),
+                arguments(ANNIVERSARY, BIRTHDAY, true),
+                arguments(ANNIVERSARY, CHRISTMAS, false),
+                arguments(CHRISTMAS, ANNIVERSARY, false),
+                arguments(CHRISTMAS, BIRTHDAY, false),
+                arguments(CHRISTMAS, CHRISTMAS, false)
+
+        );
+    }
+
     @ParameterizedTest
     @MethodSource
-    void of_should_return_Type(String type, GreetingType expected) {
+    void of_should_return_type(String type, GreetingType expected) {
         // Given
         // When
         GreetingType returnedType = GreetingType.of(type);
@@ -67,5 +81,11 @@ class GreetingTypeTest {
         String message = type.createMessage(name);
         // Then
         assertThat(message).isEqualTo(expectedMessage);
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void canBeChangedFor_should_tell_us_if_type_are_compatible(GreetingType current, GreetingType newOne, boolean changeable) {
+        assertThat(current.canBeChangedFor(newOne)).isEqualTo(changeable);
     }
 }

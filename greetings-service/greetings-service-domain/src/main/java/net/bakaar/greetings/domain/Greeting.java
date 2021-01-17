@@ -4,17 +4,16 @@ package net.bakaar.greetings.domain;
 import lombok.Getter;
 import net.bakaar.greetings.domain.exception.GreetingMissingNameException;
 import net.bakaar.greetings.domain.exception.GreetingMissingTypeException;
+import net.bakaar.greetings.domain.exception.GreetingUnmodifiableTypeException;
 
 import java.util.UUID;
 
 @Getter
 public class Greeting {
 
-    private final GreetingType type;
-
     private final UUID identifier;
-
     private final String name;
+    private GreetingType type;
 
     private Greeting(String type, String name) {
         this.identifier = UUID.randomUUID();
@@ -32,19 +31,27 @@ public class Greeting {
         return new Builder(type);
     }
 
+    public String getMessage() {
+        return type.createMessage(name);
+    }
+
+    public void updateTypeFor(String type) {
+        // Check if the new type is correct
+        GreetingType newType = GreetingType.of(type);
+        // If the current Type is not modifiable so you don't have the right to change
+        if (!this.type.canBeChangedFor(newType)) {
+            throw new GreetingUnmodifiableTypeException();
+        }
+        // Change the type in all the other cases
+        this.type = newType;
+    }
+
     public interface TypedBuilder {
 
-        NamedBuilder to(String name);
+        Builder to(String name);
     }
 
-    public interface NamedBuilder {
-
-        Greeting build();
-
-        NamedBuilder withIdentifier(String identifier);
-    }
-
-    private static class Builder implements TypedBuilder, NamedBuilder {
+    public static class Builder implements TypedBuilder {
 
         private final String type;
 
@@ -58,14 +65,12 @@ public class Greeting {
             this.type = type;
         }
 
-        @Override
-        public NamedBuilder withIdentifier(String identifier) {
+        public Builder withIdentifier(String identifier) {
             this.identifier = identifier;
             return this;
         }
 
-        @Override
-        public NamedBuilder to(String name) {
+        public Builder to(String name) {
             if (name == null) {
                 throw new GreetingMissingNameException();
             }
@@ -73,18 +78,12 @@ public class Greeting {
             return this;
         }
 
-        @Override
         public Greeting build() {
-            if (identifier == null || identifier.isBlank()) {
+            if (identifier == null || "".equals(identifier.trim())) {
                 return new Greeting(type, name);
             } else {
                 return new Greeting(type, name, identifier);
             }
         }
     }
-
-    public String getMessage() {
-        return type.createMessage(name);
-    }
-
 }
