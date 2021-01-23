@@ -1,6 +1,7 @@
 Feature: Update an existing Greeting
 
   Rule: You can only update an anniversary greeting to a birthday one and reverse
+    @e2e
     Scenario Template: update a greeting
       Given an existing <type> greeting
       When I change the type to <updatedType>

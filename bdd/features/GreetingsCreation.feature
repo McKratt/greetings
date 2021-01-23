@@ -1,6 +1,7 @@
 Feature: Creation of a Greeting Message
 
   Rule: There are three type of Greeting, Birthday, Anniversary and Christmas
+    @e2e
     Scenario Template: creation
       When I create a <type> greeting for <name>
       Then I get the message "<message>"

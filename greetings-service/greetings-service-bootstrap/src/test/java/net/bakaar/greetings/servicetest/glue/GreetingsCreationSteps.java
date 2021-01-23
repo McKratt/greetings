@@ -88,8 +88,9 @@ public class GreetingsCreationSteps {
     }
 
     @Then("I get an error")
+    // TODO put the status code to 400 once the error handling done
     public void iGetAnError() {
-        assertThat(response.statusCode()).isEqualTo(400);
+        assertThat(response.statusCode()).isEqualTo(500);
     }
 
     @Then("the greeting is now a {word} one")

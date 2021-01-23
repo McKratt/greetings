@@ -5,27 +5,15 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static io.restassured.RestAssured.given;
+import static net.bakaar.greetings.e2e.CucumberLauncherTest.dbContainer;
+import static net.bakaar.greetings.e2e.CucumberLauncherTest.serviceContainer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-@Testcontainers
+
 public class GreetingsCreationSteps {
-
-    @Container
-    private static final PostgreSQLContainer dbContainer = new PostgreSQLContainer("postgres")
-            .withUsername("foo")
-            .withPassword("secret");
-
-    @Container
-    private static final GenericContainer serviceContainer = new GenericContainer("greeting-service")
-            .withEnv("spring.datasource.username", dbContainer.getUsername())
-            .withEnv("spring.datasource.password", dbContainer.getPassword());
     private final RequestSpecification request = given()
             .baseUri("http://localhost:9080")
             .basePath("/rest/api/v1/greetings");
