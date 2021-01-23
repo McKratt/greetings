@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @WebMvcTest(controllers = GreetingsController.class)
 @AutoConfigureMockMvc
-@Import({GreetingToMessageMapper.class, JsonSerializerConfig.class})
+@Import({GreetingToMessageMapper.class})
 class GreetingsControllerIT {
 
     private final String basePath = "/rest/api/v1/greetings";
