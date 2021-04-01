@@ -1,0 +1,15 @@
+version: "2.4"
+services:
+    db:
+        image: postgres:13-alpine
+        environment: 
+            - POSTGRES_PASSWORD=123456
+    greetings:
+        depends_on:
+            - db
+        image: bakaar.net/greetings-service
+        environment: 
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+            - SPRING_DATASOURCE_USERNAME=postgres
+            - SPRING_DATASOURCE_PASSWORD=123456
+            - JAVA_TOOL_OPTIONS="--enable-preview"

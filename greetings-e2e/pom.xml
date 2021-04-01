@@ -10,8 +10,10 @@
     <properties>
         <maven.compiler.target>15</maven.compiler.target>
         <maven.compiler.source>15</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <cucumber.version>6.8.1</cucumber.version>
-        <testcontainer.version>1.15.0</testcontainer.version>
+        <testcontainer.version>1.15.2</testcontainer.version>
         <jupiter.version>5.7.0</jupiter.version>
         <assertj.version>3.18.1</assertj.version>
         <rest-assured.version>4.3.2</rest-assured.version>
@@ -77,6 +79,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-install-plugin</artifactId>
+                <version>3.0.0-M1</version>
                 <configuration>
                     <!-- This project contains only tests and should not produce any artifact -->
                     <skip>true</skip>
@@ -84,6 +87,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.0.0-M1</version>
                 <configuration>
                     <!-- This project contains only tests and should not deploy any artifact -->
                     <skip>true</skip>
