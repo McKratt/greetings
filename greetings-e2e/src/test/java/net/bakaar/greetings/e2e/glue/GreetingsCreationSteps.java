@@ -8,7 +8,6 @@ import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
 import static net.bakaar.greetings.e2e.CucumberLauncherTest.environment;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class GreetingsCreationSteps {
