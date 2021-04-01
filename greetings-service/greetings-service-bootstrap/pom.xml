@@ -55,6 +55,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <name>bakaar.net/greetings-service</name>
+                        <env>
+                            <BP_JVM_VERSION>15.*</BP_JVM_VERSION>
+                        </env>
+                    </image>
+                </configuration>
             </plugin>
         </plugins>
     </build>
