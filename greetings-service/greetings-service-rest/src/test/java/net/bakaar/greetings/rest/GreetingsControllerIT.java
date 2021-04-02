@@ -20,8 +20,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -86,6 +85,26 @@ class GreetingsControllerIT {
                                 }
                                 """.formatted(type))
                         .contentType(APPLICATION_JSON)
+        );
+        // Then
+        response.andExpect(
+                status().isOk()
+        ).andExpect(
+                header().string(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON.toString())
+        );
+    }
+
+    @Test
+    void read_should_return_correct_content_type() throws Exception {
+        // Given
+        var greeting = mock(Greeting.class);
+        var identifier = UUID.randomUUID();
+        given(service.read(identifier)).willReturn(greeting);
+        // When
+        var response = mockMvc.perform(
+                get(basePath + "/" + identifier.toString())
+                        .accept(APPLICATION_JSON, APPLICATION_PROBLEM_JSON)
+
         );
         // Then
         response.andExpect(

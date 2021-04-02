@@ -36,7 +36,7 @@ public class GreetingsController {
     public ResponseEntity<GreetingMessage> updateGreeting(@PathVariable UUID identifier,
                                                           @RequestBody UpdateGreetingCommandDTO command) {
         return ResponseEntity.ok(mapper.mapToMessage(
-                applicationService.changeType(new UpdateGreetingCommand(identifier, command.getNewType())
-                )));
+                applicationService.changeType(new UpdateGreetingCommand(identifier, command.getNewType()))
+        ));
     }
 }
