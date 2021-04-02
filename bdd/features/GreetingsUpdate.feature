@@ -2,7 +2,7 @@ Feature: Update an existing Greeting
 
   Rule: You can only update an anniversary greeting to a birthday one and reverse
 
-    @e2e
+#    @e2e find a way to populate DB without any tool from Spring nor DBUnit
     Scenario Template: update a greeting
       Given an existing <type> greeting
       When I change the type to <updatedType>

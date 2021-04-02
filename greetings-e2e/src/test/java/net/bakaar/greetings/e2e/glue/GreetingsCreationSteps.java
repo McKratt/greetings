@@ -17,6 +17,12 @@ public class GreetingsCreationSteps {
 
     private Response response;
 
+//    @Given("an existing {word} greeting")
+//    public void an_existing_greeting(String type) {
+//        // Write code here that turns the phrase above into concrete actions
+//        throw new io.cucumber.java.PendingException();
+//    }
+
     @When("I create a(n) {word} greeting for {word}")
     public void iCreateAGreetingForName(String type, String name) {
         String url = String.format("http://localhost:%d/rest/api/v1/greetings",
