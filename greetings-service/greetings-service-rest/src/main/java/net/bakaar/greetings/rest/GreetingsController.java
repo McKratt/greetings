@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
@@ -39,4 +40,11 @@ public class GreetingsController {
                 applicationService.changeType(new UpdateGreetingCommand(identifier, command.getNewType()))
         ));
     }
+
+    @GetMapping(value = "/{identifier}", produces = {APPLICATION_JSON_VALUE})
+    @ResponseStatus(HttpStatus.OK)
+    public Greeting readGreeting(@PathVariable UUID identifier) {
+        return applicationService.read(identifier);
+    }
+
 }
