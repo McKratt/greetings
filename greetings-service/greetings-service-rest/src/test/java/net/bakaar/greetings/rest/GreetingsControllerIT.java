@@ -61,7 +61,7 @@ class GreetingsControllerIT {
         response.andExpect(
                 status().isCreated()
         ).andExpect(
-                header().string("location", format("http://localhost/rest/api/v1/greetings/%s", identifier.toString()))
+                header().string("location", format("http://localhost/rest/api/v1/greetings/%s", identifier))
         ).andExpect(
                 header().string(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON.toString())
         );
@@ -77,7 +77,7 @@ class GreetingsControllerIT {
         given(service.changeType(command)).willReturn(greeting);
         // When
         var response = mockMvc.perform(
-                put(basePath + "/" + identifier.toString())
+                put(basePath + "/" + identifier)
                         .accept(APPLICATION_JSON, APPLICATION_PROBLEM_JSON)
                         .content("""
                                 {
@@ -102,9 +102,8 @@ class GreetingsControllerIT {
         given(service.read(identifier)).willReturn(greeting);
         // When
         var response = mockMvc.perform(
-                get(basePath + "/" + identifier.toString())
+                get(basePath + "/" + identifier)
                         .accept(APPLICATION_JSON, APPLICATION_PROBLEM_JSON)
-
         );
         // Then
         response.andExpect(

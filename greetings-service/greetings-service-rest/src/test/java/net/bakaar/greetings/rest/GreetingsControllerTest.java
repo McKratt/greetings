@@ -97,4 +97,17 @@ class GreetingsControllerTest {
         assertThat(capturedCommand.newType()).isEqualTo(type);
         assertThat(receivedMessage).isSameAs(message);
     }
+
+    @Test
+    void read_should_call_application_service() {
+        // Given
+        var identifier = UUID.randomUUID();
+        var greeting = mock(Greeting.class);
+        given(service.read(any())).willReturn(greeting);
+        // When
+        var returnedGreeting = service.read(identifier);
+        // Then
+        verify(service).read(identifier);
+        assertThat(returnedGreeting).isSameAs(greeting);
+    }
 }
