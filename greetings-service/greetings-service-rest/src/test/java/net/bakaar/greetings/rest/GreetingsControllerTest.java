@@ -29,7 +29,7 @@ class GreetingsControllerTest {
     @Mock
     private GreetingApplicationService service;
     @Mock
-    private GreetingToMessageMapper mapper;
+    private GreetingMapper mapper;
     @InjectMocks
     private GreetingsController controller;
 
@@ -103,11 +103,13 @@ class GreetingsControllerTest {
         // Given
         var identifier = UUID.randomUUID();
         var greeting = mock(Greeting.class);
+        var greetingJson = mock(GreetingJson.class);
         given(service.read(any())).willReturn(greeting);
+        given(mapper.mapToJson(greeting)).willReturn(greetingJson);
         // When
-        var returnedGreeting = service.read(identifier);
+        var returnedGreeting = controller.readGreeting(identifier);
         // Then
         verify(service).read(identifier);
-        assertThat(returnedGreeting).isSameAs(greeting);
+        assertThat(returnedGreeting).isSameAs(greetingJson);
     }
 }

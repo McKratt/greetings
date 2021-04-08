@@ -7,9 +7,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-class GreetingToMessageMapperTest {
+class GreetingMapperTest {
 
-    private final GreetingToMessageMapper mapper = new GreetingToMessageMapper();
+    private final GreetingMapper mapper = new GreetingMapper();
 
     @Test
     void mapToMessage_should_getMessage() {
@@ -22,5 +22,18 @@ class GreetingToMessageMapperTest {
         // Then
         assertThat(receivedMessage).isNotNull()
                 .extracting(GreetingMessage::message).isEqualTo(expectedMessage);
+    }
+
+    @Test
+    void mapToJson_should_map_fields() {
+        // Given
+        var name = "TestName";
+        var greeting = Greeting.of("Anniversary").to(name).build();
+        // When
+        var json = mapper.mapToJson(greeting);
+        // Then
+        assertThat(json).isNotNull();
+        assertThat(json.name()).isEqualTo(name);
+        assertThat(json.type()).isEqualTo("ANNIVERSARY");
     }
 }

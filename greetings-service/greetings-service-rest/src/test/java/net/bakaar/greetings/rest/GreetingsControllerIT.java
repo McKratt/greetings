@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @WebMvcTest(controllers = GreetingsController.class)
 @AutoConfigureMockMvc
-@Import({GreetingToMessageMapper.class})
+@Import({GreetingMapper.class})
 class GreetingsControllerIT {
 
     private final String basePath = "/rest/api/v1/greetings";
@@ -97,7 +97,7 @@ class GreetingsControllerIT {
     @Test
     void read_should_return_correct_content_type() throws Exception {
         // Given
-        var greeting = mock(Greeting.class);
+        var greeting = Greeting.of("Birthday").to("Noa").build();
         var identifier = UUID.randomUUID();
         given(service.read(identifier)).willReturn(greeting);
         // When

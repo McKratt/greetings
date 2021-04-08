@@ -21,7 +21,7 @@ public class GreetingsController {
 
     private final GreetingApplicationService applicationService;
 
-    private final GreetingToMessageMapper mapper;
+    private final GreetingMapper mapper;
 
     @PostMapping
 //            (produces = {APPLICATION_JSON_VALUE}, consumes = {APPLICATION_JSON_VALUE})
@@ -43,8 +43,8 @@ public class GreetingsController {
 
     @GetMapping(value = "/{identifier}", produces = {APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Greeting readGreeting(@PathVariable UUID identifier) {
-        return applicationService.read(identifier);
+    public GreetingJson readGreeting(@PathVariable UUID identifier) {
+        return mapper.mapToJson(applicationService.read(identifier));
     }
 
 }
