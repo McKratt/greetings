@@ -10,7 +10,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 @CucumberOptions(features = {
         "../../bdd/features"
 },
-        glue = "net.bakaar.greetings.servicetest.glue")
+        glue = "net.bakaar.greetings.servicetest.glue",
+        tags = "not @stat")
 public class CucumberLauncherIT {
 
     @ClassRule
