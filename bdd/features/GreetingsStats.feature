@@ -5,7 +5,7 @@ Feature: Statistics
 
     @e2e
     Scenario: First greeting
-      When I create a greetings
+      When I create a greeting
       Then the counter should be 1
 
 #    @e2e
