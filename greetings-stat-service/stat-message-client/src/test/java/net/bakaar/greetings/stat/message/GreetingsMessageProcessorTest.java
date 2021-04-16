@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.test.util.ReflectionTestUtils;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.Set;
@@ -35,6 +36,7 @@ class GreetingsMessageProcessorTest {
         var handler = mock(GreetingMessagePayloadHandler.class);
         // FIXME once lenient BDD is implemented : https://github.com/mockito/mockito/issues/1597
         lenient().when(handler.canHandle(type)).thenReturn(true);
+        given(handler.handle(any())).willReturn(Mono.empty());
 //        given(handler.canHandle(type)).willReturn(true);
         var handler2 = mock(GreetingMessagePayloadHandler.class);
         lenient().when(handler2.canHandle(type)).thenReturn(false);

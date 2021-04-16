@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import net.bakaar.greetings.stat.application.StatApplicationService;
 import net.bakaar.greetings.stat.domain.GreetingCreated;
 import net.bakaar.greetings.stat.message.exception.JsonDeserializationException;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 
@@ -16,19 +17,21 @@ public class CreatedGreetingEventPayloadHandler implements GreetingMessagePayloa
 
     private final ObjectMapper jsonMapper;
 
+    private final static URI TYPE = URI.create("http://bakaar.net/greetings/events/greeting-created");
+
     @Override
     public boolean canHandle(URI type) {
-        return GreetingCreated.TYPE.equals(type);
+        return TYPE.equals(type);
     }
 
     @Override
-    public void handle(String payload) {
+    public Mono<Void> handle(String payload) {
         GreetingCreated event = null;
         try {
             event = jsonMapper.readValue(payload, GreetingCreated.class);
         } catch (JsonProcessingException e) {
             throw new JsonDeserializationException(e);
         }
-        service.handle(event).block();
+        return service.handle(event);
     }
 }

@@ -18,11 +18,14 @@ public class GreetingsMessageProcessor {
 
     @KafkaListener(topics = "${greetings.message.topic}")
     public void processMessage(GreetingMessage message, Acknowledgment ack) {
-        handlers.stream().filter(handler -> handler.canHandle(message.type())).findFirst()
-                .ifPresentOrElse(handler -> handler.handle(message.payload()),
+        handlers.stream()
+                .filter(handler -> handler.canHandle(message.type()))
+                .findFirst()
+                .ifPresentOrElse(handler ->
+                                handler.handle(message.payload())
+                                        .subscribe(null, null, ack::acknowledge),
                         () -> {
                             throw new HandlerNotFoundException(message.type());
                         });
-        ack.acknowledge();
     }
 }
