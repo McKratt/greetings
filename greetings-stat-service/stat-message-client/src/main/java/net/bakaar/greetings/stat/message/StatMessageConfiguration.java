@@ -14,7 +14,7 @@ import org.springframework.kafka.listener.ContainerStoppingErrorHandler;
 import org.springframework.kafka.listener.ErrorHandler;
 
 @EnableKafka
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(GreetingsMessageProperties.class)
 public class StatMessageConfiguration {
 

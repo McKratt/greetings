@@ -1,19 +1,15 @@
-package net.bakaar.greetings.stat.message.glue;
+package net.bakaar.greetings.stat.bootstrap.glue;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
-import net.bakaar.greetings.stat.application.readmodel.Greeting;
-import net.bakaar.greetings.stat.domain.GreetingType;
-import net.bakaar.greetings.stat.domain.StatRepository;
 import net.bakaar.greetings.stat.message.GreetingMessage;
-import net.bakaar.greetings.stat.message.TestSpringBootApplication;
-import net.bakaar.greetings.stat.message.TestSpringBootApplication.TestGreetingsRepository;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
@@ -23,32 +19,33 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.net.URI;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
+import static io.restassured.RestAssured.given;
+import static java.lang.String.format;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @CucumberContextConfiguration
 @EmbeddedKafka(partitions = 1)
-@SpringBootTest(classes = TestSpringBootApplication.class)
+@SpringBootTest(webEnvironment = RANDOM_PORT)
 @ActiveProfiles(profiles = "test")
-public class GreetingsStatsSteps {
+//@AutoConfigureWireMock(port = 0)
+public class
+GreetingsStatsSteps {
 
     private final UUID identifier = UUID.randomUUID();
-    private final String type = "birthday";
-    private final String name = "Albert";
     @Autowired
+    // TODO replace that by a container
     private EmbeddedKafkaBroker embeddedKafka;
-    @Autowired
-    private StatRepository statRepository;
-    @Autowired
-    private TestGreetingsRepository greetingsRepository;
+
+    @LocalServerPort
+    private int port;
+
     @Value("${greetings.message.topic}")
     private String topic;
 
     @When("I create a greeting")
     public void i_create_a_greetings() {
-        // send the event on Kafka
         var producerFactory = new DefaultKafkaProducerFactory<String, GreetingMessage>(
                 KafkaTestUtils.producerProps(embeddedKafka));
         producerFactory.setKeySerializer(new StringSerializer());
@@ -62,16 +59,23 @@ public class GreetingsStatsSteps {
                 """.formatted(identifier));
         producer.send(new ProducerRecord<>(topic, identifier.toString(), message));
         producer.flush();
-        // Mock the call to greeting service
-        var greeting = new Greeting(GreetingType.of(type), name);
-        greetingsRepository.addGreeting(identifier, greeting);
+        //        stubFor(get(urlEqualTo(format("/rest/api/v1/greetings/%s", identifier))).willReturn(aResponse()
+//                .withStatus(200)
+//                .withHeader("Content-Type", "application/json")
+//                .withBody("""
+//                        {
+//                            "type":"%s",
+//                            "name":"%s"
+//                        }
+//                        """.formatted(type, name))));
     }
 
-    @Then("the counter should be {long}")
-    public void the_counter_should_be(Long counter) throws ExecutionException, InterruptedException {
-        await().until(() -> statRepository.pop().get().getStatsFor(GreetingType.of(type)).get().equals(counter));
-        var stats = statRepository.pop().get();
-        assertThat(stats).isNotNull();
-        assertThat(stats.getStatsFor(GreetingType.of(type))).isPresent().get().isEqualTo(counter);
+    @Then("the counter should be {int}")
+    public void the_counter_should_be(Integer counter) {
+        given().get(format("http://localhost:%d/greetings/rest/api/v1/stats", port))
+                .then()
+                .log().all(true)
+                // FIXME make it more precise...
+                .body(containsString(format(":\"%d\"", counter)));
     }
 }
