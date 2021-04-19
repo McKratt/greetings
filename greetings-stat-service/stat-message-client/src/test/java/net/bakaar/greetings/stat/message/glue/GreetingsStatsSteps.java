@@ -4,7 +4,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import net.bakaar.greetings.stat.application.readmodel.Greeting;
-import net.bakaar.greetings.stat.domain.GreetingType;
 import net.bakaar.greetings.stat.domain.StatRepository;
 import net.bakaar.greetings.stat.message.GreetingMessage;
 import net.bakaar.greetings.stat.message.TestSpringBootApplication;
@@ -63,15 +62,15 @@ public class GreetingsStatsSteps {
         producer.send(new ProducerRecord<>(topic, identifier.toString(), message));
         producer.flush();
         // Mock the call to greeting service
-        var greeting = new Greeting(GreetingType.of(type), name);
+        var greeting = new Greeting(type, name);
         greetingsRepository.addGreeting(identifier, greeting);
     }
 
     @Then("the counter should be {long}")
     public void the_counter_should_be(Long counter) throws ExecutionException, InterruptedException {
-        await().until(() -> statRepository.pop().get().getStatsFor(GreetingType.of(type)).get().equals(counter));
+        await().until(() -> statRepository.pop().get().getStatsFor(type).get().equals(counter));
         var stats = statRepository.pop().get();
         assertThat(stats).isNotNull();
-        assertThat(stats.getStatsFor(GreetingType.of(type))).isPresent().get().isEqualTo(counter);
+        assertThat(stats.getStatsFor(type)).isPresent().get().isEqualTo(counter);
     }
 }

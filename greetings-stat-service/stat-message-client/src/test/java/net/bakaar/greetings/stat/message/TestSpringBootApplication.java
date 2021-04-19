@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import static net.bakaar.greetings.stat.domain.GreetingType.*;
-
 @SpringBootApplication(proxyBeanMethods = false, scanBasePackages = "net.bakaar.greetings.stat")
 public class TestSpringBootApplication {
 
@@ -35,7 +33,7 @@ public class TestSpringBootApplication {
     @Bean
     StatRepository statRepository() {
         return new StatRepository() {
-            private GreetingsStats stats = new GreetingsStats(new HashMap<>(Map.of(BIRTHDAY, 0L, ANNIVERSARY, 0L, CHRISTMAS, 0L)));
+            private GreetingsStats stats = new GreetingsStats(new HashMap<>(Map.of("BIRTHDAY", 0L, "ANNIVERSARY", 0L, "CHRISTMAS", 0L)));
 
             @Override
             public CompletableFuture<Void> put(GreetingsStats stats) {

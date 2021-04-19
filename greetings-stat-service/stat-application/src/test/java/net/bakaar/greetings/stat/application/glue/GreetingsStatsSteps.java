@@ -6,7 +6,6 @@ import net.bakaar.greetings.stat.application.GreetingsRepository;
 import net.bakaar.greetings.stat.application.StatApplicationService;
 import net.bakaar.greetings.stat.application.readmodel.Greeting;
 import net.bakaar.greetings.stat.domain.GreetingCreated;
-import net.bakaar.greetings.stat.domain.GreetingType;
 import net.bakaar.greetings.stat.domain.GreetingsStats;
 import net.bakaar.greetings.stat.domain.StatRepository;
 import org.mockito.ArgumentCaptor;
@@ -17,7 +16,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import static net.bakaar.greetings.stat.domain.GreetingType.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -31,8 +29,8 @@ public class GreetingsStatsSteps {
     private final StatRepository statRepository = mock(StatRepository.class);
     private final GreetingsRepository greetingsRepository = mock(GreetingsRepository.class);
     private final StatApplicationService service = new StatApplicationService(statRepository, greetingsRepository);
-    private final GreetingsStats stats = new GreetingsStats(new HashMap<>(Map.of(BIRTHDAY, 0L, ANNIVERSARY, 0L, CHRISTMAS, 0L)));
-    private final GreetingType type = GreetingType.ANNIVERSARY;
+    private final GreetingsStats stats = new GreetingsStats(new HashMap<>(Map.of("BIRTHDAY", 0L, "ANNIVERSARY", 0L, "CHRISTMAS", 0L)));
+    private final String type = "ANNIVERSARY";
 
     @When("I create a greeting")
     public void i_create_a_greetings() {

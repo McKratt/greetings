@@ -2,7 +2,6 @@ package net.bakaar.greetings.stat.application;
 
 import net.bakaar.greetings.stat.application.readmodel.Greeting;
 import net.bakaar.greetings.stat.domain.GreetingCreated;
-import net.bakaar.greetings.stat.domain.GreetingType;
 import net.bakaar.greetings.stat.domain.GreetingsStats;
 import net.bakaar.greetings.stat.domain.StatRepository;
 import org.junit.jupiter.api.Test;
@@ -42,7 +41,7 @@ class StatApplicationServiceTest {
         given(statRepository.put(any())).willReturn(CompletableFuture.completedFuture(null));
         var greeting = mock(Greeting.class);
         given(greetingsRepository.getGreetingForIdentifier(identifier)).willReturn(Mono.just(greeting));
-        GreetingType type = GreetingType.CHRISTMAS;
+        String type = "CHRISTMAS";
         given(greeting.type()).willReturn(type);
         // When
         StepVerifier.create(service.handle(event)).verifyComplete();
