@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -36,6 +37,7 @@ class StatApplicationServiceTest {
         var event = mock(GreetingCreated.class);
         given(event.identifier()).willReturn(identifier);
         var stats = mock(GreetingsStats.class);
+        given(stats.increaseCounterFor(any())).willReturn(stats);
         given(statRepository.pop()).willReturn(CompletableFuture.completedFuture(stats));
         given(statRepository.put(any())).willReturn(CompletableFuture.completedFuture(null));
         var greeting = mock(Greeting.class);
@@ -43,7 +45,7 @@ class StatApplicationServiceTest {
         GreetingType type = GreetingType.CHRISTMAS;
         given(greeting.type()).willReturn(type);
         // When
-        service.handle(event).subscribe();
+        StepVerifier.create(service.handle(event)).verifyComplete();
         // Then
         verify(statRepository).pop();
         verify(greetingsRepository).getGreetingForIdentifier(identifier);

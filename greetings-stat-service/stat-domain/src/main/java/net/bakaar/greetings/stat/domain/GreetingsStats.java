@@ -13,7 +13,8 @@ public class GreetingsStats {
         return Optional.ofNullable(counters.getOrDefault(type, null));
     }
 
-    public void increaseCounterFor(GreetingType type) {
-        counters.compute(type, (currentType, currentValue) -> currentValue + 1L);
+    public GreetingsStats increaseCounterFor(GreetingType type) {
+        counters.compute(type, (currentType, currentValue) -> Long.sum(currentValue, 1L));
+        return this;
     }
 }

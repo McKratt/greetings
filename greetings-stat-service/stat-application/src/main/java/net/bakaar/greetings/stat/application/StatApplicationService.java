@@ -17,11 +17,11 @@ public class StatApplicationService {
 
     public Mono<Void> handle(GreetingCreated event) {
         log.debug("Event : " + event.toString());
-        return Mono.zip(greetingsRepository.getGreetingForIdentifier(event.identifier()), Mono.fromFuture(statRepository.pop()))
-                .map(tuple -> {
-                    tuple.getT2().increaseCounterFor(tuple.getT1().type());
-                    return tuple.getT2();
-                })
+        return Mono.zip(
+                greetingsRepository.getGreetingForIdentifier(event.identifier()),
+                Mono.fromFuture(statRepository.pop()),
+                (greeting, greetingsStats) -> greetingsStats.increaseCounterFor(greeting.type())
+        )
                 .flatMap(stats -> Mono.fromFuture(statRepository.put(stats)));
     }
 }

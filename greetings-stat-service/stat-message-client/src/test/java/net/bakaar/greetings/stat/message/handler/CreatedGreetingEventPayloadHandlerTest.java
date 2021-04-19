@@ -13,11 +13,12 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -61,8 +62,11 @@ class CreatedGreetingEventPayloadHandlerTest {
         var payload = "Payload";
         var event = mock(GreetingCreated.class);
         given(jsonMapper.readValue(payload, GreetingCreated.class)).willReturn(event);
+        given(service.handle(any())).willReturn(Mono.empty());
         // When
-        handler.handle(payload);
+        StepVerifier.create(handler.handle(payload))
+                .expectComplete()
+                .verify();
         // Then
         verify(jsonMapper).readValue(payload, GreetingCreated.class);
         verify(service).handle(event);
@@ -74,9 +78,9 @@ class CreatedGreetingEventPayloadHandlerTest {
         var cause = new JsonEOFException(null, null, null);
         given(jsonMapper.readValue(anyString(), any(Class.class))).willThrow(cause);
         // When
-        Throwable thrown = catchThrowable(() -> handler.handle("Whatever"));
-        // Then
-        assertThat(thrown).isInstanceOf(JsonDeserializationException.class);
-        assertThat(thrown.getCause()).isSameAs(cause);
+        StepVerifier.create(handler.handle("Whatever"))
+                .expectErrorMatches(throwable -> throwable instanceof JsonDeserializationException &&
+                        throwable.getCause().equals(cause))
+                .verify();
     }
 }

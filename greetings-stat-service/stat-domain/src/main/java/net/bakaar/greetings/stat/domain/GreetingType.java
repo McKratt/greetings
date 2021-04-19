@@ -2,6 +2,7 @@ package net.bakaar.greetings.stat.domain;
 
 import net.bakaar.greetings.stat.domain.exception.GreetingWrongTypeException;
 
+//TODO refactor to not be tight to the greetings service.
 public enum GreetingType {
     BIRTHDAY,
     ANNIVERSARY,

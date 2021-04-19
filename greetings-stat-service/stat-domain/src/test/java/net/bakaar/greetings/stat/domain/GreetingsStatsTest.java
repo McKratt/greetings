@@ -28,9 +28,9 @@ class GreetingsStatsTest {
     void should_increase_the_correct_counter(GreetingType type) {
         // Given
         // When
-        stats.increaseCounterFor(type);
+        var returnedStats = stats.increaseCounterFor(type);
         // Then
-        var stat = stats.getStatsFor(type);
+        var stat = returnedStats.getStatsFor(type);
         assertThat(stat).isPresent().get().isEqualTo(1L);
     }
 }

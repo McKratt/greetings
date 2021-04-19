@@ -1,6 +1,5 @@
 package net.bakaar.greetings.stat.message.handler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import net.bakaar.greetings.stat.application.StatApplicationService;
@@ -26,12 +25,9 @@ public class CreatedGreetingEventPayloadHandler implements GreetingMessagePayloa
 
     @Override
     public Mono<Void> handle(String payload) {
-        GreetingCreated event = null;
-        try {
-            event = jsonMapper.readValue(payload, GreetingCreated.class);
-        } catch (JsonProcessingException e) {
-            throw new JsonDeserializationException(e);
-        }
-        return service.handle(event);
+        return Mono.fromCallable(() -> jsonMapper.readValue(payload, GreetingCreated.class))
+                .onErrorMap(JsonDeserializationException::new)
+                .flatMap(service::handle);
+
     }
 }
