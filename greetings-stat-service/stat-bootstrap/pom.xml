@@ -21,6 +21,15 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>net.bakaar</groupId>
+            <artifactId>stat-persistence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.r2dbc</groupId>
+            <artifactId>r2dbc-postgresql</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <scope>test</scope>

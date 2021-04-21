@@ -14,6 +14,7 @@
         <module>stat-domain</module>
         <module>stat-bootstrap</module>
         <module>stat-rest</module>
+        <module>stat-persistence</module>
     </modules>
     <groupId>net.bakaar</groupId>
     <artifactId>greetings-stat-service</artifactId>
