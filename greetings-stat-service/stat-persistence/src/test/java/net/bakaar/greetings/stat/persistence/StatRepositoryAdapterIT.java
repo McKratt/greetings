@@ -3,19 +3,18 @@ package net.bakaar.greetings.stat.persistence;
 import net.bakaar.greetings.stat.domain.GreetingsStats;
 import net.bakaar.greetings.stat.domain.StatRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = StatPersistenceTestConfiguration.class)
+@DataR2dbcTest
+@Import({StatRepositoryAdapter.class})
 class StatRepositoryAdapterIT {
 
     @Autowired
