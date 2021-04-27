@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
@@ -20,6 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.net.URI;
 import java.util.UUID;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.containsString;
@@ -29,23 +31,24 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @EmbeddedKafka(partitions = 1)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ActiveProfiles(profiles = "test")
-//@AutoConfigureWireMock(port = 0)
+@AutoConfigureWireMock(port = 0)
 public class
 GreetingsStatsSteps {
 
     private final UUID identifier = UUID.randomUUID();
+    private final String type = "ANNIVERSARY";
+    private final String name = "Lucius";
     @Autowired
     // TODO replace that by a container
     private EmbeddedKafkaBroker embeddedKafka;
-
     @LocalServerPort
     private int port;
-
     @Value("${greetings.message.topic}")
     private String topic;
 
     @When("I create a greeting")
     public void i_create_a_greetings() {
+        // send the message on the kafka topic
         var producerFactory = new DefaultKafkaProducerFactory<String, GreetingMessage>(
                 KafkaTestUtils.producerProps(embeddedKafka));
         producerFactory.setKeySerializer(new StringSerializer());
@@ -59,15 +62,16 @@ GreetingsStatsSteps {
                 """.formatted(identifier));
         producer.send(new ProducerRecord<>(topic, identifier.toString(), message));
         producer.flush();
-        //        stubFor(get(urlEqualTo(format("/rest/api/v1/greetings/%s", identifier))).willReturn(aResponse()
-//                .withStatus(200)
-//                .withHeader("Content-Type", "application/json")
-//                .withBody("""
-//                        {
-//                            "type":"%s",
-//                            "name":"%s"
-//                        }
-//                        """.formatted(type, name))));
+        // Stub the answer from greetings service
+        stubFor(get(urlEqualTo(format("/rest/api/v1/greetings/%s", identifier))).willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBody("""
+                        {
+                            "type":"%s",
+                            "name":"%s"
+                        }
+                        """.formatted(type, name))));
     }
 
     @Then("the counter should be {int}")
