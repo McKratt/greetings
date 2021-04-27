@@ -15,6 +15,7 @@
         <module>stat-bootstrap</module>
         <module>stat-rest</module>
         <module>stat-persistence</module>
+        <module>stat-rest-client</module>
     </modules>
     <groupId>net.bakaar</groupId>
     <artifactId>greetings-stat-service</artifactId>
@@ -28,6 +29,7 @@
         <testcontainer.version>1.15.2</testcontainer.version>
         <awaitility.version>4.0.3</awaitility.version>
         <argLine>--enable-preview</argLine>
+        <pact.version>4.2.4</pact.version>
     </properties>
     <dependencies>
         <dependency>
@@ -123,6 +125,12 @@
     <!--        </plugins>-->
     <!--    </build>-->
     <repositories>
+        <!--        <repository>-->
+        <!--            <id>central</id>-->
+        <!--            <name>Maven Central</name>-->
+        <!--            <layout>default</layout>-->
+        <!--            <url>https://repo1.maven.org/maven2</url>-->
+        <!--        </repository>-->
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
