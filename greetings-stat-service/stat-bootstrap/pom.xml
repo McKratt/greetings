@@ -34,6 +34,15 @@
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-postgresql</artifactId>
         </dependency>
+        <!-- For Flyway -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>

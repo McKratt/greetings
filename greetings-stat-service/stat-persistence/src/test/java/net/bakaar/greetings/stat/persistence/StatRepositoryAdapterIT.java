@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataR2dbcTest
 @Import({StatRepositoryAdapter.class})
+@ContextConfiguration(classes = StatPersistenceTestApplication.class)
 class StatRepositoryAdapterIT {
 
     @Autowired

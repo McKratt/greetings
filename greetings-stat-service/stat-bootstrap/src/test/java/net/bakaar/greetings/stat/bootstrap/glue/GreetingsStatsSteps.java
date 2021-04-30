@@ -17,6 +17,8 @@ import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 
 import java.net.URI;
 import java.util.UUID;
@@ -24,6 +26,7 @@ import java.util.UUID;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
+import static net.bakaar.greetings.stat.bootstrap.CucumberLauncherIT.dbContainer;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -45,6 +48,19 @@ GreetingsStatsSteps {
     private int port;
     @Value("${greetings.message.topic}")
     private String topic;
+
+    @DynamicPropertySource
+    static void registerPgProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.r2dbc.url",
+                () -> String.format("r2dbc:postgresql://localhost:%d/%s",
+                        dbContainer.getFirstMappedPort(), dbContainer.getDatabaseName()));
+        registry.add("spring.r2dbc.password", dbContainer::getPassword);
+        registry.add("spring.r2dbc.username", dbContainer::getUsername);
+        registry.add("spring.flyway.url", () -> format("jdbc:postgresql://localhost:%d/%s",
+                dbContainer.getFirstMappedPort(), dbContainer.getDatabaseName()));
+        registry.add("spring.flyway.user", dbContainer::getUsername);
+        registry.add("spring.flyway.password", dbContainer::getPassword);
+    }
 
     @When("I create a greeting")
     public void i_create_a_greetings() {
