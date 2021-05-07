@@ -56,7 +56,7 @@ public class GreetingsStatsSteps {
     private CounterRepository counterRepository;
 
     @DynamicPropertySource
-    static void registerPgProperties(DynamicPropertyRegistry registry) {
+    static void registerProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.r2dbc.url",
                 () -> String.format("r2dbc:postgresql://localhost:%d/%s",
                         dbContainer.getFirstMappedPort(), dbContainer.getDatabaseName()));
@@ -107,6 +107,8 @@ public class GreetingsStatsSteps {
         given().get(format("http://localhost:%d/rest/api/v1/stats", port))
                 .then()
                 .log().all(true)
+                .statusCode(200)
+                .contentType("application/json")
                 // FIXME make it more precise...
                 .body(containsString(format(":%d", counter)));
     }

@@ -2,6 +2,7 @@ package net.bakaar.greetings.stat.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.Locale;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Getter
+@ToString
 public class GreetingsStats {
     /**
      * Key should be uppercase.
