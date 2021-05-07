@@ -3,7 +3,9 @@ package net.bakaar.greetings.stat.bootstrap.glue;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
+import lombok.extern.slf4j.Slf4j;
 import net.bakaar.greetings.stat.message.GreetingMessage;
+import net.bakaar.greetings.stat.persistence.CounterRepository;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +29,17 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static net.bakaar.greetings.stat.bootstrap.CucumberLauncherIT.dbContainer;
+import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
+@Slf4j
 @CucumberContextConfiguration
 @EmbeddedKafka(partitions = 1)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ActiveProfiles(profiles = "test")
 @AutoConfigureWireMock(port = 0)
-public class
-GreetingsStatsSteps {
+public class GreetingsStatsSteps {
 
     private final UUID identifier = UUID.randomUUID();
     private final String type = "ANNIVERSARY";
@@ -49,6 +52,9 @@ GreetingsStatsSteps {
     @Value("${greetings.message.topic}")
     private String topic;
 
+    @Autowired
+    private CounterRepository counterRepository;
+
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.r2dbc.url",
@@ -60,6 +66,7 @@ GreetingsStatsSteps {
                 dbContainer.getFirstMappedPort(), dbContainer.getDatabaseName()));
         registry.add("spring.flyway.user", dbContainer::getUsername);
         registry.add("spring.flyway.password", dbContainer::getPassword);
+        registry.add("greetings.stat.rest.client.url", () -> "http://localhost:${wiremock.server.port}/rest/api/v1/greetings");
     }
 
     @When("I create a greeting")
@@ -92,10 +99,15 @@ GreetingsStatsSteps {
 
     @Then("the counter should be {int}")
     public void the_counter_should_be(Integer counter) {
-        given().get(format("http://localhost:%d/greetings/rest/api/v1/stats", port))
+        await().until(() -> {
+            var counterDb = counterRepository.findCounterByNameEquals(type).block();
+            log.debug("Count = " + (counterDb != null ? counterDb.getCount() : 99));
+            return counterDb != null && counterDb.getCount() > 0;
+        });
+        given().get(format("http://localhost:%d/rest/api/v1/stats", port))
                 .then()
                 .log().all(true)
                 // FIXME make it more precise...
-                .body(containsString(format(":\"%d\"", counter)));
+                .body(containsString(format(":%d", counter)));
     }
 }

@@ -8,19 +8,15 @@ import net.bakaar.greetings.stat.application.readmodel.Greeting;
 import net.bakaar.greetings.stat.domain.GreetingCreated;
 import net.bakaar.greetings.stat.domain.GreetingsStats;
 import net.bakaar.greetings.stat.domain.StatRepository;
-import org.mockito.ArgumentCaptor;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 public class GreetingsStatsSteps {
 
@@ -38,22 +34,20 @@ public class GreetingsStatsSteps {
         var event = mock(GreetingCreated.class);
         given(event.identifier()).willReturn(identifier);
         // get the stat object from DB
-        given(statRepository.pop()).willReturn(CompletableFuture.completedFuture(stats));
-        given(statRepository.put(any())).willReturn(CompletableFuture.completedFuture(null));
+        given(statRepository.pop()).willReturn(stats);
         // call the greetings service to know the type
         var greeting = new Greeting(type, "Copernicus");
         given(greetingsRepository.getGreetingForIdentifier(identifier)).willReturn(Mono.just(greeting));
         // update the stat object
-        service.handle(event).subscribe();
+        StepVerifier.create(service.handle(event))
+                .verifyComplete();
     }
 
     @Then("the counter should be {long}")
     public void the_counter_should_be(Long counter) {
-        // check the saved stat object contains one of the counter to counter value
-        var captor = ArgumentCaptor.forClass(GreetingsStats.class);
-        verify(statRepository).put(captor.capture());
-        var stats = captor.getValue();
-        assertThat(stats).isNotNull();
-        assertThat(stats.getStatsFor(type)).isPresent().get().isEqualTo(counter);
+        StepVerifier.create(service.retrieveGreetingsStats())
+                .expectNextMatches(returned -> returned.getStatsFor(type).map(counter::equals).get())
+                .verifyComplete();
+
     }
 }

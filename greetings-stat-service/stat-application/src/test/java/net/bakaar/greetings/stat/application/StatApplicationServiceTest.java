@@ -13,7 +13,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -37,11 +36,10 @@ class StatApplicationServiceTest {
         given(event.identifier()).willReturn(identifier);
         var stats = mock(GreetingsStats.class);
         given(stats.increaseCounterFor(any())).willReturn(stats);
-        given(statRepository.pop()).willReturn(CompletableFuture.completedFuture(stats));
-        given(statRepository.put(any())).willReturn(CompletableFuture.completedFuture(null));
+        given(statRepository.pop()).willReturn(stats);
         var greeting = mock(Greeting.class);
-        given(greetingsRepository.getGreetingForIdentifier(identifier)).willReturn(Mono.just(greeting));
-        String type = "CHRISTMAS";
+        given(greetingsRepository.getGreetingForIdentifier(any())).willReturn(Mono.just(greeting));
+        var type = "CHRISTMAS";
         given(greeting.type()).willReturn(type);
         // When
         StepVerifier.create(service.handle(event)).verifyComplete();
@@ -50,5 +48,18 @@ class StatApplicationServiceTest {
         verify(greetingsRepository).getGreetingForIdentifier(identifier);
         verify(stats).increaseCounterFor(type);
         verify(statRepository).put(stats);
+    }
+
+    @Test
+    void should_call_repository() {
+        // Given
+        var stats = mock(GreetingsStats.class);
+        given(statRepository.pop()).willReturn(stats);
+        // When
+        StepVerifier.create(service.retrieveGreetingsStats())
+                .expectNext(stats)
+                .verifyComplete();
+        // Then
+        verify(statRepository).pop();
     }
 }

@@ -12,7 +12,6 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 @SpringBootApplication(proxyBeanMethods = false, scanBasePackages = "net.bakaar.greetings.stat")
 public class TestSpringBootApplication {
@@ -36,14 +35,13 @@ public class TestSpringBootApplication {
             private GreetingsStats stats = new GreetingsStats(new HashMap<>(Map.of("BIRTHDAY", 0L, "ANNIVERSARY", 0L, "CHRISTMAS", 0L)));
 
             @Override
-            public CompletableFuture<Void> put(GreetingsStats stats) {
+            public void put(GreetingsStats stats) {
                 this.stats = stats;
-                return CompletableFuture.completedFuture(null);
             }
 
             @Override
-            public CompletableFuture<GreetingsStats> pop() {
-                return CompletableFuture.completedFuture(stats);
+            public GreetingsStats pop() {
+                return stats;
             }
         };
     }

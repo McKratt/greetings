@@ -68,8 +68,8 @@ public class GreetingsStatsSteps {
 
     @Then("the counter should be {long}")
     public void the_counter_should_be(Long counter) throws ExecutionException, InterruptedException {
-        await().until(() -> statRepository.pop().get().getStatsFor(type).get().equals(counter));
-        var stats = statRepository.pop().get();
+        await().until(() -> statRepository.pop().getStatsFor(type).get().equals(counter));
+        var stats = statRepository.pop();
         assertThat(stats).isNotNull();
         assertThat(stats.getStatsFor(type)).isPresent().get().isEqualTo(counter);
     }
