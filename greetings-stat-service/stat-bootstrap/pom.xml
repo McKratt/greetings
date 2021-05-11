@@ -12,7 +12,7 @@
     <dependencies>
         <dependency>
             <groupId>net.bakaar</groupId>
-            <artifactId>stat-message-client</artifactId>
+            <artifactId>stat-consumer</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -27,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>net.bakaar</groupId>
-            <artifactId>stat-rest-client</artifactId>
+            <artifactId>stat-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

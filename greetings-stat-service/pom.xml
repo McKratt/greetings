@@ -9,13 +9,13 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modules>
-        <module>stat-message-client</module>
+        <module>stat-consumer</module>
         <module>stat-application</module>
         <module>stat-domain</module>
         <module>stat-bootstrap</module>
         <module>stat-rest</module>
         <module>stat-persistence</module>
-        <module>stat-rest-client</module>
+        <module>stat-client</module>
     </modules>
     <groupId>net.bakaar</groupId>
     <artifactId>greetings-stat-service</artifactId>

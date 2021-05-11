@@ -12,11 +12,9 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class CreatedGreetingEventPayloadHandler implements GreetingMessagePayloadHandler {
 
-    private final StatApplicationService service;
-
-    private final ObjectMapper jsonMapper;
-
     private final static URI TYPE = URI.create("http://bakaar.net/greetings/events/greeting-created");
+    private final StatApplicationService service;
+    private final ObjectMapper jsonMapper;
 
     @Override
     public boolean canHandle(URI type) {
