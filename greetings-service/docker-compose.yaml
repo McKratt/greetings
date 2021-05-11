@@ -1,15 +1,15 @@
 version: "3.9"
 services:
-    db:
-        image: postgres:13-alpine
-        environment: 
-            POSTGRES_PASSWORD: 123456
-    service:
-        image: bakaar.net/greetings-service
-        ports: 
-            - "9080:8080"
-        environment: 
-            SPRING_DATASOURCE_URL: "jdbc:postgresql://db:5432/postgres"
-            SPRING_DATASOURCE_USERNAME: postgres
-            SPRING_DATASOURCE_PASSWORD: 123456
-            JAVA_TOOL_OPTIONS: "--enable-preview"
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_PASSWORD: 123456
+  service:
+    image: bakaar.net/greetings-service
+    ports:
+      - "9080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://db:5432/postgres"
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 123456
+      JAVA_TOOL_OPTIONS: "--enable-preview"

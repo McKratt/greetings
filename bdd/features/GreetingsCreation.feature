@@ -6,14 +6,14 @@ Feature: Creation of a Greeting Message
     Scenario: Simple Greeting
       When I create an anniversary greeting for Charles
       Then I get the message "Joyful Anniversary Charles !"
-    
+
     Scenario Template: creation
       When I create a <type> greeting for <name>
       Then I get the message "<message>"
       Scenarios:
-        | type        | name    | message                      |
-        | birthday    | Anna    | Happy Birthday Anna !        |
-        | christmas   | Leslie  | Merry Christmas Leslie !     |
+        | type      | name   | message                  |
+        | birthday  | Anna   | Happy Birthday Anna !    |
+        | christmas | Leslie | Merry Christmas Leslie ! |
 
   Rule: Creation of a none existing type of greeting should return an error
     Scenario: Error

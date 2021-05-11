@@ -3,16 +3,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <modules>
-        <module>greetings-service-bootstrap</module>
-        <module>greetings-service-rest</module>
-        <module>greetings-service-application</module>
-        <module>greetings-service-domain</module>
-        <module>greetings-service-persistence</module>
+        <module>bootstrap</module>
+        <module>rest</module>
+        <module>application</module>
+        <module>domain</module>
+        <module>persistence</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.0-M3</version>
+        <version>2.5.0-RC1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>net.bakaar</groupId>
@@ -37,8 +37,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <!-- FIXME remove the version once Spring updated the dependency -->
-            <version>1.18.20</version>
             <optional>true</optional>
         </dependency>
         <dependency>

@@ -1,5 +1,3 @@
-.idea
-**.iml
 **target
 **.DS_Store
 **.settings
@@ -7,3 +5,9 @@
 **.classpath
 **.project
 .vscode
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
