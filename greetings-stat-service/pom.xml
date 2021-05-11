@@ -97,40 +97,9 @@
                     <compilerArgs>${argLine}</compilerArgs>
                 </configuration>
             </plugin>
-            <!--            <plugin>-->
-            <!--                <groupId>org.apache.maven.plugins</groupId>-->
-            <!--                <artifactId>maven-compiler-plugin</artifactId>-->
-            <!--                <configuration>-->
-            <!--                    <source>${java.version}</source>-->
-            <!--                    <target>${java.version}</target>-->
-            <!--                    <compilerArgs>${argLine}</compilerArgs>-->
-            <!--                </configuration>-->
-            <!--            </plugin>-->
         </plugins>
     </build>
-    <!--    <build>-->
-    <!--        <plugins>-->
-    <!--            <plugin>-->
-    <!--                <groupId>org.springframework.boot</groupId>-->
-    <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-    <!--                <configuration>-->
-    <!--                    <excludes>-->
-    <!--                        <exclude>-->
-    <!--                            <groupId>org.projectlombok</groupId>-->
-    <!--                            <artifactId>lombok</artifactId>-->
-    <!--                        </exclude>-->
-    <!--                    </excludes>-->
-    <!--                </configuration>-->
-    <!--            </plugin>-->
-    <!--        </plugins>-->
-    <!--    </build>-->
     <repositories>
-        <!--        <repository>-->
-        <!--            <id>central</id>-->
-        <!--            <name>Maven Central</name>-->
-        <!--            <layout>default</layout>-->
-        <!--            <url>https://repo1.maven.org/maven2</url>-->
-        <!--        </repository>-->
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
