@@ -19,6 +19,7 @@
         <rest-assured.version>4.3.3</rest-assured.version>
         <logback.version>1.2.3</logback.version>
         <awaitility.version>4.0.3</awaitility.version>
+        <argLine>--enable-preview</argLine>
     </properties>
     <dependencies>
         <dependency>
@@ -109,9 +110,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>15</source>
-                    <target>15</target>
-                    <compilerArgs>--enable-preview</compilerArgs>
+                    <compilerArgs>${argLine}</compilerArgs>
                 </configuration>
             </plugin>
         </plugins>
