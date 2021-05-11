@@ -8,11 +8,11 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>greetings-service-application</artifactId>
+    <artifactId>application</artifactId>
     <dependencies>
         <dependency>
             <groupId>net.bakaar</groupId>
-            <artifactId>greetings-service-domain</artifactId>
+            <artifactId>domain</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
