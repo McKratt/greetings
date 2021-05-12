@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DataJpaTest // No needs to add @Transactional, @DataJpaTest does that for us.
 // needed to include the adapter and the mapper inside the context, because @DataJpaTest restraint the context to only Data concerned beans
 @Import({GreetingRepositoryJPAAdapter.class, DomainToEntityMapper.class})

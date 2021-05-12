@@ -18,6 +18,7 @@ import static net.bakaar.greetings.domain.GreetingType.BIRTHDAY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 class GreetingTest {

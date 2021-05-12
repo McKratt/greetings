@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static net.bakaar.greetings.domain.GreetingType.ANNIVERSARY;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class DomainToEntityMapperTest {
 
