@@ -4,6 +4,8 @@ package net.bakaar.greetings.domain;
 import lombok.RequiredArgsConstructor;
 import net.bakaar.greetings.domain.exception.GreetingWrongTypeException;
 
+import static java.lang.String.format;
+
 @RequiredArgsConstructor
 public enum GreetingType {
     BIRTHDAY(name -> format("Happy Birthday %s !", name)),
