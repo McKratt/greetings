@@ -41,8 +41,9 @@ class CreatedGreetingEventPayloadHandlerTest {
     @ValueSource(strings = {
             "",
             "https://google.com",
-            "http://bakaar.net/greetings/events/greeting-createds",
-            "http://bakaar.net/greetings/events/greeting-created/1"
+            "https://bakaar.net/greetings/events/greeting-createds",
+            "http://bakaar.net/greetings/events/greeting-created/1",
+            "http://bakaar.net/greetings/events/greeting-created"
     })
     void canHandle_should_return_false(String type) {
         // Given
@@ -53,7 +54,7 @@ class CreatedGreetingEventPayloadHandlerTest {
 
     @Test
     void canHandle_should_return_true() {
-        assertThat(handler.canHandle(URI.create("http://bakaar.net/greetings/events/greeting-created"))).isTrue();
+        assertThat(handler.canHandle(URI.create("https://bakaar.net/greetings/events/greeting-created"))).isTrue();
     }
 
     @Test

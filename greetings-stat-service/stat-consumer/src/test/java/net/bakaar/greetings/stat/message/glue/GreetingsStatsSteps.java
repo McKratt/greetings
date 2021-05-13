@@ -22,7 +22,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.net.URI;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -53,7 +52,7 @@ public class GreetingsStatsSteps {
         producerFactory.setKeySerializer(new StringSerializer());
         producerFactory.setValueSerializer(new JsonSerializer<>());
         var producer = producerFactory.createProducer();
-        var message = new GreetingMessage(URI.create("http://bakaar.net/greetings/events/greeting-created"), """
+        var message = new GreetingMessage(URI.create("https://bakaar.net/greetings/events/greeting-created"), """
                 {
                    "identifier": "%s",
                    "raisedAt" : "2010-01-01T12:00:00+01:00"
@@ -67,7 +66,7 @@ public class GreetingsStatsSteps {
     }
 
     @Then("the counter should be {long}")
-    public void the_counter_should_be(Long counter) throws ExecutionException, InterruptedException {
+    public void the_counter_should_be(Long counter) {
         await().until(() -> statRepository.pop().getStatsFor(type).get().equals(counter));
         var stats = statRepository.pop();
         assertThat(stats).isNotNull();
