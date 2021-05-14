@@ -1,4 +1,4 @@
-package net.bakaar.greetings.message.producer;
+package net.bakaar.greetings.message;
 
 import java.net.URI;
 

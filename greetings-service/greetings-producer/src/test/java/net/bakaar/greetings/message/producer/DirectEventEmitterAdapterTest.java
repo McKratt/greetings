@@ -3,6 +3,7 @@ package net.bakaar.greetings.message.producer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.bakaar.greetings.domain.event.GreetingsEvent;
+import net.bakaar.greetings.message.GreetingsMessage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

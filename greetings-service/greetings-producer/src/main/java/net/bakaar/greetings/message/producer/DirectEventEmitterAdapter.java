@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import net.bakaar.greetings.domain.event.EventEmitter;
 import net.bakaar.greetings.domain.event.GreetingsEvent;
+import net.bakaar.greetings.message.GreetingsMessage;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.net.URI;

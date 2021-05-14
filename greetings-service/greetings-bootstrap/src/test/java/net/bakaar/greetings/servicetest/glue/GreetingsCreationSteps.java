@@ -7,7 +7,7 @@ import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
-import net.bakaar.greetings.message.producer.GreetingsMessage;
+import net.bakaar.greetings.message.GreetingsMessage;
 import net.bakaar.greetings.message.producer.GreetingsProducerProperties;
 import net.bakaar.greetings.persist.GreetingJpaEntity;
 import net.bakaar.greetings.persist.GreetingJpaRepository;

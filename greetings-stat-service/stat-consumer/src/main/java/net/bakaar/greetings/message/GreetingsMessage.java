@@ -1,4 +1,4 @@
-package net.bakaar.greetings.stat.message;
+package net.bakaar.greetings.message;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 

@@ -3,6 +3,7 @@ package net.bakaar.greetings.message.producer;
 import net.bakaar.greetings.domain.Greeting;
 import net.bakaar.greetings.domain.event.EventEmitter;
 import net.bakaar.greetings.domain.event.GreetingCreated;
+import net.bakaar.greetings.message.GreetingsMessage;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.jupiter.api.Test;

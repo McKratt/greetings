@@ -1,5 +1,6 @@
 package net.bakaar.greetings.stat.message;
 
+import net.bakaar.greetings.message.GreetingsMessage;
 import net.bakaar.greetings.stat.message.handler.GreetingMessagePayloadHandler;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

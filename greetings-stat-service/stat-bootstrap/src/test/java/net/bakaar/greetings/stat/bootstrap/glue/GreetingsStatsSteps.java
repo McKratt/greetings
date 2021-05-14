@@ -4,7 +4,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import lombok.extern.slf4j.Slf4j;
-import net.bakaar.greetings.stat.message.GreetingsMessage;
+import net.bakaar.greetings.message.GreetingsMessage;
 import net.bakaar.greetings.stat.persistence.CounterRepository;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
