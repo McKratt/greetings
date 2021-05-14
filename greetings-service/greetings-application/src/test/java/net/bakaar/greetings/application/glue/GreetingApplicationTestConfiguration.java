@@ -16,7 +16,7 @@ import java.util.UUID;
 public class GreetingApplicationTestConfiguration {
 
     @Bean
-    public GreetingRepository greetingRepository() {
+    GreetingRepository greetingRepository() {
         return new GreetingRepository() {
             private final Map<UUID, Greeting> greetings = new HashMap<>();
 

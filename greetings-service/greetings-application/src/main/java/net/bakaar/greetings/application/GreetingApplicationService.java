@@ -6,6 +6,8 @@ import net.bakaar.greetings.domain.CreateGreetingCommand;
 import net.bakaar.greetings.domain.Greeting;
 import net.bakaar.greetings.domain.GreetingRepository;
 import net.bakaar.greetings.domain.UpdateGreetingCommand;
+import net.bakaar.greetings.domain.event.EventEmitter;
+import net.bakaar.greetings.domain.event.GreetingCreated;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,10 +19,13 @@ import static java.lang.String.format;
 @RequiredArgsConstructor
 public class GreetingApplicationService {
     private final GreetingRepository repository;
+    private final EventEmitter emitter;
 
     @Transactional
     public Greeting createGreeting(CreateGreetingCommand command) {
-        return repository.put(Greeting.of(command.type()).to(command.name()).build());
+        var greeting = Greeting.of(command.type()).to(command.name()).build();
+        emitter.emit(GreetingCreated.of(greeting));
+        return repository.put(greeting);
     }
 
     @Transactional

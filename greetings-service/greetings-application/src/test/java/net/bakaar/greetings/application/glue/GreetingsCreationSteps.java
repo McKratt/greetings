@@ -23,6 +23,9 @@ public class GreetingsCreationSteps {
     @Autowired
     private GreetingApplicationService service;
 
+    @Autowired
+    private StubbedEventEmitter emitter;
+
     private Greeting createdGreeting;
     private Greeting updatedGreeting;
 
@@ -46,6 +49,11 @@ public class GreetingsCreationSteps {
     @Then("I get the message {string}")
     public void iGetTheMessage(String message) {
         assertThat(createdGreeting.getMessage()).isEqualTo(message);
+    }
+
+    @Then("an event {word} is emitted")
+    public void an_event_greeting_created_is_emitted(String eventName) {
+        assertThat(emitter.getEmittedEvent().getClass().getSimpleName()).isEqualTo(eventName);
     }
 
     @Then("I get an error")

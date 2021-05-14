@@ -1,7 +1,7 @@
 package net.bakaar.greetings.message.producer;
 
 import net.bakaar.greetings.domain.event.EventEmitter;
-import net.bakaar.greetings.domain.event.GreetingCreatedEvent;
+import net.bakaar.greetings.domain.event.GreetingCreated;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ public class DirectEventEmitterAdapterIT {
         var identifier = UUID.randomUUID();
         embeddedKafka.addTopics(topicName);
         // When
-        var event = new GreetingCreatedEvent(identifier);
+        var event = new GreetingCreated(identifier);
         emitter.emit(event);
         // Then
         var consumerProps = KafkaTestUtils.consumerProps("testGroup", "true", this.embeddedKafka);

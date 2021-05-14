@@ -37,6 +37,11 @@ public class GreetingsCreationSteps {
         assertThat(createdGreeting.getMessage()).isEqualTo(message);
     }
 
+    @Then("an event GreetingCreated is emitted")
+    public void an_event_greeting_created_is_emitted() {
+        // Nothing to do not a business rule issue.
+    }
+
     @Then("I get an error")
     public void iGetAnError() {
         assertThat(thrown).isNotNull();
