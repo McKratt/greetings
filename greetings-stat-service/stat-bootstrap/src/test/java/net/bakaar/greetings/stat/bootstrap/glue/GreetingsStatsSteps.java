@@ -4,12 +4,11 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import lombok.extern.slf4j.Slf4j;
-import net.bakaar.greetings.stat.message.GreetingMessage;
+import net.bakaar.greetings.message.GreetingsMessage;
 import net.bakaar.greetings.stat.persistence.CounterRepository;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
@@ -18,7 +17,6 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 
@@ -37,10 +35,10 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @CucumberContextConfiguration
 @EmbeddedKafka(partitions = 1)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-@ActiveProfiles(profiles = "test")
 @AutoConfigureWireMock(port = 0)
 public class GreetingsStatsSteps {
 
+    private static final String topic = "test-topic";
     private final UUID identifier = UUID.randomUUID();
     private final String type = "ANNIVERSARY";
     private final String name = "Lucius";
@@ -49,9 +47,6 @@ public class GreetingsStatsSteps {
     private EmbeddedKafkaBroker embeddedKafka;
     @LocalServerPort
     private int port;
-    @Value("${greetings.message.topic}")
-    private String topic;
-
     @Autowired
     private CounterRepository counterRepository;
 
@@ -66,18 +61,20 @@ public class GreetingsStatsSteps {
                 dbContainer.getFirstMappedPort(), dbContainer.getDatabaseName()));
         registry.add("spring.flyway.user", dbContainer::getUsername);
         registry.add("spring.flyway.password", dbContainer::getPassword);
+        registry.add("greetings.message.topic", () -> topic);
+        registry.add("spring.kafka.bootstrap-servers", () -> "${spring.embedded.kafka.brokers}");
         registry.add("greetings.stat.rest.client.url", () -> "http://localhost:${wiremock.server.port}/rest/api/v1/greetings");
     }
 
     @When("I create a greeting")
     public void i_create_a_greetings() {
         // send the message on the kafka topic
-        var producerFactory = new DefaultKafkaProducerFactory<String, GreetingMessage>(
+        var producerFactory = new DefaultKafkaProducerFactory<String, GreetingsMessage>(
                 KafkaTestUtils.producerProps(embeddedKafka));
         producerFactory.setKeySerializer(new StringSerializer());
         producerFactory.setValueSerializer(new JsonSerializer<>());
         var producer = producerFactory.createProducer();
-        var message = new GreetingMessage(URI.create("http://bakaar.net/greetings/events/greeting-created"), """
+        var message = new GreetingsMessage(URI.create("https://bakaar.net/greetings/events/greeting-created"), """
                 {
                    "identifier": "%s",
                    "raisedAt" : "2010-01-01T12:00:00+01:00"

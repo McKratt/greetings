@@ -1,5 +1,6 @@
 package net.bakaar.greetings.stat.message;
 
+import net.bakaar.greetings.message.GreetingsMessage;
 import net.bakaar.greetings.stat.message.exception.HandlerNotFoundException;
 import net.bakaar.greetings.stat.message.handler.GreetingMessagePayloadHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,9 @@ public class GreetingsMessageProcessor {
     @Autowired
     private final Set<GreetingMessagePayloadHandler> handlers = new HashSet<>();
 
+    // FIXME The manual ack pass even if there is an exception...
     @KafkaListener(topics = "${greetings.message.topic}")
-    public void processMessage(GreetingMessage message, Acknowledgment ack) {
+    public void processMessage(GreetingsMessage message, Acknowledgment ack) {
         handlers.stream()
                 .filter(handler -> handler.canHandle(message.type()))
                 .findFirst()

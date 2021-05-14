@@ -11,11 +11,10 @@
     <logger name="org.testcontainers" level="info"/>
     <logger name="org.springframework" level="info"/>
     <logger name="org.hibernate" level="info"/>
-    <logger name="org.apache" level="warn"/>
+    <logger name="org.apache" level="error"/>
+    <logger name="org.apache.zookeeper" level="error"/>
     <logger name="kafka" level="error"/>
     <logger name="com.zaxxer" level="error"/>
-    <logger name="org.flywaydb" level="info"/>
-    <logger name="io.netty" level="info"/>
 
 
     <root level="debug">

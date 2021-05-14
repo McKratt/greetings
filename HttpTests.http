@@ -1,0 +1,13 @@
+GET http://localhost:9081/rest/api/v1/stats
+Accept: application/json
+
+###
+POST http://localhost:9080/rest/api/v1/greetings
+Content-Type: application/json
+
+{
+  "type": "BIRTHDAY",
+  "name": "McKratt"
+}
+
+###

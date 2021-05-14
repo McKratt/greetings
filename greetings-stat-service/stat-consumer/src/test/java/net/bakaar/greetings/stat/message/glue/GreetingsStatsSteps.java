@@ -3,9 +3,9 @@ package net.bakaar.greetings.stat.message.glue;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
+import net.bakaar.greetings.message.GreetingsMessage;
 import net.bakaar.greetings.stat.application.readmodel.Greeting;
 import net.bakaar.greetings.stat.domain.StatRepository;
-import net.bakaar.greetings.stat.message.GreetingMessage;
 import net.bakaar.greetings.stat.message.TestSpringBootApplication;
 import net.bakaar.greetings.stat.message.TestSpringBootApplication.TestGreetingsRepository;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -18,11 +18,11 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 
 import java.net.URI;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -30,7 +30,6 @@ import static org.awaitility.Awaitility.await;
 @CucumberContextConfiguration
 @EmbeddedKafka(partitions = 1)
 @SpringBootTest(classes = TestSpringBootApplication.class)
-@ActiveProfiles(profiles = "test")
 public class GreetingsStatsSteps {
 
     private final UUID identifier = UUID.randomUUID();
@@ -43,17 +42,24 @@ public class GreetingsStatsSteps {
     @Autowired
     private TestGreetingsRepository greetingsRepository;
     @Value("${greetings.message.topic}")
-    private String topic;
+    private static final String topic = "stat_topic";
+
+    @DynamicPropertySource
+    static void registerProperties(DynamicPropertyRegistry registry) {
+        registry.add("greetings.message.topic", () -> topic);
+        registry.add("spring.kafka.bootstrap-servers", () -> "${spring.embedded.kafka.brokers}");
+        registry.add("greetings.stat.rest.client.url", () -> "http://localhost:${wiremock.server.port}/rest/api/v1/greetings");
+    }
 
     @When("I create a greeting")
     public void i_create_a_greetings() {
         // send the event on Kafka
-        var producerFactory = new DefaultKafkaProducerFactory<String, GreetingMessage>(
+        var producerFactory = new DefaultKafkaProducerFactory<String, GreetingsMessage>(
                 KafkaTestUtils.producerProps(embeddedKafka));
         producerFactory.setKeySerializer(new StringSerializer());
         producerFactory.setValueSerializer(new JsonSerializer<>());
         var producer = producerFactory.createProducer();
-        var message = new GreetingMessage(URI.create("http://bakaar.net/greetings/events/greeting-created"), """
+        var message = new GreetingsMessage(URI.create("https://bakaar.net/greetings/events/greeting-created"), """
                 {
                    "identifier": "%s",
                    "raisedAt" : "2010-01-01T12:00:00+01:00"
@@ -67,7 +73,7 @@ public class GreetingsStatsSteps {
     }
 
     @Then("the counter should be {long}")
-    public void the_counter_should_be(Long counter) throws ExecutionException, InterruptedException {
+    public void the_counter_should_be(Long counter) {
         await().until(() -> statRepository.pop().getStatsFor(type).get().equals(counter));
         var stats = statRepository.pop();
         assertThat(stats).isNotNull();

@@ -75,6 +75,11 @@ public class GreetingsCreationSteps {
         assertThat(response.getBody()).isNotNull().contains(message);
     }
 
+    @Then("an event GreetingCreated is emitted")
+    public void an_event_greeting_created_is_emitted() {
+        // Nothing to do.
+    }
+
     @Then("I get an error")
     public void iGetAnError() {
         // Here pop up a 500 because the error propagation interceptor is only there in the bootstrap project.

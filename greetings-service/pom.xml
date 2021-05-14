@@ -8,6 +8,7 @@
         <module>greetings-application</module>
         <module>greetings-domain</module>
         <module>greetings-persistence</module>
+        <module>greetings-producer</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

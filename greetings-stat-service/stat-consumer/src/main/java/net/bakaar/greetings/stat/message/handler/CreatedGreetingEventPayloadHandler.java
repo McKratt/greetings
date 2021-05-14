@@ -12,7 +12,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class CreatedGreetingEventPayloadHandler implements GreetingMessagePayloadHandler {
 
-    private final static URI TYPE = URI.create("http://bakaar.net/greetings/events/greeting-created");
+    private final static URI TYPE = URI.create("https://bakaar.net/greetings/events/greeting-created");
     private final StatApplicationService service;
     private final ObjectMapper jsonMapper;
 

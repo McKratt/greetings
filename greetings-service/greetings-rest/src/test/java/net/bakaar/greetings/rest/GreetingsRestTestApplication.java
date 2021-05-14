@@ -2,6 +2,7 @@ package net.bakaar.greetings.rest;
 
 import net.bakaar.greetings.domain.Greeting;
 import net.bakaar.greetings.domain.GreetingRepository;
+import net.bakaar.greetings.domain.event.EventEmitter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
@@ -28,6 +29,12 @@ public class GreetingsRestTestApplication {
             public Optional<Greeting> find(UUID identifier) {
                 return Optional.ofNullable(greetings.get(identifier));
             }
+        };
+    }
+
+    @Bean
+    EventEmitter eventEmitter() {
+        return event -> {
         };
     }
 }

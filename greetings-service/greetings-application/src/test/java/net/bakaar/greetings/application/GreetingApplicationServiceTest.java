@@ -5,6 +5,9 @@ import net.bakaar.greetings.domain.CreateGreetingCommand;
 import net.bakaar.greetings.domain.Greeting;
 import net.bakaar.greetings.domain.GreetingRepository;
 import net.bakaar.greetings.domain.UpdateGreetingCommand;
+import net.bakaar.greetings.domain.event.EventEmitter;
+import net.bakaar.greetings.domain.event.GreetingCreated;
+import net.bakaar.greetings.domain.event.GreetingsEvent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -27,12 +30,13 @@ class GreetingApplicationServiceTest {
 
     @Mock
     private GreetingRepository repository;
-
+    @Mock
+    private EventEmitter emitter;
     @InjectMocks
     private GreetingApplicationService service;
 
     @Test
-    void create_should_call_repository() {
+    void create_should_call_repository_and_emit_event() {
         // Given
         given(repository.put(any())).willAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
         // When
@@ -41,8 +45,13 @@ class GreetingApplicationServiceTest {
         // Then
         var greetingCaptor = ArgumentCaptor.forClass(Greeting.class);
         verify(repository).put(greetingCaptor.capture());
-        final Greeting expected = greetingCaptor.getValue();
-        assertThat(returnedGreeting).isSameAs(expected);
+        var eventCaptor = ArgumentCaptor.forClass(GreetingsEvent.class);
+        verify(emitter).emit(eventCaptor.capture());
+        var savedGreeting = greetingCaptor.getValue();
+        assertThat(returnedGreeting).isSameAs(savedGreeting);
+        var expectedEvent = eventCaptor.getValue();
+        assertThat(expectedEvent).isInstanceOf(GreetingCreated.class);
+        assertThat(((GreetingCreated) expectedEvent).getIdentifier()).isEqualTo(returnedGreeting.getIdentifier());
     }
 
     @Test
