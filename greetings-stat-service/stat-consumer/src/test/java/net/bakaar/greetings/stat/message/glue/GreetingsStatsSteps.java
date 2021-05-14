@@ -18,7 +18,8 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 
 import java.net.URI;
 import java.util.UUID;
@@ -29,7 +30,6 @@ import static org.awaitility.Awaitility.await;
 @CucumberContextConfiguration
 @EmbeddedKafka(partitions = 1)
 @SpringBootTest(classes = TestSpringBootApplication.class)
-@ActiveProfiles(profiles = "test")
 public class GreetingsStatsSteps {
 
     private final UUID identifier = UUID.randomUUID();
@@ -42,7 +42,14 @@ public class GreetingsStatsSteps {
     @Autowired
     private TestGreetingsRepository greetingsRepository;
     @Value("${greetings.message.topic}")
-    private String topic;
+    private static final String topic = "stat_topic";
+
+    @DynamicPropertySource
+    static void registerProperties(DynamicPropertyRegistry registry) {
+        registry.add("greetings.message.topic", () -> topic);
+        registry.add("spring.kafka.bootstrap-servers", () -> "${spring.embedded.kafka.brokers}");
+        registry.add("greetings.stat.rest.client.url", () -> "http://localhost:${wiremock.server.port}/rest/api/v1/greetings");
+    }
 
     @When("I create a greeting")
     public void i_create_a_greetings() {
