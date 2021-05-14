@@ -1,5 +1,6 @@
 package net.bakaar.greetings.message.producer;
 
+import net.bakaar.greetings.domain.Greeting;
 import net.bakaar.greetings.domain.event.EventEmitter;
 import net.bakaar.greetings.domain.event.GreetingCreated;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -22,6 +23,8 @@ import java.util.UUID;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 @EmbeddedKafka
 @SpringJUnitConfig(classes = GreetingsProducerConfiguration.class)
@@ -45,9 +48,11 @@ public class DirectEventEmitterAdapterIT {
     void should_send_createdEvent_to_kafka() {
         // Given
         var identifier = UUID.randomUUID();
+        var greeting = mock(Greeting.class);
+        given(greeting.getIdentifier()).willReturn(identifier);
         embeddedKafka.addTopics(topicName);
         // When
-        var event = new GreetingCreated(identifier);
+        var event = GreetingCreated.of(greeting);
         emitter.emit(event);
         // Then
         var consumerProps = KafkaTestUtils.consumerProps("testGroup", "true", this.embeddedKafka);
