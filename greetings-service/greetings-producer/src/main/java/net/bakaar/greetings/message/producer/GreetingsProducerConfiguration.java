@@ -19,7 +19,7 @@ import static org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CL
 import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG;
 
 @EnableKafka
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(GreetingsProducerProperties.class)
 public class GreetingsProducerConfiguration {
 

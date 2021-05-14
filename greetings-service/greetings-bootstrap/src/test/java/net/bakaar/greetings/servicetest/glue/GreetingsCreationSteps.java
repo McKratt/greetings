@@ -12,7 +12,6 @@ import net.bakaar.greetings.message.producer.GreetingsProducerProperties;
 import net.bakaar.greetings.persist.GreetingJpaEntity;
 import net.bakaar.greetings.persist.GreetingJpaRepository;
 import org.apache.kafka.clients.consumer.Consumer;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.hamcrest.Matchers;
@@ -35,17 +34,21 @@ import java.util.UUID;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static net.bakaar.greetings.servicetest.CucumberLauncherIT.dbContainer;
+import static net.bakaar.greetings.servicetest.glue.GreetingsCreationSteps.topic;
+import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
+import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @Slf4j
-@EmbeddedKafka(partitions = 1)
+@EmbeddedKafka(partitions = 1, topics = topic)
 @CucumberContextConfiguration
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 public class GreetingsCreationSteps {
 
 
+    public static final String topic = "test_topic";
     private final String identifier = UUID.randomUUID().toString();
     private final RequestSpecification request = given()
             .log().all(true)
@@ -70,7 +73,7 @@ public class GreetingsCreationSteps {
                         dbContainer.getFirstMappedPort(), dbContainer.getDatabaseName()));
         registry.add("spring.datasource.username", dbContainer::getUsername);
         registry.add("spring.datasource.password", dbContainer::getPassword);
-        registry.add("greetings.message.producer.topicName", () -> "test_topic");
+        registry.add("greetings.message.producer.topicName", () -> topic);
         registry.add("spring.kafka.bootstrap-servers", () -> "${spring.embedded.kafka.brokers}");
     }
 
@@ -111,11 +114,12 @@ public class GreetingsCreationSteps {
     @Then("an event {word} is emitted")
     public void an_event_is_emitted(String eventType) {
         var consumerProps = KafkaTestUtils.consumerProps("testGroup", "true", this.embeddedKafka);
-        consumerProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        consumerProps.put(VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        consumerProps.put(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "net.bakaar.*");
         var factory = new DefaultKafkaConsumerFactory<String, GreetingsMessage>(consumerProps);
-        factory.setKeyDeserializer(new StringDeserializer());
-        factory.setValueDeserializer(new JsonDeserializer<>());
         Consumer<String, GreetingsMessage> consumer = factory.createConsumer();
+        embeddedKafka.consumeFromAnEmbeddedTopic(consumer, topic);
         ConsumerRecord<String, GreetingsMessage> record = KafkaTestUtils.getSingleRecord(consumer, messageProperties.getTopicName(), 10000L);
         var message = record.value();
         assertThat(message).isNotNull();
