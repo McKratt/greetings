@@ -17,7 +17,7 @@ public class GreetingsMessageProcessor {
     private final Set<GreetingMessagePayloadHandler> handlers = new HashSet<>();
 
     @KafkaListener(topics = "${greetings.message.topic}")
-    public void processMessage(GreetingMessage message, Acknowledgment ack) {
+    public void processMessage(GreetingsMessage message, Acknowledgment ack) {
         handlers.stream()
                 .filter(handler -> handler.canHandle(message.type()))
                 .findFirst()

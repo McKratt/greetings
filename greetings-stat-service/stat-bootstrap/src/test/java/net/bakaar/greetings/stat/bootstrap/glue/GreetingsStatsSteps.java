@@ -4,7 +4,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import lombok.extern.slf4j.Slf4j;
-import net.bakaar.greetings.stat.message.GreetingMessage;
+import net.bakaar.greetings.stat.message.GreetingsMessage;
 import net.bakaar.greetings.stat.persistence.CounterRepository;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -69,12 +69,12 @@ public class GreetingsStatsSteps {
     @When("I create a greeting")
     public void i_create_a_greetings() {
         // send the message on the kafka topic
-        var producerFactory = new DefaultKafkaProducerFactory<String, GreetingMessage>(
+        var producerFactory = new DefaultKafkaProducerFactory<String, GreetingsMessage>(
                 KafkaTestUtils.producerProps(embeddedKafka));
         producerFactory.setKeySerializer(new StringSerializer());
         producerFactory.setValueSerializer(new JsonSerializer<>());
         var producer = producerFactory.createProducer();
-        var message = new GreetingMessage(URI.create("https://bakaar.net/greetings/events/greeting-created"), """
+        var message = new GreetingsMessage(URI.create("https://bakaar.net/greetings/events/greeting-created"), """
                 {
                    "identifier": "%s",
                    "raisedAt" : "2010-01-01T12:00:00+01:00"

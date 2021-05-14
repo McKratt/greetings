@@ -28,7 +28,7 @@ class GreetingsMessageProcessorTest {
     @Test
     void service_should_choose_the_correct_event_handler() {
         // Given
-        var message = mock(GreetingMessage.class);
+        var message = mock(GreetingsMessage.class);
         var type = URI.create("http://test/events/type1");
         given(message.type()).willReturn(type);
         var payload = "Here is a payload";
@@ -54,7 +54,7 @@ class GreetingsMessageProcessorTest {
     @Test
     void should_throw_an_exception_if_no_handler_found() {
         // Given
-        var message = mock(GreetingMessage.class);
+        var message = mock(GreetingsMessage.class);
         var type = URI.create("http://test/events/type1");
         given(message.type()).willReturn(type);
         // When
@@ -68,7 +68,7 @@ class GreetingsMessageProcessorTest {
     @Test
     void should_throw_an_exception_if_no_correct_handler_found() {
         // Given
-        var message = mock(GreetingMessage.class);
+        var message = mock(GreetingsMessage.class);
         var type = URI.create("http://test/events/type1");
         given(message.type()).willReturn(type);
         var handler = mock(GreetingMessagePayloadHandler.class);
