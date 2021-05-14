@@ -7,8 +7,8 @@ import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
-import net.bakaar.greetings.message.producer.GreetingProducerProperties;
 import net.bakaar.greetings.message.producer.GreetingsMessage;
+import net.bakaar.greetings.message.producer.GreetingsProducerProperties;
 import net.bakaar.greetings.persist.GreetingJpaEntity;
 import net.bakaar.greetings.persist.GreetingJpaRepository;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -61,7 +61,7 @@ public class GreetingsCreationSteps {
     // TODO replace that by a container
     private EmbeddedKafkaBroker embeddedKafka;
     @Autowired
-    private GreetingProducerProperties messageProperties;
+    private GreetingsProducerProperties messageProperties;
 
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
