@@ -89,6 +89,22 @@
                     <compilerArgs>${argLine}</compilerArgs>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.appland</groupId>
+                <artifactId>appmap-maven-plugin</artifactId>
+                <configuration>
+                    <configFile>../appmap.yml</configFile>
+                    <outputDirectory>../target/appmap</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <repositories>

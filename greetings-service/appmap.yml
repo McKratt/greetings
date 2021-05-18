@@ -1,0 +1,4 @@
+name: greetings-service
+packages:
+  - path: net.bakaar.greetings
+
