@@ -28,8 +28,9 @@ import org.springframework.test.context.DynamicPropertySource;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
@@ -59,7 +60,6 @@ public class GreetingsCreationSteps {
     private int port;
     @Autowired
     private GreetingJpaRepository japRepository;
-    private final Map<String, URI> TYPE_MAP = Map.of("GreetingCreated", URI.create("https://bakaar.net/greetings/events/greeting-created"));
     @Autowired
     // TODO replace that by a container
     private EmbeddedKafkaBroker embeddedKafka;
@@ -111,8 +111,8 @@ public class GreetingsCreationSteps {
         response.then().body("message", equalTo(message));
     }
 
-    @Then("an event {word} is emitted")
-    public void an_event_is_emitted(String eventType) {
+    @Then("a Greeting is created")
+    public void a_greeting_is_created() {
         var consumerProps = KafkaTestUtils.consumerProps("testGroup", "true", this.embeddedKafka);
         consumerProps.put(VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         consumerProps.put(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
@@ -123,8 +123,19 @@ public class GreetingsCreationSteps {
         ConsumerRecord<String, GreetingsMessage> record = KafkaTestUtils.getSingleRecord(consumer, messageProperties.getTopicName(), 10000L);
         var message = record.value();
         assertThat(message).isNotNull();
-        assertThat(message.type()).isEqualTo(TYPE_MAP.get(eventType));
-        // TODO test the identifier value is corresponding to the location header in the response
+        assertThat(message.type()).isEqualTo(URI.create("https://bakaar.net/greetings/events/greeting-created"));
+        var uuid = extractIdentifierFromUrl(response.getHeader("location"));
+        assertThat(uuid).isNotEmpty();
+        assertThat(message.payload()).contains(uuid.get());
+    }
+
+    private Optional<String> extractIdentifierFromUrl(String url) {
+        var pattern = Pattern.compile("([a-f0-9]{8}(-[a-f0-9]{4}){4}[a-f0-9]{8})");
+        var match = pattern.matcher(url);
+        if (match.find()) {
+            return Optional.ofNullable(match.group(1));
+        }
+        return Optional.empty();
     }
 
 

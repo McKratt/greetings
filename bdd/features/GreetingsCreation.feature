@@ -6,7 +6,7 @@ Feature: Creation of a Greeting Message
     Scenario: Simple Greeting
       When I create an anniversary greeting for Charles
       Then I get the message "Joyful Anniversary Charles !"
-      Then an event GreetingCreated is emitted
+      Then a Greeting is created
 
     Scenario Template: creation
       When I create a <type> greeting for <name>

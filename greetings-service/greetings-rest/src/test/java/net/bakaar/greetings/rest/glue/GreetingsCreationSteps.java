@@ -5,6 +5,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import net.bakaar.greetings.domain.CreateGreetingCommand;
+import net.bakaar.greetings.domain.GreetingRepository;
 import net.bakaar.greetings.rest.UpdateGreetingCommandDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,6 +17,9 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.regex.Pattern;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,6 +33,8 @@ public class GreetingsCreationSteps {
 
     @Autowired
     private TestRestTemplate restTemplate;
+    @Autowired
+    private GreetingRepository repository;
 
     @LocalServerPort
     private int port;
@@ -75,9 +81,20 @@ public class GreetingsCreationSteps {
         assertThat(response.getBody()).isNotNull().contains(message);
     }
 
-    @Then("an event GreetingCreated is emitted")
-    public void an_event_greeting_created_is_emitted() {
-        // Nothing to do.
+    @Then("a Greeting is created")
+    public void a_greeting_is_created() {
+        var identifier = extractIdentifierFromUrl(response.getHeaders().get("location").toString()).get();
+        var greeting = repository.find(UUID.fromString(identifier));
+        assertThat(greeting).isNotEmpty();
+    }
+
+    private Optional<String> extractIdentifierFromUrl(String url) {
+        var pattern = Pattern.compile("([a-f0-9]{8}(-[a-f0-9]{4}){4}[a-f0-9]{8})");
+        var match = pattern.matcher(url);
+        if (match.find()) {
+            return Optional.ofNullable(match.group(1));
+        }
+        return Optional.empty();
     }
 
     @Then("I get an error")

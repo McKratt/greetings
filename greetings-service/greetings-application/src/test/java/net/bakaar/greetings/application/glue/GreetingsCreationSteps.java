@@ -8,6 +8,7 @@ import net.bakaar.greetings.application.GreetingApplicationService;
 import net.bakaar.greetings.domain.CreateGreetingCommand;
 import net.bakaar.greetings.domain.Greeting;
 import net.bakaar.greetings.domain.UpdateGreetingCommand;
+import net.bakaar.greetings.domain.event.GreetingCreated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -51,9 +52,9 @@ public class GreetingsCreationSteps {
         assertThat(createdGreeting.getMessage()).isEqualTo(message);
     }
 
-    @Then("an event {word} is emitted")
-    public void an_event_greeting_created_is_emitted(String eventName) {
-        assertThat(emitter.getEmittedEvent().getClass().getSimpleName()).isEqualTo(eventName);
+    @Then("a Greeting is created")
+    public void a_greeting_is_created() {
+        assertThat(emitter.getEmittedEvent()).isInstanceOf(GreetingCreated.class);
     }
 
     @Then("I get an error")
