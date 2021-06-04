@@ -8,6 +8,8 @@
     </appender>
 
     <logger name="net.bakaar" level="TRACE"/>
+    <logger name="org.hibernate.sql" level="debug"/>
+    <logger name="org.springframework.data" level="debug"/>
 
     <root level="info">
         <appender-ref ref="STDOUT"/>

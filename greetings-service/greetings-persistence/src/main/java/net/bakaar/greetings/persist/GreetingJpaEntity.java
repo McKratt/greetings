@@ -23,8 +23,9 @@ public class GreetingJpaEntity {
     @Column(name = "S_NAME", nullable = false)
     private String name;
 
-    @Column(name = "S_TYPE", nullable = false)
-    private String type;
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "FK_TYPE", referencedColumnName = "PK_T_TYPES", nullable = false)
+    private GreetingTypeJpaEntity type;
 
     @Column(name = "TS_CREATEDAT", nullable = false, updatable = false)
     @CreationTimestamp
