@@ -9,8 +9,6 @@ import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
 import net.bakaar.greetings.message.GreetingsMessage;
 import net.bakaar.greetings.message.producer.GreetingsProducerProperties;
-import net.bakaar.greetings.persist.GreetingJpaEntity;
-import net.bakaar.greetings.persist.GreetingJpaRepository;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -18,6 +16,7 @@ import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
@@ -28,6 +27,7 @@ import org.springframework.test.context.DynamicPropertySource;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -59,7 +59,7 @@ public class GreetingsCreationSteps {
     @LocalServerPort
     private int port;
     @Autowired
-    private GreetingJpaRepository japRepository;
+    private JdbcTemplate dbTemplate;
     @Autowired
     // TODO replace that by a container
     private EmbeddedKafkaBroker embeddedKafka;
@@ -79,12 +79,9 @@ public class GreetingsCreationSteps {
 
     @Given("an existing {word} greeting")
     public void an_existing_greeting(String type) {
-        GreetingJpaEntity entity = new GreetingJpaEntity();
-        entity.setType(type);
-        entity.setIdentifier(identifier);
-        entity.setName("Koala");
-        entity.setCreatedAt(LocalDateTime.now());
-        japRepository.save(entity);
+        var idType = dbTemplate.queryForObject("select pk_t_types from t_types where s_name = ?", Long.class, type.toUpperCase(Locale.ROOT));
+        dbTemplate.update("insert into t_greetings (s_identifier, s_name, fk_type, ts_createdat) values (?,?,?,?)",
+                identifier, "Koala", idType, LocalDateTime.now());
     }
 
     @When("I create a(n) {word} greeting for {word}")
