@@ -1,0 +1,44 @@
+@startuml
+package rest {
+    class GreetingMessage {
+        - message : String
+    }
+    class GreetingJson {
+        - type : String
+        - name : String
+    }
+}
+
+package domain {
+    class Greeting <<entity>> {
+        - identifier : UUID
+        - name : String
+        - type : GreetingType
+        + getMessage() : String
+        + updateTypeFor(String type) : void
+
+    }
+    enum GreetingType <<vo>> {
+        - messageCreator : MessageCreator
+        + BIRTHDAY
+        + ANNIVERSARY
+        + CHRISTMAS
+        + createMessage(String name) : String
+        + canBeChangeFor(GreetingType newOne) : boolean
+    }
+}
+
+package persistence {
+    class GreetingJpaEntity {
+        - id : long
+        - identifier : String
+        - name : String
+        - type : GreetingJpaType
+        - createdAt : LocalDateTime
+    }
+    class GreetingTypeJpaEntity {
+        - id : long
+        - name : String
+    }
+}
+@enduml
