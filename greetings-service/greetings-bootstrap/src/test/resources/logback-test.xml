@@ -16,6 +16,7 @@
     <logger name="com.zaxxer" level="error"/>
     <logger name="org.flywaydb" level="info"/>
     <logger name="io.netty" level="info"/>
+    <logger name="com.github" level="error"/>
 
 
     <root level="debug">
