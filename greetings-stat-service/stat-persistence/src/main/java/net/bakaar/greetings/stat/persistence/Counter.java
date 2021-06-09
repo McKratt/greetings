@@ -12,8 +12,6 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Table("T_COUNTER")
 public class Counter {
-
-
     @Id
     @Column("PK_T_COUNTER")
     private long id;
