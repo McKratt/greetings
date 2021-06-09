@@ -1,17 +1,10 @@
 @startuml
-'package consumer{
-'    class GreetingMessage {
-'        - type : URI
-'        - payload : String
-'    }
-'}
-'package client{
-'
-'}
+package rest{
+    class GreetingsStatsJson {
+        - counters : Map<String, Long>
+    }
+}
 package domain{
-'    class GreetingCreated {
-'        - identifier : UUID
-'    }
     class GreetingsStats{
         - counters : Map<String, Long>
         + getStatsFor(String type) : Optional<Long>
