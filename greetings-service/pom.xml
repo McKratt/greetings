@@ -34,6 +34,11 @@
         <sonar.projectKey>greetings-service</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
         <sonar.organization>mckratt</sonar.organization>
+        <sonar.coverage.exclusions>
+            **/**Properties.java,
+            **/**Configuration.java,
+            **/**Application.java
+        </sonar.coverage.exclusions>
     </properties>
     <dependencies>
         <dependency>
