@@ -23,7 +23,13 @@ jobs:
         distribution: 'adopt'
     - name: Build Greetings Service
       working-directory: ./greetings-service      
-      run: mvn -B package --file pom.xml
+      run: mvn -B package sonar:sonar --file pom.xml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
     - name: Build Stats Service
       working-directory: ./greetings-stat-service      
-      run: mvn -B package --file pom.xml
+      run: mvn -B package sonar:sonar --file pom.xml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
