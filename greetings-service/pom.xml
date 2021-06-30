@@ -32,6 +32,7 @@
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
         <sonar.projectName>greetings-service</sonar.projectName>
         <sonar.projectKey>greetings-service</sonar.projectKey>
+        <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
         <sonar.organization>mckratt-github</sonar.organization>
     </properties>
     <dependencies>
