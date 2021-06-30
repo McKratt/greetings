@@ -33,7 +33,7 @@
         <sonar.projectName>greetings-service</sonar.projectName>
         <sonar.projectKey>greetings-service</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
-        <sonar.organization>McKratt-Github</sonar.organization>
+        <sonar.organization>mckratt</sonar.organization>
     </properties>
     <dependencies>
         <dependency>
