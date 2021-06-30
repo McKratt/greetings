@@ -37,9 +37,9 @@
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
         <sonar.organization>mckratt</sonar.organization>
         <sonar.coverage.exclusions>
-            **/**Properties.java,
-            **/**Configuration.java,
-            **/**Application.java
+            **/*Properties.java,
+            **/*Configuration.,
+            **/*Application.java
         </sonar.coverage.exclusions>
     </properties>
     <dependencies>
