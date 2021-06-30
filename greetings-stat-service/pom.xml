@@ -32,7 +32,8 @@
         <spring.cloud.contract.version>3.0.2</spring.cloud.contract.version>
         <argLine>--enable-preview</argLine>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
-        <sonar.projectName>${project.artifactId}</sonar.projectName>
+        <sonar.projectName>greetings-stat-service</sonar.projectName>
+        <sonar.projectKey>greetings-stat-service</sonar.projectKey>
         <sonar.organization>mckratt-github</sonar.organization>
     </properties>
     <dependencies>
