@@ -38,7 +38,7 @@
         <sonar.organization>mckratt</sonar.organization>
         <sonar.coverage.exclusions>
             **/*Properties.java,
-            **/*Configuration.,
+            **/*Configuration.java,
             **/*Application.java
         </sonar.coverage.exclusions>
     </properties>
