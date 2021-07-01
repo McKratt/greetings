@@ -87,6 +87,9 @@
                         <goals>
                             <goal>build-image</goal>
                         </goals>
+                        <configuration>
+                            <skip>${skipBuildImage}</skip>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
