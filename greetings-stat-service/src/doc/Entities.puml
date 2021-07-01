@@ -1,11 +1,11 @@
 @startuml
 package rest{
-    class GreetingsStatsJson {
+    class GreetingsStatsJson <<Record>> {
         - counters : Map<String, Long>
     }
 }
 package domain{
-    class GreetingsStats{
+    class GreetingsStats <<entity>> {
         - counters : Map<String, Long>
         + getStatsFor(String type) : Optional<Long>
         + increaseCounterFor(String type) : GreetingsStats

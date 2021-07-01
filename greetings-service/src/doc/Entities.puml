@@ -1,9 +1,9 @@
 @startuml
 package rest {
-    class GreetingMessage {
+    class GreetingMessage <<Record>> {
         - message : String
     }
-    class GreetingJson {
+    class GreetingJson <<Record>> {
         - type : String
         - name : String
     }
