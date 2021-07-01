@@ -10,37 +10,75 @@ on:
     branches: [ master ]
 
 jobs:
-  greetings:
+  build_greetings:
     name: Build Greetings
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 16
-      uses: actions/setup-java@v2
-      with:
-        java-version: '16'
-        distribution: 'adopt'
-    - name: Build + Analysis Greetings Service
-      working-directory: ./greetings-service
-      run: mvn -B -Pcoverage clean verify sonar:sonar --file pom.xml -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
-  stats:
-     name: Build Stats
-     runs-on: ubuntu-latest
+      - uses: actions/checkout@v2
+      - name: Set up JDK 16
+        uses: actions/setup-java@v2
+        with:
+          java-version: '16'
+          distribution: 'adopt'
+      - name: Build + Analysis Greetings Service
+        working-directory: ./greetings-service
+        #        -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
+        run: mvn -B -Pcoverage clean verify sonar:sonar --file pom.xml -DskipBuildImage=true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
 
-     steps:
-     - uses: actions/checkout@v2
-     - name: Set up JDK 16
-       uses: actions/setup-java@v2
-       with:
-         java-version: '16'
-         distribution: 'adopt'
-     - name: Build + Analysis Stats Service
-       working-directory: ./greetings-stat-service
-       run: mvn -B -Pcoverage clean verify sonar:sonar --file pom.xml -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
-       env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
+  build_stats:
+    name: Build Stats
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 16
+        uses: actions/setup-java@v2
+        with:
+          java-version: '16'
+          distribution: 'adopt'
+      - name: Build + Analysis Stats Service
+        working-directory: ./greetings-stat-service
+        run: mvn -B -Pcoverage clean verify sonar:sonar --file pom.xml -DskipBuildImage=true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
+
+  deploy_greetings:
+    name: Deploy Greetings
+    runs-on: ubuntu-latest
+    needs: build_greetings
+    if: success() && github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 16
+        uses: actions/setup-java@v2
+        with:
+          java-version: '16'
+          distribution: 'adopt'
+      - name: Package + deploy
+        working-directory: ./greetings-service
+        run: mvn -B -DskipTests package --file pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+
+  deploy_stats:
+    name: Deploy Greetings
+    runs-on: ubuntu-latest
+    needs: build_stats
+    if: success() && github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 16
+        uses: actions/setup-java@v2
+        with:
+          java-version: '16'
+          distribution: 'adopt'
+      - name: Package + deploy
+        working-directory: ./greetings-stat-service
+        run: mvn -B -DskipTests package --file pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}

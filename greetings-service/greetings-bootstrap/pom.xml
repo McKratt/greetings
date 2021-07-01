@@ -67,12 +67,31 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <image>
-                        <name>bakaar.net/greetings-service</name>
+                        <name>bakaar/greetings-service</name>
+                        <!-- -Dspring-boot.build-image.publish=true -->
+                        <publish>true</publish>
                         <env>
                             <BP_JVM_VERSION>${java.version}.*</BP_JVM_VERSION>
                         </env>
                     </image>
+                    <docker>
+                        <publishRegistry>
+                            <username>bakaar</username>
+                            <password>${env.REGISTRY_TOKEN}</password>
+                        </publishRegistry>
+                    </docker>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build-image</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skipBuildImage}</skip>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

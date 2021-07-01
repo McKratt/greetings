@@ -9,7 +9,7 @@ services:
   greetings:
     depends_on:
       - db
-    image: bakaar.net/greetings-service
+    image: bakaar/greetings-service
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
