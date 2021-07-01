@@ -13,7 +13,7 @@ HIDE_STEREOTYPE()
 
 Person(user,"User",$sprite="user_tie")
 'System_Boundary(sys,"Greetings Messages"){
-    Container(greetings, "greetings-service","Produces Greetings Messages", $sprite="java")
+    Container(greetings, "greetings-service","Create Greetings Messages", $sprite="java")
     ContainerDb(greetings_db,"Greetings DB","PostgreSQL",$sprite="postgresql")
     Container(stats, "greetings-stats-service","Records Statistics", $sprite="java")
     ContainerDb(stats_db,"Statistics DB","PostgreSQL",$sprite="postgresql")
@@ -22,7 +22,7 @@ Person(user,"User",$sprite="user_tie")
 
 Rel(greetings, greetings_db, "Reads/Writes")
 Rel(stats, stats_db, "Reads/Writes")
-Rel_D(greetings, kafka, "Sends Events")
+Rel_D(greetings, kafka, "Produces Events")
 Rel_D(stats, kafka, "Consumes Events")
 Rel_L(stats, greetings, "GET /greetings/{identifier}", "HTTP")
 Rel_D(user,greetings,"POST /greetings", "HTTP")
