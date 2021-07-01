@@ -84,11 +84,18 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <image>
-                        <name>bakaar.net/greetings-stat-service</name>
+                        <name>bakaar/greetings-stat-service</name>
+                        <publish>true</publish>
                         <env>
                             <BP_JVM_VERSION>${java.version}.*</BP_JVM_VERSION>
                         </env>
                     </image>
+                    <docker>
+                        <publishRegistry>
+                            <username>bakaar</username>
+                            <password>${env.REGISTRY_TOKEN}</password>
+                        </publishRegistry>
+                    </docker>
                 </configuration>
             </plugin>
         </plugins>
