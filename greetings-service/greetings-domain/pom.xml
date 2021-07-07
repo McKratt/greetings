@@ -9,4 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>greetings-domain</artifactId>
+    <build>
+        <testResources>
+            <testResource>
+                <directory>../../bdd/features</directory>
+                <targetPath>net/bakaar/greetings/domain</targetPath>
+            </testResource>
+        </testResources>
+    </build>
 </project>
