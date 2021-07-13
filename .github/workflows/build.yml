@@ -23,7 +23,7 @@ jobs:
       - name: Build + Analysis Greetings Service
         working-directory: ./greetings-service
         #        -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
-        run: mvn -B -Pcoverage clean verify sonar:sonar --file pom.xml -DskipBuildImage=true
+        run: mvn -B -Pcoverage clean verify sonar:sonar --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
@@ -40,7 +40,7 @@ jobs:
           distribution: 'adopt'
       - name: Build + Analysis Stats Service
         working-directory: ./greetings-stat-service
-        run: mvn -B -Pcoverage clean verify sonar:sonar --file pom.xml -DskipBuildImage=true
+        run: mvn -B -Pcoverage clean verify sonar:sonar --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
@@ -59,7 +59,7 @@ jobs:
           distribution: 'adopt'
       - name: Package + deploy
         working-directory: ./greetings-service
-        run: mvn -B -DskipTests package --file pom.xml
+        run: mvn -B -DskipTests -PbuildImage package --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
@@ -78,7 +78,7 @@ jobs:
           distribution: 'adopt'
       - name: Package + deploy
         working-directory: ./greetings-stat-service
-        run: mvn -B -DskipTests package --file pom.xml
+        run: mvn -B -DskipTests -PbuildImage package --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}

@@ -77,38 +77,43 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <image>
-                        <name>bakaar/greetings-stat-service</name>
-                        <publish>true</publish>
-                        <env>
-                            <BP_JVM_VERSION>${java.version}.*</BP_JVM_VERSION>
-                        </env>
-                    </image>
-                    <docker>
-                        <publishRegistry>
-                            <username>bakaar</username>
-                            <password>${env.REGISTRY_TOKEN}</password>
-                        </publishRegistry>
-                    </docker>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build-image</goal>
-                        </goals>
+    <profiles>
+        <profile>
+            <id>buildImage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
-                            <skip>${skipBuildImage}</skip>
+                            <image>
+                                <name>bakaar/greetings-stat-service</name>
+                                <publish>true</publish>
+                                <env>
+                                    <BP_JVM_VERSION>${java.version}.*</BP_JVM_VERSION>
+                                </env>
+                            </image>
+                            <docker>
+                                <publishRegistry>
+                                    <username>bakaar</username>
+                                    <password>${env.REGISTRY_TOKEN}</password>
+                                </publishRegistry>
+                            </docker>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build-image</goal>
+                                </goals>
+                                <configuration>
+                                    <skip>${skipBuildImage}</skip>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

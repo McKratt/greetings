@@ -9,6 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>greetings-application</artifactId>
+    <build>
+        <testResources>
+            <testResource>
+                <directory>../../bdd/features</directory>
+                <targetPath>net/bakaar/greetings/application</targetPath>
+            </testResource>
+        </testResources>
+    </build>
     <dependencies>
         <dependency>
             <groupId>net.bakaar</groupId>

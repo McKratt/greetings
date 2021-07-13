@@ -9,6 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>greetings-rest</artifactId>
+    <build>
+        <testResources>
+            <testResource>
+                <directory>../../bdd/features</directory>
+                <targetPath>net/bakaar/greetings/rest</targetPath>
+            </testResource>
+        </testResources>
+    </build>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
