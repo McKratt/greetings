@@ -15,4 +15,4 @@ image::images/ArchitectureOverviewC4.png[architecture overview,800]
 * Test : Unit tests with Mockito and AssertJ
 * Test : Integration tests with Spring Slice Tests Annotations
 * Test : Integration tests with `@EmbeddedKafka`
-* Test : BDD test with Cucumber with JUnit 4 (link:./greetings-service[greeting service]) or JUnit 5 (link:./greetings-stat-service[stat service])
+* Test : BDD tests with Cucumber with JUnit 4 (link:./greetings-stat-service[stat service]) or JUnit 5 (link:./greetings-service[greeting service])
