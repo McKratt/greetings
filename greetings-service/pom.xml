@@ -26,7 +26,7 @@
         <java.version>16</java.version>
         <cucumber.version>6.10.4</cucumber.version>
         <testcontainer.version>1.15.3</testcontainer.version>
-        <pact.version>4.2.6</pact.version>
+        <pact.version>4.2.7</pact.version>
         <argLine>--enable-preview</argLine>
         <spring-boot.run.jvmArguments>--enable-preview</spring-boot.run.jvmArguments>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
