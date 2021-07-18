@@ -71,6 +71,9 @@
                 <directory>../../bdd/features</directory>
                 <targetPath>net/bakaar/greetings/servicetest</targetPath>
             </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
         </testResources>
     </build>
     <profiles>
