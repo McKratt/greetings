@@ -1,0 +1,73 @@
+{
+  "consumer": {
+    "name": "greetings-stat-service"
+  },
+  "interactions": [
+    {
+      "description": "Get a greeting for Name and type",
+      "providerStates": [
+        {
+          "name": "An existing Greeting id 03e805ff-5860-49a6-88bc-a1dcda0dd4b4"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/rest/api/v1/greetings/03e805ff-5860-49a6-88bc-a1dcda0dd4b4"
+      },
+      "response": {
+        "body": {
+          "name": "Fermi",
+          "type": "CHRISTMAS"
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[A-Z].*"
+                }
+              ]
+            },
+            "$.type": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[A-Z]+"
+                }
+              ]
+            }
+          },
+          "header": {
+            "Content-Type": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "application/json(;\\s?charset=[\\w\\-]+)?"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    }
+  ],
+  "metadata": {
+    "pact-jvm": {
+      "version": "4.2.6"
+    },
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  },
+  "provider": {
+    "name": "greetings-service"
+  }
+}

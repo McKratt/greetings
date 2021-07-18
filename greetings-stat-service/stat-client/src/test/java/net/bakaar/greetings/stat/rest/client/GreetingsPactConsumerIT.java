@@ -20,7 +20,7 @@ import java.util.UUID;
 @ExtendWith({PactConsumerTestExt.class})
 @PactTestFor(providerName = "greetings-service")
 @ContextConfiguration(classes = GreetingsStatRestClientConfiguration.class)
-class GreetingsConsumerPactIT {
+class GreetingsPactConsumerIT {
 
     private final String stringIdentifier = "03e805ff-5860-49a6-88bc-a1dcda0dd4b4";
     private final UUID identifier = UUID.fromString(stringIdentifier);
