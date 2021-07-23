@@ -1,4 +1,30 @@
 = Demonstration Project
+:toc:
+:toclevels: 3
+
+== Builds
+
+image::https://github.com/McKratt/greetings/actions/workflows/build.yml/badge.svg[]
+
+=== Greetings Service
+
+image::https://sonarcloud.io/api/project_badges/measure?project=greetings-service&metric=alert_status[https://sonarcloud.io/dashboard?id=greetings-service]
+
+image::https://sonarcloud.io/api/project_badges/measure?project=greetings-service&metric=sqale_rating[https://sonarcloud.io/dashboard?id=greetings-service]
+
+image::https://sonarcloud.io/api/project_badges/measure?project=greetings-service&metric=vulnerabilities[https://sonarcloud.io/dashboard?id=greetings-service]
+
+image::https://sonarcloud.io/api/project_badges/measure?project=greetings-service&metric=coverage[https://sonarcloud.io/dashboard?id=greetings-service]
+
+=== Stat Service
+
+image::https://sonarcloud.io/api/project_badges/measure?project=greetings-stat-service&metric=alert_status[https://sonarcloud.io/dashboard?id=greetings-stat-service]
+
+image::https://sonarcloud.io/api/project_badges/measure?project=greetings-stat-service&metric=sqale_rating[https://sonarcloud.io/dashboard?id=greetings-stat-service]
+
+image::https://sonarcloud.io/api/project_badges/measure?project=greetings-stat-service&metric=vulnerabilities[https://sonarcloud.io/dashboard?id=greetings-stat-service]
+
+image::https://sonarcloud.io/api/project_badges/measure?project=greetings-stat-service&metric=coverage[https://sonarcloud.io/dashboard?id=greetings-stat-service]
 
 == Architecture overview
 
@@ -15,4 +41,5 @@ image::images/ArchitectureOverviewC4.png[architecture overview,800]
 * Test : Unit tests with Mockito and AssertJ
 * Test : Integration tests with Spring Slice Tests Annotations
 * Test : Integration tests with `@EmbeddedKafka`
+* Test : CDC tests with https://docs.pact5.io[Pact]
 * Test : BDD tests with Cucumber with JUnit 4 (link:./greetings-stat-service[stat service]) or JUnit 5 (link:./greetings-service[greeting service])
