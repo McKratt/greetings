@@ -1,5 +1,6 @@
 package net.bakaar.greetings.stat.message;
 
+import lombok.extern.slf4j.Slf4j;
 import net.bakaar.greetings.message.GreetingsMessage;
 import net.bakaar.greetings.stat.message.exception.HandlerNotFoundException;
 import net.bakaar.greetings.stat.message.handler.GreetingMessagePayloadHandler;
@@ -11,13 +12,13 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
 @Component
 public class GreetingsMessageProcessor {
 
     @Autowired
     private final Set<GreetingMessagePayloadHandler> handlers = new HashSet<>();
 
-    // FIXME The manual ack pass even if there is an exception...
     @KafkaListener(topics = "${greetings.message.topic}")
     public void processMessage(GreetingsMessage message, Acknowledgment ack) {
         handlers.stream()
@@ -25,7 +26,10 @@ public class GreetingsMessageProcessor {
                 .findFirst()
                 .ifPresentOrElse(handler ->
                                 handler.handle(message.payload())
-                                        .subscribe(null, null, ack::acknowledge),
+                                        .onErrorMap(exception -> exception) // makes the exception go out to blocking Thread.
+                                        .subscribe(null,
+                                                null,
+                                                ack::acknowledge),
                         () -> {
                             throw new HandlerNotFoundException(message.type());
                         });

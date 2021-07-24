@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Mono;
@@ -18,7 +20,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith({MockitoExtension.class, OutputCaptureExtension.class})
 class GreetingsMessageProcessorTest {
 
     private final GreetingsMessageProcessor processor = new GreetingsMessageProcessor();
@@ -81,5 +83,26 @@ class GreetingsMessageProcessorTest {
         verify(ack, never()).acknowledge();
         assertThat(thrown).isNotNull();
         assertThat(thrown.getMessage()).contains(type.toString());
+    }
+
+    @Test
+    void should_not_ack_if_handler_failed(CapturedOutput output) {
+        // Given
+        var message = mock(GreetingsMessage.class);
+        var type = URI.create("http://test/events/type1");
+        given(message.type()).willReturn(type);
+        var payload = "Here is a payload";
+        given(message.payload()).willReturn(payload);
+        var handler = mock(GreetingMessagePayloadHandler.class);
+        // FIXME once lenient BDD is implemented : https://github.com/mockito/mockito/issues/1597
+        lenient().when(handler.canHandle(type)).thenReturn(true);
+        var exception = mock(RuntimeException.class);
+        given(handler.handle(any())).willThrow(exception);
+        ReflectionTestUtils.setField(processor, "handlers", Set.of(handler));
+        // When
+        var thrown = catchThrowable(() -> processor.processMessage(message, ack));
+        // Then
+        verify(ack, never()).acknowledge();
+        assertThat(thrown).isSameAs(exception);// the exception is never returned outside the subscriber.
     }
 }
