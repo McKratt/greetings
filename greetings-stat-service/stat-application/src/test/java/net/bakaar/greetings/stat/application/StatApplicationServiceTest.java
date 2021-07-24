@@ -14,10 +14,10 @@ import reactor.test.StepVerifier;
 
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class StatApplicationServiceTest {
@@ -61,5 +61,44 @@ class StatApplicationServiceTest {
                 .verifyComplete();
         // Then
         verify(statRepository).pop();
+    }
+
+    @Test
+    void should_propagate_exception_when_pop_failed() {
+        // Given
+        var exception = mock(RuntimeException.class);
+        given(statRepository.pop()).willThrow(exception);
+        // When
+        StepVerifier.create(service.retrieveGreetingsStats())
+                .expectErrorSatisfies((ex) -> assertThat(ex).isSameAs(exception))
+                .verify();
+        // Then
+        verify(statRepository).pop();
+    }
+
+    @Test
+    void should_propagate_exception_when_put_failed() {
+        // Given
+        var identifier = UUID.randomUUID();
+        var event = mock(GreetingCreated.class);
+        given(event.identifier()).willReturn(identifier);
+        var stats = mock(GreetingsStats.class);
+        given(stats.increaseCounterFor(any())).willReturn(stats);
+        given(statRepository.pop()).willReturn(stats);
+        var greeting = mock(Greeting.class);
+        given(greetingsRepository.getGreetingForIdentifier(any())).willReturn(Mono.just(greeting));
+        var type = "CHRISTMAS";
+        given(greeting.type()).willReturn(type);
+        var exception = mock(RuntimeException.class);
+        doThrow(exception).when(statRepository).put(any());
+        // When
+        StepVerifier.create(service.handle(event))
+                .expectErrorSatisfies((ex) -> assertThat(ex).isSameAs(exception))
+                .verify();
+        // Then
+        verify(statRepository).pop();
+        verify(greetingsRepository).getGreetingForIdentifier(identifier);
+        verify(stats).increaseCounterFor(type);
+        verify(statRepository).put(stats);
     }
 }
