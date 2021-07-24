@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Locale;
 
-// TODO find a way to do it "reactively"
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -28,13 +27,11 @@ public class StatRepositoryAdapter implements StatRepository {
 
     @Override
     public GreetingsStats pop() {
-        log.debug("IN THE PERSISTENCE ADAPTER - pop");
         var counters = new HashMap<String, Long>();
-        var disposable = repository.findAll().log(log.getName()).subscribe(counter -> counters.put(counter.getName(), counter.getCount()));
-        while (!disposable.isDisposed()) {
-            //wait for findAll
-        }
-        log.debug("counter size = " + counters.size());
+        repository.findAll()
+                .doOnNext(counter -> counters.put(counter.getName(), counter.getCount()))
+                .blockLast();
         return new GreetingsStats(counters);
+
     }
 }
