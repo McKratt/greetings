@@ -9,6 +9,7 @@
         <module>greetings-domain</module>
         <module>greetings-persistence</module>
         <module>greetings-producer</module>
+        <module>jacoco-reports</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -29,6 +30,7 @@
         <pact.version>4.2.7</pact.version>
         <argLine>--enable-preview</argLine>
         <spring-boot.run.jvmArguments>--enable-preview</spring-boot.run.jvmArguments>
+        <jacoco.version>0.8.7</jacoco.version>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
         <sonar.projectName>greetings-service</sonar.projectName>
         <sonar.projectKey>greetings-service</sonar.projectKey>
@@ -37,8 +39,11 @@
         <sonar.coverage.exclusions>
             **/*Properties.java,
             **/*Configuration.java,
-            **/*Application.java
+            **/*Application.java,
+            jacoco-report/**
         </sonar.coverage.exclusions>
+        <aggregate.report.dir>../jacoco-reports/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
+        <sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
     <dependencies>
         <dependency>
@@ -126,7 +131,7 @@
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.7</version>
+                        <version>${jacoco.version}</version>
                         <executions>
                             <execution>
                                 <id>prepare-agent</id>
@@ -139,16 +144,6 @@
                                 <goals>
                                     <goal>prepare-agent-integration</goal>
                                 </goals>
-                            </execution>
-                            <execution>
-                                <id>report</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>report-aggregate</goal>
-                                </goals>
-                                <configuration>
-                                    <formats>XML</formats>
-                                </configuration>
                             </execution>
                         </executions>
                     </plugin>

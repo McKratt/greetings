@@ -65,6 +65,9 @@
             <version>${pact.version}</version>
         </dependency>
     </dependencies>
+    <properties>
+        <sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+    </properties>
     <build>
         <testResources>
             <testResource>
