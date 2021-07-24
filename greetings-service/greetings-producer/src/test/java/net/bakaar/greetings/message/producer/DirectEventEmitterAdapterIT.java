@@ -30,7 +30,7 @@ import static org.mockito.Mockito.mock;
 @EmbeddedKafka
 @SpringJUnitConfig(classes = GreetingsProducerConfiguration.class)
 @EnableAutoConfiguration
-public class DirectEventEmitterAdapterIT {
+class DirectEventEmitterAdapterIT {
 
     private static final String topicName = "test_topic";
     @Autowired

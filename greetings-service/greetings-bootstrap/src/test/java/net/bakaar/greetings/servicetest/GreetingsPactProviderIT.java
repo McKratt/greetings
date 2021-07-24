@@ -27,7 +27,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @Provider("greetings-service")
 @PactFolder("pacts")
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
-public class GreetingsPactProviderIT {
+class GreetingsPactProviderIT {
 
     @MockBean
     private GreetingRepository repository;

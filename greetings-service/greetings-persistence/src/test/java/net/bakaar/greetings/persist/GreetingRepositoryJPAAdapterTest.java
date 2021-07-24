@@ -100,7 +100,7 @@ class GreetingRepositoryJPAAdapterTest {
             assertThat(capturedEntity.getType().getName()).isEqualTo(type.name());
             assertThat(capturedEntity.getName()).isEqualTo(name);
             assertThat(capturedEntity.getIdentifier()).isEqualTo(greeting.getIdentifier().toString());
-            assertThat(capturedEntity.getId()).isEqualTo(0L);
+            assertThat(capturedEntity.getId()).isZero();
             assertThat(capturedEntity.getCreatedAt()).isBetween(LocalDateTime.now().minus(10, SECONDS), LocalDateTime.now());
             assertThat(returned).usingRecursiveComparison().ignoringExpectedNullFields().isEqualTo(greeting);
         }

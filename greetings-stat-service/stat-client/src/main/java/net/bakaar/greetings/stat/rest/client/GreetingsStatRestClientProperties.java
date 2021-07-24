@@ -8,5 +8,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @ConfigurationProperties(prefix = "greetings.stat.rest.client")
 public class GreetingsStatRestClientProperties {
-    private String Url;
+    private String url;
 }

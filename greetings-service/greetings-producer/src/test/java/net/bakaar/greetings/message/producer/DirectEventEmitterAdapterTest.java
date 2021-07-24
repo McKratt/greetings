@@ -48,7 +48,7 @@ class DirectEventEmitterAdapterTest {
         verify(template).send(eq(topic), captor.capture());
         var message = captor.getValue();
         assertThat(message).isNotNull();
-        assertThat(message.type().toString()).isEqualTo(type);
+        assertThat(message.type()).hasToString(type);
         assertThat(message.payload()).isSameAs(payload);
     }
 

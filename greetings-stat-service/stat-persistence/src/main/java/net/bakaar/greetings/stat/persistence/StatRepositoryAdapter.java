@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 // TODO find a way to do it "reactively"
 @Slf4j
@@ -23,7 +22,7 @@ public class StatRepositoryAdapter implements StatRepository {
         repository.saveAll(stats.getCounters()
                 .entrySet().stream()
                 .map(entry -> new Counter().setName(entry.getKey().toUpperCase(Locale.ROOT)).setCount(entry.getValue()))
-                .collect(Collectors.toList()))
+                .toList())
                 .subscribe();
     }
 
