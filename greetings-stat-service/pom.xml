@@ -16,6 +16,7 @@
         <module>stat-rest</module>
         <module>stat-persistence</module>
         <module>stat-client</module>
+        <module>jacoco-stat-reports</module>
     </modules>
     <groupId>net.bakaar</groupId>
     <artifactId>greetings-stat-service</artifactId>
@@ -31,6 +32,7 @@
         <pact.version>4.2.7</pact.version>
         <spring.cloud.contract.version>3.0.3</spring.cloud.contract.version>
         <argLine>--enable-preview</argLine>
+        <jacoco.version>0.8.7</jacoco.version>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
         <sonar.projectName>greetings-stat-service</sonar.projectName>
         <sonar.projectKey>greetings-stat-service</sonar.projectKey>
@@ -39,8 +41,11 @@
         <sonar.coverage.exclusions>
             **/*Properties.java,
             **/*Configuration.java,
-            **/*Application.java
+            **/*Application.java,
+            jacoco-stat-report/**
         </sonar.coverage.exclusions>
+        <aggregate.report.dir>../jacoco-stat-reports/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
+        <sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
     <dependencies>
         <dependency>
@@ -118,7 +123,7 @@
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.7</version>
+                        <version>${jacoco.version}</version>
                         <executions>
                             <execution>
                                 <id>prepare-agent</id>
@@ -130,12 +135,6 @@
                                 <id>prepare-agent-it</id>
                                 <goals>
                                     <goal>prepare-agent-integration</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>report</id>
-                                <goals>
-                                    <goal>report</goal>
                                 </goals>
                             </execution>
                         </executions>

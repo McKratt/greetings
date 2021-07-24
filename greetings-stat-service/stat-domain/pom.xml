@@ -9,4 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>stat-domain</artifactId>
+    <properties>
+        <sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+    </properties>
 </project>
