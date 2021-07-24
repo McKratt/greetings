@@ -81,4 +81,29 @@ class GreetingApplicationServiceTest {
         // Then
         assertThat(thrown).isNotNull().isInstanceOf(GreetingNotFoundException.class);
     }
+
+    @Test
+    void read_should_throw_exception_if_identifier_not_found() {
+        // Given
+        var identifier = UUID.randomUUID();
+        given(repository.find(any())).willReturn(Optional.empty());
+        // When
+        Throwable thrown = catchThrowable(() -> service.read(identifier));
+        // Then
+        assertThat(thrown).isInstanceOf(GreetingNotFoundException.class);
+        assertThat(thrown.getMessage()).contains(identifier.toString());
+    }
+
+    @Test
+    void read_should_call_the_repository() {
+        // Given
+        var identifier = UUID.randomUUID();
+        var greeting = mock(Greeting.class);
+        given(repository.find(any())).willReturn(Optional.of(greeting));
+        // When
+        var returnedGreeting = service.read(identifier);
+        // Then
+        verify(repository).find(identifier);
+        assertThat(returnedGreeting).isSameAs(greeting);
+    }
 }

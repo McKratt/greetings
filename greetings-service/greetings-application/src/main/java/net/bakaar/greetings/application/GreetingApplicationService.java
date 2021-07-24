@@ -30,10 +30,7 @@ public class GreetingApplicationService {
 
     @Transactional
     public Greeting changeType(UpdateGreetingCommand command) {
-        Greeting greeting = repository.find(command.identifier())
-                .orElseThrow(() ->
-                        new GreetingNotFoundException(format("Greeting with identifier %s not found", command.identifier()))
-                );
+        Greeting greeting = read(command.identifier());
         greeting.updateTypeFor(command.newType());
         return repository.put(greeting);
     }

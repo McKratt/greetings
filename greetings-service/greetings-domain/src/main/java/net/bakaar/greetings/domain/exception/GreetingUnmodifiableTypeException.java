@@ -9,12 +9,4 @@ public class GreetingUnmodifiableTypeException extends IllegalArgumentException 
     public GreetingUnmodifiableTypeException(String typeFrom, String typeTo) {
         super(format(ERROR_MESSAGE_PATTERN, typeFrom, typeTo));
     }
-
-    public GreetingUnmodifiableTypeException(String typeFrom, String typeTo, Throwable cause) {
-        super(format(ERROR_MESSAGE_PATTERN, typeFrom, typeTo), cause);
-    }
-
-    public GreetingUnmodifiableTypeException(Throwable cause) {
-        throw new UnsupportedOperationException();
-    }
 }
