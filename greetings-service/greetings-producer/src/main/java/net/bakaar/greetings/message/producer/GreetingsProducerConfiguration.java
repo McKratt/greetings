@@ -24,12 +24,6 @@ import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_
 @EnableConfigurationProperties(GreetingsProducerProperties.class)
 public class GreetingsProducerConfiguration {
 
-    //TODO put that in bootstrap, this is not the producer that know the actual configuration of Kafka
-//    @Bean
-//    NewTopic greetingTopic(GreetingsProducerProperties properties) {
-//        return new NewTopic(properties.getTopicName(), 1, (short) 1);
-//    }
-
     @Bean
     EventEmitter eventEmitter(GreetingsProducerProperties properties, KafkaTemplate<String, GreetingsMessage> template) {
         return new DirectEventEmitterAdapter(properties, createMapper(), template);

@@ -10,4 +10,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class GreetingsProducerProperties {
 
     private String topicName;
+    private int numPartition;
+    private int replication;
 }
