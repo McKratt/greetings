@@ -13,7 +13,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.2</version>
+        <version>2.5.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>net.bakaar</groupId>
@@ -142,9 +142,13 @@
                             </execution>
                             <execution>
                                 <id>report</id>
+                                <phase>post-integration-test</phase>
                                 <goals>
                                     <goal>report-aggregate</goal>
                                 </goals>
+                                <configuration>
+                                    <formats>XML</formats>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
