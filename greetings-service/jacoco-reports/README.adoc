@@ -1,0 +1,105 @@
+= Jacoco Coverage Report
+
+Enable code coverage with multi-modules maven project.
+
+For multi-modules, you have to add a new module `jacoco-reports` (or name it as you want) where you will aggregate coverage results.
+
+== Parent module
+
+.pom.xml
+[source,xml]
+----
+<properties>
+    ...
+    <jacoco.version>0.8.7</jacoco.version>
+    <sonar.coverage.exclusions>
+        ...
+        jacoco-report/**
+    </sonar.coverage.exclusions>
+    <aggregate.report.dir>../jacoco-reports/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
+    <sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+</properties>
+...
+<profiles>
+        <profile>
+            <id>coverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco.version}</version>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>prepare-agent-it</id>
+                                <goals>
+                                    <goal>prepare-agent-integration</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+----
+
+== Jacoco Reports Sub module
+
+Make it depend on all the other submodules.
+
+.pom.xml
+[source,xml]
+----
+<dependecies>
+    Put all the other submodules here as dependencies
+</dependecies>
+<profiles>
+        <profile>
+            <id>coverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco.version}</version>
+                        <executions>
+                            <execution>
+                                <id>report</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>report-aggregate</goal>
+                                </goals>
+                                <configuration>
+                                    <formats>XML</formats>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+----
+
+== Others Sub modules
+
+.pom.xml
+[source,xml]
+----
+    <properties>
+        <sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+    </properties>
+----
+
+== Resources
+
+https://community.sonarsource.com/t/jacoco-0-code-coverage-since-switching-to-xmlreportpaths/30105/3
+
+https://github.com/jacoco/jacoco/issues/974
