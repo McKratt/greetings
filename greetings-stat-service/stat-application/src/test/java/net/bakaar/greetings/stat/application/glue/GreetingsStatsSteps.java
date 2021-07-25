@@ -14,6 +14,7 @@ import reactor.test.StepVerifier;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -34,7 +35,7 @@ public class GreetingsStatsSteps {
         var event = mock(GreetingCreated.class);
         given(event.identifier()).willReturn(identifier);
         // get the stat object from DB
-        given(statRepository.pop()).willReturn(stats);
+        given(statRepository.pop()).willReturn(CompletableFuture.completedFuture(stats));
         // call the greetings service to know the type
         var greeting = new Greeting(type, "Copernicus");
         given(greetingsRepository.getGreetingForIdentifier(identifier)).willReturn(Mono.just(greeting));

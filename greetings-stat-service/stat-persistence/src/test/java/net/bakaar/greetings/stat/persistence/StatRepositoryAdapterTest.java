@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -57,14 +58,14 @@ class StatRepositoryAdapterTest {
     }
 
     @Test
-    void should_pop_all_the_existing_counter() {
+    void should_pop_all_the_existing_counter() throws ExecutionException, InterruptedException {
         // Given
         var key1 = "key1";
         var key2 = "key2";
         var key3 = "key3";
         given(repository.findAll()).willReturn(Flux.just(new Counter().setName(key1), new Counter().setName(key2), new Counter().setName(key3)));
         // When
-        var stats = adapter.pop();
+        var stats = adapter.pop().get();
         // Then
         assertThat(stats.getCounters()).containsKeys(key1, key2, key3);
     }

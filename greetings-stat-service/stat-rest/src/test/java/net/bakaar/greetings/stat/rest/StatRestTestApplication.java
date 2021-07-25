@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 @SpringBootApplication(proxyBeanMethods = false,
         scanBasePackages = "net.bakaar.greetings.stat")
@@ -22,8 +23,8 @@ public class StatRestTestApplication {
             }
 
             @Override
-            public GreetingsStats pop() {
-                return stats;
+            public CompletableFuture<GreetingsStats> pop() {
+                return CompletableFuture.completedFuture(stats);
             }
         };
     }

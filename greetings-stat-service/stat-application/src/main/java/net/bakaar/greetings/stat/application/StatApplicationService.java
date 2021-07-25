@@ -20,12 +20,12 @@ public class StatApplicationService {
     public Mono<Void> handle(GreetingCreated event) {
         return Mono.zip(
                 greetingsRepository.getGreetingForIdentifier(event.identifier()),
-                Mono.just(statRepository.pop()),
+                Mono.fromFuture(statRepository.pop()),
                 (greeting, greetingsStats) -> greetingsStats.increaseCounterFor(greeting.type())
         ).flatMap(stats -> Mono.fromRunnable(() -> statRepository.put(stats)));
     }
 
     public Mono<GreetingsStats> retrieveGreetingsStats() {
-        return Mono.fromCallable(statRepository::pop);
+        return Mono.fromFuture(statRepository::pop);
     }
 }

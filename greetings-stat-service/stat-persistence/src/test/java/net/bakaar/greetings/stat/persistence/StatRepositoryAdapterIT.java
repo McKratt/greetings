@@ -13,6 +13,7 @@ import reactor.test.StepVerifier;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,7 +48,7 @@ class StatRepositoryAdapterIT {
     }
 
     @Test
-    void pop_should_get_counter_in_db() {
+    void pop_should_get_counter_in_db() throws ExecutionException, InterruptedException {
         // Given
         var counter = new Counter();
         var count = 64L;
@@ -59,7 +60,7 @@ class StatRepositoryAdapterIT {
                 .verifyComplete();
         // When
 //        await().until();
-        var stats = repository.pop();
+        var stats = repository.pop().get();
         // Then
         assertThat(stats).isNotNull();
         assertThat(stats.getCounters()).hasSize(1);

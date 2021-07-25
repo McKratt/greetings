@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @SpringBootApplication(proxyBeanMethods = false, scanBasePackages = "net.bakaar.greetings.stat")
 public class TestSpringBootApplication {
@@ -40,8 +41,8 @@ public class TestSpringBootApplication {
             }
 
             @Override
-            public GreetingsStats pop() {
-                return stats;
+            public CompletableFuture<GreetingsStats> pop() {
+                return CompletableFuture.completedFuture(stats);
             }
         };
     }

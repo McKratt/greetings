@@ -23,6 +23,7 @@ import org.springframework.test.context.DynamicPropertySource;
 
 import java.net.URI;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -73,10 +74,10 @@ public class GreetingsStatsSteps {
     }
 
     @Then("the counter should be {long}")
-    public void the_counter_should_be(Long counter) {
-        await().until(() -> statRepository.pop().getStatsFor(type).get().equals(counter));
+    public void the_counter_should_be(Long counter) throws ExecutionException, InterruptedException {
+        await().until(() -> statRepository.pop().get().getStatsFor(type).get().equals(counter));
         var stats = statRepository.pop();
         assertThat(stats).isNotNull();
-        assertThat(stats.getStatsFor(type)).isPresent().get().isEqualTo(counter);
+        assertThat(stats.get().getStatsFor(type)).isPresent().get().isEqualTo(counter);
     }
 }
