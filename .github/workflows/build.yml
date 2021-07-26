@@ -65,7 +65,7 @@ jobs:
           REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
 
   deploy_stats:
-    name: Deploy Greetings
+    name: Deploy Stats
     runs-on: ubuntu-latest
     needs: build_stats
     if: success() && github.ref == 'refs/heads/master'
