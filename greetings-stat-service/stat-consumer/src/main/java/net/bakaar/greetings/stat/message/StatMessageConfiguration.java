@@ -17,7 +17,8 @@ import org.springframework.kafka.listener.ErrorHandler;
 @EnableKafka
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(GreetingsMessageProperties.class)
-@PropertySource("classpath:config/customer.properties")
+@PropertySource("classpath:config/consumer.properties")
+// FIXME not enough to enable Kafka Message consumation @Lazy(value = false)
 public class StatMessageConfiguration {
 
     @Bean

@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class FlywayConfiguration {
 
     @Bean(initMethod = "migrate")
+    // @Lazy(value = false) FIXME Re enable once lazy loading fixed for Kafka consumer
     Flyway configureFlyway(FlywayProperties flywayProperties) {
         return new Flyway(Flyway.configure()
                 .baselineOnMigrate(true)

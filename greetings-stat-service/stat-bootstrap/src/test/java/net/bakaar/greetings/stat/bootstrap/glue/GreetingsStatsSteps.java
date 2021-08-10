@@ -6,13 +6,18 @@ import io.cucumber.spring.CucumberContextConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import net.bakaar.greetings.message.GreetingsMessage;
 import net.bakaar.greetings.stat.persistence.CounterRepository;
+import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
@@ -27,18 +32,24 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static net.bakaar.greetings.stat.bootstrap.CucumberLauncherIT.dbContainer;
+import static net.bakaar.greetings.stat.bootstrap.glue.GreetingsStatsSteps.topic;
+import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
+import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @Slf4j
 @CucumberContextConfiguration
-@EmbeddedKafka(partitions = 1)
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@EmbeddedKafka(partitions = 1, topics = topic)
+@SpringBootTest(webEnvironment = RANDOM_PORT, properties = {
+        "spring.profiles.active=test"
+})
 @AutoConfigureWireMock(port = 0)
 public class GreetingsStatsSteps {
 
-    private static final String topic = "test-topic";
+    public static final String topic = "test-topic";
     private final UUID identifier = UUID.randomUUID();
     private final String type = "ANNIVERSARY";
     private final String name = "Lucius";
@@ -92,6 +103,24 @@ public class GreetingsStatsSteps {
                             "name":"%s"
                         }
                         """.formatted(type, name))));
+        // Check the message is in Topic with another groupId
+        Consumer<String, GreetingsMessage> consumer = createConsumer();
+        ConsumerRecord<String, GreetingsMessage> record = KafkaTestUtils.getSingleRecord(consumer, topic, 10000L);
+        var testMessage = record.value();
+        assertThat(testMessage).isNotNull();
+        assertThat(testMessage.type()).isEqualTo(URI.create("https://bakaar.net/greetings/events/greeting-created"));
+        assertThat(testMessage.payload()).contains(identifier.toString());
+    }
+
+    private Consumer<String, GreetingsMessage> createConsumer() {
+        var consumerProps = KafkaTestUtils.consumerProps("testGroup", "true", this.embeddedKafka);
+        consumerProps.put(VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        consumerProps.put(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "net.bakaar.*");
+        var factory = new DefaultKafkaConsumerFactory<String, GreetingsMessage>(consumerProps);
+        Consumer<String, GreetingsMessage> consumer = factory.createConsumer();
+        embeddedKafka.consumeFromAnEmbeddedTopic(consumer, topic);
+        return consumer;
     }
 
     @Then("the counter should be {int}")
