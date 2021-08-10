@@ -9,6 +9,7 @@ import net.bakaar.greetings.stat.message.handler.GreetingMessagePayloadHandler;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.listener.ContainerStoppingErrorHandler;
 import org.springframework.kafka.listener.ErrorHandler;
@@ -16,6 +17,7 @@ import org.springframework.kafka.listener.ErrorHandler;
 @EnableKafka
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(GreetingsMessageProperties.class)
+@PropertySource("classpath:config/customer.properties")
 public class StatMessageConfiguration {
 
     @Bean
