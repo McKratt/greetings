@@ -139,12 +139,12 @@
                                     <goal>prepare-agent</goal>
                                 </goals>
                             </execution>
-                            <execution>
-                                <id>prepare-agent-it</id>
-                                <goals>
-                                    <goal>prepare-agent-integration</goal>
-                                </goals>
-                            </execution>
+                            <!--                            <execution>-->
+                            <!--                                <id>prepare-agent-it</id>-->
+                            <!--                                <goals>-->
+                            <!--                                    <goal>prepare-agent-integration</goal>-->
+                            <!--                                </goals>-->
+                            <!--                            </execution>-->
                         </executions>
                     </plugin>
                 </plugins>
