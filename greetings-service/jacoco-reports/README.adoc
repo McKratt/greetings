@@ -14,7 +14,7 @@ For multi-modules, you have to add a new module `jacoco-reports` (or name it as 
     <jacoco.version>0.8.7</jacoco.version>
     <sonar.coverage.exclusions>
         ...
-        jacoco-report/**
+        jacoco-reports/**
     </sonar.coverage.exclusions>
     <aggregate.report.dir>../jacoco-reports/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
     <sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
@@ -36,6 +36,7 @@ For multi-modules, you have to add a new module `jacoco-reports` (or name it as 
                                     <goal>prepare-agent</goal>
                                 </goals>
                             </execution>
+                            <!-- Remove this execution if you don't want coverage from integration tests -->
                             <execution>
                                 <id>prepare-agent-it</id>
                                 <goals>
@@ -57,9 +58,9 @@ Make it depend on all the other submodules.
 .pom.xml
 [source,xml]
 ----
-<dependecies>
+<dependencies>
     Put all the other submodules here as dependencies
-</dependecies>
+</dependencies>
 <profiles>
         <profile>
             <id>coverage</id>
