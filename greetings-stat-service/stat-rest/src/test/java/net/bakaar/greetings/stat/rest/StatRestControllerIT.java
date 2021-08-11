@@ -28,7 +28,6 @@ class StatRestControllerIT {
     @Test
     void should_respond_json() {
         // Given
-
         var counters = Map.of("BIRTHDAY", 34L, "ANNIVERSARY", 89L);
         var stats = new GreetingsStats(counters);
         given(service.retrieveGreetingsStats()).willReturn(Mono.just(stats));
@@ -37,15 +36,16 @@ class StatRestControllerIT {
                 .uri("/rest/api/v1/stats")
                 .accept(APPLICATION_JSON)
                 .exchange()
+                // Then
                 .expectStatus().isOk()
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody().json("""
-                {
-                    "counters" : {
-                        "BIRTHDAY": 34,
-                        "ANNIVERSARY": 89
-                    }
-                }""");
-        // Then
+                        {
+                            "counters" : {
+                                "BIRTHDAY": 34,
+                                "ANNIVERSARY": 89
+                            }
+                        }""");
+
     }
 }
