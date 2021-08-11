@@ -146,7 +146,7 @@
                                 <id>report</id>
                                 <phase>post-integration-test</phase>
                                 <goals>
-                                    <goal>report-aggregate</goal>
+                                    <goal>report</goal>
                                     <goal>report-integration</goal>
                                 </goals>
                                 <configuration>
