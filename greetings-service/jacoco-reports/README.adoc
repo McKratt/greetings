@@ -99,6 +99,12 @@ Make it depend on all the other submodules.
     </properties>
 ----
 
+== Know issues
+
+You cannot use the bootstrap module, which would be nice, because an ongoing bug in jacoco :
+
+https://github.com/jacoco/jacoco/pull/1007
+
 == Resources
 
 https://community.sonarsource.com/t/jacoco-0-code-coverage-since-switching-to-xmlreportpaths/30105/3
