@@ -17,6 +17,7 @@ Feature: Creation of a Greeting Message
         | christmas | Leslie | Merry Christmas Leslie ! |
 
   Rule: Creation of a none existing type of greeting should return an error
+
     Scenario: Error
       When I create a birth greeting for Bob
       Then I get an error

@@ -65,7 +65,7 @@ public class GreetingsCreationSteps {
 
     @When("I change the type to {word}")
     public void i_change_the_type_to(String type) {
-        UpdateGreetingCommandDTO updateGreetingCommand = new UpdateGreetingCommandDTO();
+        var updateGreetingCommand = new UpdateGreetingCommandDTO();
         updateGreetingCommand.setNewType(type);
         var request = RequestEntity
                 .put(URI.create(response.getHeaders().getLocation().getPath()))
