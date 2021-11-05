@@ -29,6 +29,7 @@
         <testcontainer.version>1.15.3</testcontainer.version>
         <pact.version>4.2.7</pact.version>
         <!--        <argLine>&#45;&#45;enable-preview</argLine>-->
+                <argLine></argLine>
         <!--        <spring-boot.run.jvmArguments>&#45;&#45;enable-preview</spring-boot.run.jvmArguments>-->
         <jacoco.version>0.8.7</jacoco.version>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
@@ -139,12 +140,12 @@
                                     <goal>prepare-agent</goal>
                                 </goals>
                             </execution>
-                            <!--                            <execution>-->
-                            <!--                                <id>prepare-agent-it</id>-->
-                            <!--                                <goals>-->
-                            <!--                                    <goal>prepare-agent-integration</goal>-->
-                            <!--                                </goals>-->
-                            <!--                            </execution>-->
+                            <execution>
+                                <id>prepare-agent-it</id>
+                                <goals>
+                                    <goal>prepare-agent-integration</goal>
+                                </goals>
+                            </execution>
                         </executions>
                     </plugin>
                 </plugins>

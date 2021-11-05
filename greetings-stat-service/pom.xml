@@ -16,7 +16,7 @@
         <module>stat-rest</module>
         <module>stat-persistence</module>
         <module>stat-client</module>
-<!--        <module>jacoco-stat-reports</module>-->
+        <!--        <module>jacoco-stat-reports</module>-->
     </modules>
     <groupId>net.bakaar</groupId>
     <artifactId>greetings-stat-service</artifactId>
@@ -31,7 +31,8 @@
         <awaitility.version>4.1.0</awaitility.version>
         <pact.version>4.2.7</pact.version>
         <spring.cloud.contract.version>3.0.3</spring.cloud.contract.version>
-        <!--        <argLine>&#45;&#45;enable-preview</argLine>-->
+        <!--                <argLine>&#45;&#45;enable-preview</argLine>-->
+        <argLine></argLine>
         <jacoco.version>0.8.7</jacoco.version>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
         <sonar.projectName>greetings-stat-service</sonar.projectName>
