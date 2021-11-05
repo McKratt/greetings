@@ -9,8 +9,7 @@
 
     <logger name="net.bakaar" level="TRACE"/>
     <logger name="org.testcontainers" level="info"/>
-
-
+    <logger name="com.github" level="info"/>
     <root level="debug">
         <appender-ref ref="STDOUT"/>
     </root>

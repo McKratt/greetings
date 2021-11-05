@@ -40,7 +40,7 @@ public class GreetingsCreationSteps {
                                 .values(999, identifier, "Dummy", type, LocalDateTime.now())
                                 .build()
                 );
-        DbSetup dbSetup = new DbSetup(new DriverManagerDestination("jdbc:postgresql://localhost:15432/postgres", "postgres", "123456"), operation);
+        DbSetup dbSetup = new DbSetup(new DriverManagerDestination("jdbc:postgresql://localhost:15432/postgres", "greeting", "123456"), operation);
         dbSetup.launch();
     }
 
