@@ -1,4 +1,4 @@
-package net.bakaar.greetings.stat.application;
+package net.bakaar.greetings.stat.rest;
 
 import org.junit.platform.suite.api.*;
 
@@ -9,6 +9,7 @@ import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
 @SelectFiles(
         @SelectFile("../../bdd/features/GreetingsStats.feature")
 )
-@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "net.bakaar.greetings.stat.application.glue")
-class CucumberLauncherIT {
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "net.bakaar.greetings.stat.rest.glue")
+public class StatRestCucumberLauncherIT {
+
 }
