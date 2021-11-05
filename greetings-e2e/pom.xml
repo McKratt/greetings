@@ -15,6 +15,7 @@
         <cucumber.version>6.10.4</cucumber.version>
         <testcontainer.version>1.16.2</testcontainer.version>
         <jupiter.version>5.8.1</jupiter.version>
+        <junit-platform.version>1.8.1</junit-platform.version>
         <assertj.version>3.21.0</assertj.version>
         <rest-assured.version>4.4.0</rest-assured.version>
         <logback.version>1.2.6</logback.version>
@@ -85,6 +86,12 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.19</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <version>${junit-platform.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

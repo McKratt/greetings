@@ -1,11 +1,15 @@
 package net.bakaar.greetings.stat.message;
 
-import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
-import org.junit.runner.RunWith;
+import org.junit.platform.suite.api.*;
 
-@RunWith(Cucumber.class)
-@CucumberOptions(features = "../../bdd/features/GreetingsStats.feature",
-        glue = "net.bakaar.greetings.stat.message.glue")
+import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
+
+
+@Suite
+@IncludeEngines("cucumber")
+@SelectFiles(
+        @SelectFile("../../bdd/features/GreetingsStats.feature")
+)
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "net.bakaar.greetings.stat.message.glue")
 public class CucumberLauncherIT {
 }
