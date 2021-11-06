@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
 
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
-import static net.bakaar.greetings.servicetest.CucumberLauncherIT.dbContainer;
+import static net.bakaar.greetings.servicetest.BootstrapCucumberLauncherIT.dbContainer;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
