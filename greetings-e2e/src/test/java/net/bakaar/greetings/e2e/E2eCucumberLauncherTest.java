@@ -1,25 +1,18 @@
 package net.bakaar.greetings.e2e;
 
-import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
-import org.junit.ClassRule;
-import org.junit.runner.RunWith;
-import org.testcontainers.containers.DockerComposeContainer;
+import org.junit.platform.suite.api.*;
 
-import java.io.File;
+import static io.cucumber.core.options.Constants.FILTER_TAGS_PROPERTY_NAME;
+import static io.cucumber.core.options.Constants.GLUE_PROPERTY_NAME;
 
-@RunWith(Cucumber.class)
-@CucumberOptions(features = {
-        "../bdd/features/GreetingsCreation.feature",
-        "../bdd/features/GreetingsUpdate.feature"
-//        "../bdd/features/GreetingsStats.feature"
-},
-        glue = "net.bakaar.greetings.e2e.glue",
-        tags = "@e2e")
+@Suite
+@IncludeEngines("cucumber")
+@SelectFiles({
+        @SelectFile("../bdd/features/GreetingsCreation.feature"),
+        @SelectFile("../bdd/features/GreetingsUpdate.feature")
+//        @SelectFile("../bdd/features/GreetingsStats.feature")
+})
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "net.bakaar.greetings.e2e.glue")
+@ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "@e2e")
 public class E2eCucumberLauncherTest {
-
-    @ClassRule
-    public static DockerComposeContainer environment = new DockerComposeContainer(
-            new File("src/test/resources/compose-test.yaml"))
-            .withExposedService("greetings_1", 8080);
 }

@@ -9,17 +9,27 @@ import io.cucumber.java.en.When;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.junit.jupiter.api.AfterAll;
+import org.testcontainers.containers.DockerComposeContainer;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static com.ninja_squad.dbsetup.Operations.*;
 import static io.restassured.RestAssured.given;
-import static net.bakaar.greetings.e2e.E2eCucumberLauncherTest.environment;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.hamcrest.Matchers.equalTo;
 
 public class GreetingsCreationSteps {
+
+    private static final DockerComposeContainer environment = new DockerComposeContainer(
+            new File("src/test/resources/compose-test.yaml"))
+            .withExposedService("greetings_1", 8080);
+
+    static {
+        environment.start();
+    }
 
     private final RequestSpecification request = given().log().all(true).contentType("application/json")
             .filters(new ResponseLoggingFilter()).accept("application/json");
@@ -29,6 +39,11 @@ public class GreetingsCreationSteps {
     private final String identifier = UUID.randomUUID().toString();
     private final String url = String.format("http://localhost:%d/rest/api/v1/greetings",
             environment.getServicePort("greetings", 8080));
+
+    @AfterAll
+    static void afterAll() {
+        environment.stop();
+    }
 
     @Given("an existing {word} greeting")
     public void an_existing_greeting(String type) {

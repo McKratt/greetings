@@ -12,7 +12,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <cucumber.version>6.10.4</cucumber.version>
+        <cucumber.version>7.0.0</cucumber.version>
         <testcontainer.version>1.16.2</testcontainer.version>
         <jupiter.version>5.8.1</jupiter.version>
         <junit-platform.version>1.8.1</junit-platform.version>
@@ -23,6 +23,7 @@
         <dbsetup.version>2.1.0</dbsetup.version>
         <postgresql.version>42.2.19</postgresql.version>
         <!--        <argLine>&#45;&#45;enable-preview</argLine>-->
+        <argLine></argLine>
     </properties>
     <dependencies>
         <dependency>
@@ -45,14 +46,8 @@
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit</artifactId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
             <version>${cucumber.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <version>${jupiter.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
