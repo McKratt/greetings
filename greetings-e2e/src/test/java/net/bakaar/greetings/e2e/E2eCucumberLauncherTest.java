@@ -16,7 +16,7 @@ import java.io.File;
 },
         glue = "net.bakaar.greetings.e2e.glue",
         tags = "@e2e")
-public class CucumberLauncherTest {
+public class E2eCucumberLauncherTest {
 
     @ClassRule
     public static DockerComposeContainer environment = new DockerComposeContainer(

@@ -20,6 +20,8 @@
         <rest-assured.version>4.4.0</rest-assured.version>
         <logback.version>1.2.6</logback.version>
         <awaitility.version>4.1.1</awaitility.version>
+        <dbsetup.version>2.1.0</dbsetup.version>
+        <postgresql.version>42.2.19</postgresql.version>
         <!--        <argLine>&#45;&#45;enable-preview</argLine>-->
     </properties>
     <dependencies>
@@ -79,13 +81,13 @@
         <dependency>
             <groupId>com.ninja-squad</groupId>
             <artifactId>DbSetup</artifactId>
-            <version>2.1.0</version>
+            <version>${dbsetup.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.19</version>
+            <version>${postgresql.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

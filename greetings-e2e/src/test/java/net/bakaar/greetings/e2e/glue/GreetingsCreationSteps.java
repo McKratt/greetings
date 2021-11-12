@@ -15,7 +15,7 @@ import java.util.UUID;
 
 import static com.ninja_squad.dbsetup.Operations.*;
 import static io.restassured.RestAssured.given;
-import static net.bakaar.greetings.e2e.CucumberLauncherTest.environment;
+import static net.bakaar.greetings.e2e.E2eCucumberLauncherTest.environment;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -32,15 +32,22 @@ public class GreetingsCreationSteps {
 
     @Given("an existing {word} greeting")
     public void an_existing_greeting(String type) {
+        // FIXME Make it dynamic from DB Values.
+        var typeId = switch (type.toUpperCase()) {
+            case "ANNIVERSARY" -> 1;
+            case "CHRISTMAS" -> 2;
+            case "BIRTHDAY" -> 3;
+            default -> throw new IllegalArgumentException(type);
+        };
         Operation operation =
                 sequenceOf(
                         DELETE_ALL,
                         insertInto("T_GREETINGS")
-                                .columns("PK_T_GREETINGS", "S_IDENTIFIER", "S_NAME", "S_TYPE", "TS_CREATEDAT")
-                                .values(999, identifier, "Dummy", type, LocalDateTime.now())
+                                .columns("PK_T_GREETINGS", "S_IDENTIFIER", "S_NAME", "FK_TYPE", "TS_CREATEDAT")
+                                .values(999, identifier, "Dummy", typeId, LocalDateTime.now())
                                 .build()
                 );
-        DbSetup dbSetup = new DbSetup(new DriverManagerDestination("jdbc:postgresql://localhost:15432/postgres", "greeting", "123456"), operation);
+        DbSetup dbSetup = new DbSetup(new DriverManagerDestination("jdbc:postgresql://localhost:15432/greetings", "greeting", "123456"), operation);
         dbSetup.launch();
     }
 
@@ -70,5 +77,10 @@ public class GreetingsCreationSteps {
     @Then("I get the message {string}")
     public void iGetTheMessage(String message) {
         response.then().body("message", equalTo(message));
+    }
+
+    @Then("a Greeting is created")
+    public void a_greeting_is_created() {
+        response.then().statusCode(201);
     }
 }
