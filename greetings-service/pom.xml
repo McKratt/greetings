@@ -44,7 +44,7 @@
             **/*Application.java,
             jacoco-report/**
         </sonar.coverage.exclusions>
-        <aggregate.report.dir>../jacoco-reports/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
+        <aggregate.report.dir>jacoco-reports/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
         <sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
     <dependencies>

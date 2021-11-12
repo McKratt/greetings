@@ -16,7 +16,7 @@
         <module>stat-rest</module>
         <module>stat-persistence</module>
         <module>stat-client</module>
-        <!--        <module>jacoco-stat-reports</module>-->
+        <module>jacoco-stat-reports</module>
     </modules>
     <groupId>net.bakaar</groupId>
     <artifactId>greetings-stat-service</artifactId>
@@ -46,7 +46,7 @@
             **/*Application.java,
             jacoco-stat-report/**
         </sonar.coverage.exclusions>
-        <aggregate.report.dir>../stat-bootstrap/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
+        <aggregate.report.dir>jacoco-stat-reports/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
         <sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
     <dependencies>
