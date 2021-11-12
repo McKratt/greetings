@@ -1,18 +1,15 @@
 package net.bakaar.greetings.servicetest;
 
-import io.cucumber.junit.platform.engine.Cucumber;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.junit.platform.suite.api.*;
 
-@Cucumber
+import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
+
+@Suite
+@IncludeEngines("cucumber")
+@SelectFiles({
+        @SelectFile("../../bdd/features/GreetingsCreation.feature"),
+        @SelectFile("../../bdd/features/GreetingsUpdate.feature")
+})
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "net.bakaar.greetings.servicetest.glue")
 public class BootstrapCucumberLauncherIT {
-
-    //  @Container FIXME This annotation doesn't seem to work with Cucumber even if I put it in the step file
-    public static final PostgreSQLContainer dbContainer = new PostgreSQLContainer("postgres")
-            .withDatabaseName("greetings")
-            .withUsername("foo")
-            .withPassword("secret");
-
-    static {
-        dbContainer.start();
-    }
 }
