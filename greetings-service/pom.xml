@@ -33,6 +33,7 @@
         <argLine></argLine>
         <!--        <spring-boot.run.jvmArguments>&#45;&#45;enable-preview</spring-boot.run.jvmArguments>-->
         <jacoco.version>0.8.7</jacoco.version>
+        <jacoco.includes.pattern>net.bakaar.*</jacoco.includes.pattern>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
         <sonar.projectName>greetings-service</sonar.projectName>
         <sonar.projectKey>greetings-service</sonar.projectKey>
@@ -156,6 +157,9 @@
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
                         <version>${jacoco.version}</version>
+                        <configuration>
+                            <includes>${jacoco.includes.pattern}</includes>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>prepare-agent</id>
