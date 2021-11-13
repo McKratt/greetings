@@ -32,8 +32,6 @@
         <awaitility.version>4.1.1</awaitility.version>
         <pact.version>4.2.14</pact.version>
         <spring.cloud.contract.version>3.0.4</spring.cloud.contract.version>
-        <!--                <argLine>&#45;&#45;enable-preview</argLine>-->
-        <argLine></argLine>
         <jacoco.version>0.8.7</jacoco.version>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
         <sonar.projectName>greetings-stat-service</sonar.projectName>
@@ -97,12 +95,6 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${testcontainer.version}</version>
-            <!--            <exclusions>-->
-            <!--                <exclusion>-->
-            <!--                    <groupId>junit</groupId>-->
-            <!--                    <artifactId>junit</artifactId>-->
-            <!--                </exclusion>-->
-            <!--            </exclusions>-->
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -130,7 +122,6 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <compilerArgs>${argLine}</compilerArgs>
                 </configuration>
             </plugin>
         </plugins>

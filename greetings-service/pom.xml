@@ -29,9 +29,6 @@
         <junit-platform.version>1.8.1</junit-platform.version>
         <testcontainer.version>1.16.2</testcontainer.version>
         <pact.version>4.2.14</pact.version>
-        <!--        <argLine>&#45;&#45;enable-preview</argLine>-->
-        <argLine></argLine>
-        <!--        <spring-boot.run.jvmArguments>&#45;&#45;enable-preview</spring-boot.run.jvmArguments>-->
         <jacoco.version>0.8.7</jacoco.version>
         <jacoco.includes.pattern>net.bakaar.*</jacoco.includes.pattern>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
@@ -104,12 +101,6 @@
             <artifactId>mockito-inline</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>com.github.javafaker</groupId>-->
-        <!--            <artifactId>javafaker</artifactId>-->
-        <!--            <version>1.0.2</version>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
     </dependencies>
     <build>
         <plugins>
@@ -123,7 +114,6 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <compilerArgs>${argLine}</compilerArgs>
                 </configuration>
             </plugin>
         </plugins>

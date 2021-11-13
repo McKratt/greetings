@@ -22,7 +22,6 @@
         <awaitility.version>4.1.1</awaitility.version>
         <dbsetup.version>2.1.0</dbsetup.version>
         <postgresql.version>42.2.19</postgresql.version>
-        <!--        <argLine>&#45;&#45;enable-preview</argLine>-->
         <argLine></argLine>
     </properties>
     <dependencies>
