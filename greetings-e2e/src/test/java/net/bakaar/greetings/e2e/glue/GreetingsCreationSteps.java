@@ -9,17 +9,27 @@ import io.cucumber.java.en.When;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.junit.jupiter.api.AfterAll;
+import org.testcontainers.containers.DockerComposeContainer;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static com.ninja_squad.dbsetup.Operations.*;
 import static io.restassured.RestAssured.given;
-import static net.bakaar.greetings.e2e.CucumberLauncherTest.environment;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.hamcrest.Matchers.equalTo;
 
 public class GreetingsCreationSteps {
+
+    private static final DockerComposeContainer environment = new DockerComposeContainer(
+            new File("src/test/resources/compose-test.yaml"))
+            .withExposedService("greetings_1", 8080);
+
+    static {
+        environment.start();
+    }
 
     private final RequestSpecification request = given().log().all(true).contentType("application/json")
             .filters(new ResponseLoggingFilter()).accept("application/json");
@@ -30,17 +40,29 @@ public class GreetingsCreationSteps {
     private final String url = String.format("http://localhost:%d/rest/api/v1/greetings",
             environment.getServicePort("greetings", 8080));
 
+    @AfterAll
+    static void afterAll() {
+        environment.stop();
+    }
+
     @Given("an existing {word} greeting")
     public void an_existing_greeting(String type) {
+        // FIXME Make it dynamic from DB Values.
+        var typeId = switch (type.toUpperCase()) {
+            case "ANNIVERSARY" -> 1;
+            case "CHRISTMAS" -> 2;
+            case "BIRTHDAY" -> 3;
+            default -> throw new IllegalArgumentException(type);
+        };
         Operation operation =
                 sequenceOf(
                         DELETE_ALL,
                         insertInto("T_GREETINGS")
-                                .columns("PK_T_GREETINGS", "S_IDENTIFIER", "S_NAME", "S_TYPE", "TS_CREATEDAT")
-                                .values(999, identifier, "Dummy", type, LocalDateTime.now())
+                                .columns("PK_T_GREETINGS", "S_IDENTIFIER", "S_NAME", "FK_TYPE", "TS_CREATEDAT")
+                                .values(999, identifier, "Dummy", typeId, LocalDateTime.now())
                                 .build()
                 );
-        DbSetup dbSetup = new DbSetup(new DriverManagerDestination("jdbc:postgresql://localhost:15432/postgres", "greeting", "123456"), operation);
+        DbSetup dbSetup = new DbSetup(new DriverManagerDestination("jdbc:postgresql://localhost:15432/greetings", "greeting", "123456"), operation);
         dbSetup.launch();
     }
 
@@ -70,5 +92,10 @@ public class GreetingsCreationSteps {
     @Then("I get the message {string}")
     public void iGetTheMessage(String message) {
         response.then().body("message", equalTo(message));
+    }
+
+    @Then("a Greeting is created")
+    public void a_greeting_is_created() {
+        response.then().statusCode(201);
     }
 }

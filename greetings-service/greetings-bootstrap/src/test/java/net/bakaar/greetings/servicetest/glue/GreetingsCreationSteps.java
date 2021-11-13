@@ -26,6 +26,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -36,7 +37,6 @@ import java.util.regex.Pattern;
 
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
-import static net.bakaar.greetings.servicetest.CucumberLauncherIT.dbContainer;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,8 +50,16 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 public class GreetingsCreationSteps {
 
-
     public static final String topic = "test-topic";
+    private static final PostgreSQLContainer dbContainer = new PostgreSQLContainer("postgres")
+            .withDatabaseName("greetings")
+            .withUsername("foo")
+            .withPassword("secret");
+
+    static {
+        dbContainer.start();
+    }
+
     private final String identifier = UUID.randomUUID().toString();
     private final RequestSpecification request = given()
             .log().all(true)

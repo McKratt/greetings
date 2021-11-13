@@ -10,17 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>greetings-domain</artifactId>
     <properties>
-        <sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
-    <build>
-        <testResources>
-            <testResource>
-                <directory>../../bdd/features</directory>
-                <targetPath>net/bakaar/greetings/domain</targetPath>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-        </testResources>
-    </build>
 </project>

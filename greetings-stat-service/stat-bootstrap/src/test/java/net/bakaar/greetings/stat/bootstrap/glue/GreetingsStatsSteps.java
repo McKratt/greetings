@@ -11,6 +11,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.junit.jupiter.api.AfterAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -24,6 +25,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.net.URI;
 import java.util.UUID;
@@ -31,7 +33,6 @@ import java.util.UUID;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
-import static net.bakaar.greetings.stat.bootstrap.CucumberLauncherIT.dbContainer;
 import static net.bakaar.greetings.stat.bootstrap.glue.GreetingsStatsSteps.topic;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
@@ -60,6 +61,20 @@ public class GreetingsStatsSteps {
     private int port;
     @Autowired
     private CounterRepository counterRepository;
+
+    private static final PostgreSQLContainer dbContainer = new PostgreSQLContainer("postgres")
+            .withDatabaseName("stats")
+            .withUsername("foo")
+            .withPassword("secret");
+
+    static {
+        dbContainer.start();
+    }
+
+    @AfterAll
+    static void afterAll() {
+        dbContainer.stop();
+    }
 
     @DynamicPropertySource
     static void registerProperties(DynamicPropertyRegistry registry) {
