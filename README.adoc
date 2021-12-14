@@ -42,4 +42,4 @@ image::images/ArchitectureOverviewC4.png[architecture overview,800]
 * Test : Integration tests with Spring Slice Tests Annotations
 * Test : Integration tests with `@EmbeddedKafka`
 * Test : CDC tests with https://docs.pact5.io[Pact]
-* Test : BDD tests with Cucumber with JUnit 4 (link:./greetings-stat-service[stat service]) or JUnit 5 (link:./greetings-service[greeting service])
+* Test : BDD tests with Cucumber and JUnit 5
