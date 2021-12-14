@@ -80,17 +80,6 @@
     <properties>
         <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
-    <build>
-        <testResources>
-            <testResource>
-                <directory>../../bdd/features</directory>
-                <targetPath>net/bakaar/greetings/servicetest</targetPath>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-        </testResources>
-    </build>
     <profiles>
         <profile>
             <id>buildImage</id>

@@ -22,7 +22,6 @@ jobs:
           distribution: 'zulu'
       - name: Build + Analysis Greetings Service
         working-directory: ./greetings-service
-        #        -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
         run: mvn -B -Pcoverage clean verify sonar:sonar --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
