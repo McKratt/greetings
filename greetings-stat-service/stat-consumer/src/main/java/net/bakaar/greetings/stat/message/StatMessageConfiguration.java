@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.listener.ContainerStoppingErrorHandler;
-import org.springframework.kafka.listener.ErrorHandler;
+import org.springframework.kafka.listener.CommonContainerStoppingErrorHandler;
+import org.springframework.kafka.listener.CommonErrorHandler;
 
 @EnableKafka
 @Configuration(proxyBeanMethods = false)
@@ -22,13 +22,18 @@ import org.springframework.kafka.listener.ErrorHandler;
 public class StatMessageConfiguration {
 
     @Bean
-    ErrorHandler errorHandler() {
-        return new ContainerStoppingErrorHandler();
+    CommonErrorHandler errorHandler() {
+        return new CommonContainerStoppingErrorHandler();
     }
 
     @Bean
     GreetingMessagePayloadHandler greetingCreatedPayloadHandler(StatApplicationService service) {
         return new CreatedGreetingEventPayloadHandler(service, createJsonMapper());
+    }
+
+    @Bean
+    GreetingsMessageProcessor greetingsMessageProcessor(){
+        return new GreetingsMessageProcessor();
     }
 
     private ObjectMapper createJsonMapper() {

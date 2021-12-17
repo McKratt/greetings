@@ -10,8 +10,9 @@
     <logger name="net.bakaar" level="TRACE"/>
     <logger name="org.testcontainers" level="info"/>
     <logger name="org.apache" level="info"/>
+    <logger name="au.com" level="info"/>
     <logger name="kafka" level="info"/>
-    <logger name="org.springframework" level="debug"/>
+    <logger name="org.springframework" level="info"/>
 
     <root level="debug">
         <appender-ref ref="STDOUT"/>

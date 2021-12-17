@@ -1,10 +1,10 @@
 package net.bakaar.greetings.servicetest;
 
-import au.com.dius.pact.core.model.annotations.PactDirectory;
 import au.com.dius.pact.provider.junit5.HttpTestTarget;
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.State;
+import au.com.dius.pact.provider.junitsupport.loader.PactFolder;
 import au.com.dius.pact.provider.spring.junit5.PactVerificationSpringProvider;
 import net.bakaar.greetings.domain.Greeting;
 import net.bakaar.greetings.domain.GreetingRepository;
@@ -25,7 +25,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Provider("greetings-service")
-@PactDirectory("pacts")
+@PactFolder("pacts")
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 class GreetingsPactProviderIT {
 
