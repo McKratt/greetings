@@ -22,15 +22,13 @@ public class GreetingsMessageProcessor {
         handlers.stream()
                 .filter(handler -> handler.canHandle(message.type()))
                 .findFirst()
-                .map(handler ->
-                        handler.handle(message.payload())
-                                .onErrorMap(exception -> exception) // makes the exception go out to block the Thread.
-                                .subscribe(null,
-                                        null,
-                                        ack::acknowledge))
-                .orElseThrow(
-                        () -> {
-                            throw new HandlerNotFoundException(message.type());
-                        });
+                .orElseThrow(() -> {
+                    throw new HandlerNotFoundException(message.type());
+                })
+                .handle(message.payload())
+                .onErrorMap(exception -> exception) // makes the exception go out to block the Thread.
+                .subscribe(null,
+                        null,
+                        ack::acknowledge);
     }
 }

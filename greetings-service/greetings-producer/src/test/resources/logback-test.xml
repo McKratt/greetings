@@ -10,7 +10,7 @@
     <logger name="net.bakaar" level="TRACE"/>
     <logger name="org.testcontainers" level="info"/>
     <logger name="org.springframework" level="info"/>
-    <logger name="au.com" level="debug"/>
+    <logger name="au.com" level="info"/>
     <logger name="org.hibernate" level="info"/>
     <logger name="org.apache" level="error"/>
     <logger name="org.apache.zookeeper" level="error"/>
