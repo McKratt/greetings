@@ -59,7 +59,6 @@ class StatConsumerMessagePactIT {
     MessagePact createPact(MessagePactBuilder builder) {
         PactDslJsonBody payload = new PactDslJsonBody()
                 .stringMatcher("type", "^https://bakaar.net/greetings/events/.*", "https://bakaar.net/greetings/events/greeting-created")
-                // TODO put a regex to validate the json format
                 .stringType("payload", "{\"identifier\":\"" + identifier + "\"}")
                 .asBody();
         return builder
