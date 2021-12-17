@@ -28,7 +28,7 @@
         <cucumber.version>7.1.0</cucumber.version>
         <junit-platform.version>1.8.1</junit-platform.version>
         <testcontainer.version>1.16.2</testcontainer.version>
-        <pact.version>4.2.14</pact.version>
+        <pact.version>4.3.2</pact.version>
         <jacoco.version>0.8.7</jacoco.version>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
         <sonar.projectName>greetings-service</sonar.projectName>

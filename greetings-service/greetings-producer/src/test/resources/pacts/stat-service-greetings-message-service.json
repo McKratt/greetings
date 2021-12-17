@@ -1,0 +1,49 @@
+{
+  "consumer": {
+    "name": "stat-service"
+  },
+  "messages": [
+    {
+      "contents": {
+        "payload": "{\"identifier\":\"777e7d99-c283-4a8c-a42c-c0f60d18a4b4\"}",
+        "type": "https://bakaar.net/greetings/events/greeting-created"
+      },
+      "description": "A greetings created message",
+      "matchingRules": {
+        "body": {
+          "$.payload": {
+            "combine": "AND",
+            "matchers": [
+              {
+                "match": "type"
+              }
+            ]
+          },
+          "$.type": {
+            "combine": "AND",
+            "matchers": [
+              {
+                "match": "regex",
+                "regex": "^https://bakaar.net/greetings/events/.*"
+              }
+            ]
+          }
+        }
+      },
+      "metaData": {
+        "contentType": "application/json"
+      }
+    }
+  ],
+  "metadata": {
+    "pact-jvm": {
+      "version": "4.3.2"
+    },
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  },
+  "provider": {
+    "name": "greetings-message-service"
+  }
+}

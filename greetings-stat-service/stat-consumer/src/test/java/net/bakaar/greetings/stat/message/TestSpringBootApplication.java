@@ -26,7 +26,6 @@ public class TestSpringBootApplication {
     @Bean
     GreetingsRepository greetingsRepository() {
         return new TestGreetingsRepository();
-
     }
 
     // MockBean doesn't work with Cucumber
