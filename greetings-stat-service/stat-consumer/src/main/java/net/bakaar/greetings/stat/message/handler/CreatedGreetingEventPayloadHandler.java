@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import net.bakaar.greetings.stat.application.StatApplicationService;
 import net.bakaar.greetings.stat.domain.GreetingCreated;
+import net.bakaar.greetings.stat.message.exception.JsonDeserializationException;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -23,7 +24,7 @@ public class CreatedGreetingEventPayloadHandler implements GreetingMessagePayloa
     @Override
     public Mono<Void> handle(String payload) {
         return Mono.fromCallable(() -> jsonMapper.readValue(payload, GreetingCreated.class))
-                .onErrorMap(exception -> exception)
+                .onErrorMap(JsonDeserializationException::new)
                 .flatMap(service::handle);
 
     }
