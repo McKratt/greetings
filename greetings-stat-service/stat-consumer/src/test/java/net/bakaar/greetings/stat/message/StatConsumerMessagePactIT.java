@@ -24,7 +24,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.support.Acknowledgment;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.util.List;
@@ -82,9 +81,5 @@ class StatConsumerMessagePactIT {
         verify(service).handle(captor.capture());
         var event = captor.getValue();
         assertThat(event).isNotNull().extracting(GreetingCreated::identifier).isEqualTo(identifier);
-        StepVerifier.create(handler.handle(message.payload()))
-                .expectSubscription()
-                .expectComplete()
-                .verify();
     }
 }
