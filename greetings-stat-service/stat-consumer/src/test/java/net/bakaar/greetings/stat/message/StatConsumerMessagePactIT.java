@@ -20,9 +20,10 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -36,11 +37,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(PactConsumerTestExt.class)
-@SpringBootTest(classes = StatMessageConfiguration.class,
-        properties = {
-                "greetings.message.topic=test"
-        })
 @EnableAutoConfiguration
+@SpringJUnitConfig(classes = StatMessageConfiguration.class)
+@TestPropertySource(properties = "greetings.message.topic=test")
 @PactTestFor(providerName = "greetings-message-service", providerType = ProviderType.ASYNCH, pactVersion = PactSpecVersion.V3)
 class StatConsumerMessagePactIT {
 
@@ -83,3 +82,5 @@ class StatConsumerMessagePactIT {
         assertThat(event).isNotNull().extracting(GreetingCreated::identifier).isEqualTo(identifier);
     }
 }
+
+

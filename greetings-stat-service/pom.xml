@@ -16,7 +16,6 @@
         <module>stat-rest</module>
         <module>stat-persistence</module>
         <module>stat-client</module>
-        <module>jacoco-stat-reports</module>
     </modules>
     <groupId>net.bakaar</groupId>
     <artifactId>greetings-stat-service</artifactId>
@@ -149,6 +148,9 @@
     <profiles>
         <profile>
             <id>coverage</id>
+            <modules>
+                <module>jacoco-stat-reports</module>
+            </modules>
             <build>
                 <plugins>
                     <plugin>

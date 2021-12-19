@@ -9,7 +9,6 @@
         <module>greetings-domain</module>
         <module>greetings-persistence</module>
         <module>greetings-producer</module>
-        <module>jacoco-reports</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -140,6 +139,9 @@
     <profiles>
         <profile>
             <id>coverage</id>
+            <modules>
+                <module>jacoco-reports</module>
+            </modules>
             <build>
                 <plugins>
                     <plugin>

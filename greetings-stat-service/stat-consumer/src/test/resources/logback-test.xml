@@ -9,7 +9,8 @@
 
     <logger name="net.bakaar" level="TRACE"/>
     <logger name="org.testcontainers" level="info"/>
-    <logger name="org.apache" level="info"/>
+    <logger name="org.apache" level="warn"/>
+    <logger name="io.netty" level="info"/>
     <logger name="au.com" level="info"/>
     <logger name="kafka" level="info"/>
     <logger name="org.springframework" level="info"/>
