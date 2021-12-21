@@ -46,12 +46,15 @@ class StatConsumerMessagePactIT {
     private final UUID identifier = UUID.randomUUID();
     private final ObjectMapper jsonMapper = new ObjectMapper();
     @Autowired
-    GreetingsMessageProcessor processor;
+    private GreetingsMessageProcessor processor;
     @Autowired
     @Qualifier("greetingCreatedPayloadHandler")
-    GreetingMessagePayloadHandler handler;
+    private GreetingMessagePayloadHandler handler;
     @MockBean
-    StatApplicationService service;
+    private StatApplicationService service;
+    // FIXME, find the ObjectMapper, injected in the JsonDeserializer
+//    @Autowired
+//    private ObjectMapper jsonMapper;
 
     @Pact(consumer = "stat-service")
     MessagePact createPact(MessagePactBuilder builder) {
