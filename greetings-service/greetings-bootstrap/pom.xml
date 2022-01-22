@@ -5,7 +5,7 @@
     <parent>
         <artifactId>greetings-service</artifactId>
         <groupId>net.bakaar</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>greetings-bootstrap</artifactId>
@@ -90,7 +90,7 @@
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
                             <image>
-                                <name>bakaar/greetings-service</name>
+                                <name>bakaar/greetings-service:1-latest</name>
                                 <!-- -Dspring-boot.build-image.publish=true -->
                                 <publish>true</publish>
                                 <env>

@@ -19,7 +19,7 @@
     </modules>
     <groupId>net.bakaar</groupId>
     <artifactId>greetings-stat-service</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>greetings-stat-service</name>
     <description>Statistics service for greetings</description>
     <packaging>pom</packaging>
