@@ -5,7 +5,7 @@ name: Build + Sonar Analysis + Deploy To DockerHub
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, spring_boot_3 ]
   pull_request:
     branches: [ master ]
 
@@ -14,6 +14,7 @@ jobs:
     name: Build Greetings
     runs-on: ubuntu-latest
     steps:
+      - run: echo ${{github.ref}}
       - uses: actions/checkout@v2
       - name: Set up JDK 17
         uses: actions/setup-java@v2
@@ -48,7 +49,7 @@ jobs:
     name: Deploy Greetings
     runs-on: ubuntu-latest
     needs: build_greetings
-    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'spring_boot_3')
+    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/spring_boot_3')
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 17
@@ -67,7 +68,7 @@ jobs:
     name: Deploy Stats
     runs-on: ubuntu-latest
     needs: build_stats
-    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'spring_boot_3')
+    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/spring_boot_3')
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 17

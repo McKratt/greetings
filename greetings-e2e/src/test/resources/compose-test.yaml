@@ -55,7 +55,7 @@ services:
     depends_on:
       - db_greeting
       - broker
-    image: bakaar/greetings-service:1-latest
+    image: bakaar/greetings-service:1.0.0-sb3
     ports:
       - "9080:8080"
     environment:
@@ -72,7 +72,7 @@ services:
       - dbStat
       - broker
       - greetings
-    image: bakaar/greetings-stat-service:1-latest
+    image: bakaar/greetings-stat-service:1.0.0-sb3
     ports:
       - "9081:8080"
     environment:

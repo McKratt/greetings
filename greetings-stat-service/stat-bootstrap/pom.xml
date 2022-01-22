@@ -107,7 +107,7 @@
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
                             <image>
-                                <name>bakaar/greetings-stat-service:1-latest</name>
+                                <name>bakaar/greetings-stat-service:${project.version}-sb3</name>
                                 <publish>true</publish>
                                 <env>
                                     <BP_JVM_VERSION>${java.version}.*</BP_JVM_VERSION>
