@@ -1,13 +1,13 @@
 package net.bakaar.greetings.stat.persistence;
 
 import io.r2dbc.spi.ConnectionFactory;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import reactor.test.StepVerifier;
 
-import javax.annotation.PostConstruct;
 
 @SpringBootApplication(proxyBeanMethods = false)
 @EnableTransactionManagement
