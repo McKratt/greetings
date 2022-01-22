@@ -48,7 +48,7 @@ jobs:
     name: Deploy Greetings
     runs-on: ubuntu-latest
     needs: build_greetings
-    if: success() && github.ref == 'refs/heads/master'
+    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'spring_boot_3')
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 17
@@ -67,7 +67,7 @@ jobs:
     name: Deploy Stats
     runs-on: ubuntu-latest
     needs: build_stats
-    if: success() && github.ref == 'refs/heads/master'
+    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'spring_boot_3')
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 17
