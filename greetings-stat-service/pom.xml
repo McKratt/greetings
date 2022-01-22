@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.3</version>
+        <version>3.0.0-M1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modules>
@@ -32,6 +32,8 @@
         <pact.version>4.3.4</pact.version>
         <spring.cloud.contract.version>3.1.0</spring.cloud.contract.version>
         <jacoco.version>0.8.7</jacoco.version>
+        <!-- FIXME remove once Spring Boot reinteger the dependency -->
+        <rest-assured.version>4.5.0</rest-assured.version>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
         <sonar.projectName>greetings-stat-service</sonar.projectName>
         <sonar.projectKey>greetings-stat-service</sonar.projectKey>
@@ -125,7 +127,7 @@
             </plugin>
         </plugins>
     </build>
-    <!-- <repositories>
+    <repositories>
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
@@ -144,7 +146,7 @@
                 <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
-    </pluginRepositories> -->
+    </pluginRepositories>
     <profiles>
         <profile>
             <id>coverage</id>
