@@ -17,7 +17,7 @@
         <relativePath>../greetings-parent</relativePath>
     </parent>
     <artifactId>greetings-service</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
     <name>greetings-service</name>
     <description>Demo project for BDD testing and Hexagonal architecture</description>
     <packaging>pom</packaging>

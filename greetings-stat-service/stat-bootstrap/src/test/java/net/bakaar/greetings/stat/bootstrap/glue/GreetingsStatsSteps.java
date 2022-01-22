@@ -28,6 +28,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -120,7 +121,7 @@ public class GreetingsStatsSteps {
                         """.formatted(type, name))));
         // Check the message is in Topic with another groupId
         Consumer<String, GreetingsMessage> consumer = createConsumer();
-        ConsumerRecord<String, GreetingsMessage> record = KafkaTestUtils.getSingleRecord(consumer, topic, 10000L);
+        ConsumerRecord<String, GreetingsMessage> record = KafkaTestUtils.getSingleRecord(consumer, topic, Duration.ofMillis(10000));
         var testMessage = record.value();
         assertThat(testMessage).isNotNull();
         assertThat(testMessage.type()).isEqualTo(URI.create("https://bakaar.net/greetings/events/greeting-created"));

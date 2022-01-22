@@ -43,7 +43,7 @@ public class E2eGreetingsCreationSteps {
                 .jsonPath()
                 .get("app.version");
         System.out.println("Greeting Version : [" + version + "]");
-        assertThat(version).isEqualTo("1.0.0");
+        assertThat(version).isEqualTo("2.0.0");
         System.out.println("Verify stat service version...");
         var statVersion = given()
                 .log().all(true)
@@ -55,7 +55,7 @@ public class E2eGreetingsCreationSteps {
                 .jsonPath()
                 .get("app.version");
         System.out.println("Stat Version : [" + statVersion + "]");
-        assertThat(statVersion).isEqualTo("1.0.0");
+        assertThat(statVersion).isEqualTo("2.0.0");
     }
 
     private final RequestSpecification request = given().log().all(true).contentType("application/json")

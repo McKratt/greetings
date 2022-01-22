@@ -18,7 +18,7 @@
         <module>stat-client</module>
     </modules>
     <artifactId>greetings-stat-service</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
     <name>greetings-stat-service</name>
     <description>Statistics service for greetings</description>
     <packaging>pom</packaging>
