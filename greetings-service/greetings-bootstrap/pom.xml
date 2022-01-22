@@ -101,7 +101,7 @@
                                 </exclude>
                             </excludes>
                             <image>
-                                <name>bakaar/greetings-service:1-latest</name>
+                                <name>bakaar/greetings-service:${project.version}-db3</name>
                                 <!-- -Dspring-boot.build-image.publish=true -->
                                 <publish>true</publish>
                                 <env>
