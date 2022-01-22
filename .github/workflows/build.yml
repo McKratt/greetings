@@ -5,7 +5,7 @@ name: Build + Sonar Analysis + Deploy To DockerHub
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, spring_boot_3 ]
   pull_request:
     branches: [ master ]
 
@@ -54,15 +54,18 @@ jobs:
           key: ${{ runner.os }}-greetings-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-greetings-m2-
       - name: Build
-        run: mvn -B -Pcoverage clean compile
+        working-directory: ./greetings-service
+        run: mvn -B -T 1C -Pcoverage clean compile
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Unit Test
-        run: mvn -B -Pcoverage test
+        working-directory: ./greetings-service
+        run: mvn -B -T 1C -Pcoverage test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Integration Test
-        run: mvn -B -Pcoverage verify -DskipUTs
+        working-directory: ./greetings-service
+        run: mvn -B -T 1C -Pcoverage verify -DskipUTs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Sonar Analysis
@@ -91,15 +94,18 @@ jobs:
           key: ${{ runner.os }}-stats-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-stats-m2-
       - name: Build
-        run: mvn -B -Pcoverage clean compile
+        working-directory: ./greetings-stat-service
+        run: mvn -B -T 1C -Pcoverage clean compile
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Unit Test
-        run: mvn -B -Pcoverage test
+        working-directory: ./greetings-stat-service
+        run: mvn -B -T 1C -Pcoverage test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Integration Test
-        run: mvn -B -Pcoverage verify -DskipUTs
+        working-directory: ./greetings-stat-service
+        run: mvn -B -T 1C -Pcoverage verify -DskipUTs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Sonar Analysis
@@ -113,7 +119,7 @@ jobs:
     name: Deploy Greetings
     runs-on: ubuntu-latest
     needs: build_greetings
-    if: success() && github.ref == 'refs/heads/master'
+    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/spring_boot_3')
     defaults:
       run:
         working-directory: ./greetings-service
@@ -141,7 +147,7 @@ jobs:
     name: Deploy Stats
     runs-on: ubuntu-latest
     needs: build_stats
-    if: success() && github.ref == 'refs/heads/master'
+    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/spring_boot_3')
     defaults:
       run:
         working-directory: ./greetings-stat-service
