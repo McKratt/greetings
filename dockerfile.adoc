@@ -1,0 +1,30 @@
+= Dockerfile and Spring Boot Layers
+:toc:
+:toclevels: 3
+:source-highlighter: highlight.js
+:highlightjs-languages: dockerfile
+
+== Historic
+
+Historically, Spring Boot built a big fat jar which can run in any _"machine"_ that have a corresponding JRE installed.
+
+With the coming of Docker, the _"machine"_ start to be a container and we simply add the jar to this container as we did before.
+
+//TODO do greetings-service as old school and greetings-stat as new way
+.Dockerfile
+[source, dockerfile]
+----
+FROM Some JRE image
+COPY target/fatjar-exec.jar application.jar
+
+ENTRYPOINT java -jar application.jar
+----
+
+
+== Spring Boot Layers
+==== How it works ?
+=== When you have common enterprise wide libraries
+== Layers in Docker
+==== Why it is important
+== Putting all together for a better Docker image
+=== Maven reproducible builds
