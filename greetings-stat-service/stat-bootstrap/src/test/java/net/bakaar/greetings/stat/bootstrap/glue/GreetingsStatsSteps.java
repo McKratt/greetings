@@ -55,7 +55,7 @@ public class GreetingsStatsSteps {
     private final String type = "ANNIVERSARY";
     private final String name = "Lucius";
     @Autowired
-    // TODO replace that by a container
+    // FIXME replace that by a container
     private EmbeddedKafkaBroker embeddedKafka;
     @LocalServerPort
     private int port;

@@ -8,6 +8,7 @@ Feature: Statistics
       When I create a greeting
       Then the counter should be 1
 
+# TODO finish steps
 #    @e2e
 #    Scenario: More greetings
 #      Given the greetings counter is equal to 3

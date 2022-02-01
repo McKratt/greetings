@@ -45,10 +45,10 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @Slf4j
-@EmbeddedKafka(partitions = 1, topics = GreetingsCreationSteps.topic)
+@EmbeddedKafka(partitions = 1, topics = GreetingsBootstrapCreationSteps.topic)
 @CucumberContextConfiguration
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class GreetingsCreationSteps {
+public class GreetingsBootstrapCreationSteps {
 
     public static final String topic = "test-topic";
     private static final PostgreSQLContainer dbContainer = new PostgreSQLContainer("postgres")
@@ -71,7 +71,7 @@ public class GreetingsCreationSteps {
     @Autowired
     private JdbcTemplate dbTemplate;
     @Autowired
-    // TODO replace that by a container
+    // FIXME replace that by a container
     private EmbeddedKafkaBroker embeddedKafka;
     @Autowired
     private GreetingsProducerProperties messageProperties;
@@ -158,7 +158,7 @@ public class GreetingsCreationSteps {
 
 
     @Then("I get an error")
-    // TODO put the status code to 400 once the error handling done
+    // FIXME put the status code to 400 once the error handling done
     public void iGetAnError() {
         assertThat(response.statusCode()).isEqualTo(500);
     }
