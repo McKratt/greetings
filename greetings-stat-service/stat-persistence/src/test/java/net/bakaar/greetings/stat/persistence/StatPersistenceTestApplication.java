@@ -19,10 +19,11 @@ public class StatPersistenceTestApplication {
     @PostConstruct
     void template() {
         var template = new R2dbcEntityTemplate(connectionFactory);
-        template.getDatabaseClient().sql("CREATE TABLE T_COUNTER" +
-                "(PK_T_COUNTER SERIAL PRIMARY KEY," +
-                "S_NAME VARCHAR(255)," +
-                "L_COUNT NUMBER)")
+        template.getDatabaseClient().sql("""
+                CREATE TABLE T_COUNTER
+                (PK_T_COUNTER SERIAL PRIMARY KEY,
+                S_NAME VARCHAR(255),
+                L_COUNT NUMBER)""")
                 .fetch()
                 .rowsUpdated()
                 .as(StepVerifier::create)
