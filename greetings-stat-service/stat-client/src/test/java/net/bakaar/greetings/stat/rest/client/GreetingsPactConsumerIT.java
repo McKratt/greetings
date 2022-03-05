@@ -15,11 +15,14 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.test.context.ContextConfiguration;
 import reactor.test.StepVerifier;
 
+import java.util.Collections;
 import java.util.UUID;
+
+import static java.util.Collections.singletonMap;
 
 @WebFluxTest
 @ExtendWith({PactConsumerTestExt.class})
-@PactTestFor(providerName = "greetings-service",pactVersion = PactSpecVersion.V3)
+@PactTestFor(providerName = "greetings-service", pactVersion = PactSpecVersion.V3)
 @ContextConfiguration(classes = GreetingsStatRestClientConfiguration.class)
 class GreetingsPactConsumerIT {
 
@@ -37,12 +40,14 @@ class GreetingsPactConsumerIT {
                 .uponReceiving("Get a greeting for Name and type")
                 .path("/rest/api/v1/greetings/" + stringIdentifier)
                 .method("GET")
+                .headers("Accept", "application/json")
                 .willRespondWith()
                 .status(200)
                 .body(new PactDslJsonBody()
                         .stringMatcher("name", "[A-Z].*", "Fermi")
                         .stringMatcher("type", "[A-Z]+", "CHRISTMAS")
                 )
+                .headers(singletonMap("Content-Type","application/json"))
                 .toPact();
     }
 

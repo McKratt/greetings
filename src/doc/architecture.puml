@@ -1,11 +1,13 @@
 'Doc : https://github.com/plantuml-stdlib/C4-PlantUML
-@startuml C4_Elements
+@startuml
+
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
 HIDE_STEREOTYPE()
 
-!define ICONURL https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v2.3.0
-!includeurl ICONURL/common.puml
+!define ICONURL https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master
+!include ICONURL/common.puml
+!include ICONURL/devicons/angular.puml
 !include ICONURL/devicons/java.puml
 !include ICONURL/devicons/postgresql.puml
 !include ICONURL/devicons2/apache_line.puml
@@ -13,6 +15,7 @@ HIDE_STEREOTYPE()
 
 Person(user,"User",$sprite="user_tie")
 'System_Boundary(sys,"Greetings Messages"){
+    Container(greetings_ui,"greetings-ui","Greetings User Interface", $sprite="angular")
     Container(greetings, "greetings-service","Create Greetings Messages", $sprite="java")
     ContainerDb(greetings_db,"Greetings DB","PostgreSQL",$sprite="postgresql")
     Container(stats, "greetings-stats-service","Records Statistics", $sprite="java")
@@ -20,11 +23,12 @@ Person(user,"User",$sprite="user_tie")
     ContainerQueue(kafka,"Kafka","greeting_topic",$sprite="apache_line")
 '}
 
+Rel(greetings_ui, greetings, "GET|POST|PUT /greetings/*", "HTTP")
+Rel(greetings_ui, stats, "GET /stats", "HTTP")
 Rel(greetings, greetings_db, "Reads/Writes")
 Rel(stats, stats_db, "Reads/Writes")
-Rel_D(greetings, kafka, "Produces Events")
-Rel_D(stats, kafka, "Consumes Events")
+Rel_D(greetings, kafka, "Produces Events", "Async")
+Rel_D(stats, kafka, "Consumes Events","Async")
 Rel_L(stats, greetings, "GET /greetings/{identifier}", "HTTP")
-Rel_D(user,greetings,"POST /greetings", "HTTP")
-Rel_D(user,stats,"GET /stats", "HTTP")
+Rel_D(user,greetings_ui,"User Interface")
 @enduml
