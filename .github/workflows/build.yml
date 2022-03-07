@@ -20,7 +20,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'maven'
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-greetings-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-greetings-m2-
       - name: Build + Analysis Greetings Service
         working-directory: ./greetings-service
         run: mvn -B -Pcoverage clean verify sonar:sonar --file pom.xml
@@ -38,7 +43,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'maven'
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-stats-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-stats-m2-
       - name: Build + Analysis Stats Service
         working-directory: ./greetings-stat-service
         run: mvn -B -Pcoverage clean verify sonar:sonar --file pom.xml
@@ -58,7 +68,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'maven'
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-greetings-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-greetings-m2-
       - name: Package + deploy
         working-directory: ./greetings-service
         run: mvn -B -DskipTests -PbuildImage package --file pom.xml
@@ -78,7 +93,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'maven'
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-stats-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-stats-m2-
       - name: Package + deploy
         working-directory: ./greetings-stat-service
         run: mvn -B -DskipTests -PbuildImage package --file pom.xml
