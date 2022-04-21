@@ -1,0 +1,70 @@
+{
+  "consumer": {
+    "name": "greetings-ui"
+  },
+  "provider": {
+    "name": "greetings-service"
+  },
+  "interactions": [
+    {
+      "description": "A request for a new Greeting Message",
+      "request": {
+        "method": "POST",
+        "path": "/rest/api/v1/greetings",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "origin": "http://localhost:99"
+        },
+        "body": {
+          "type": "Christmas",
+          "name": "Max Planck"
+        },
+        "matchingRules": {
+          "$.headers.Accept": {
+            "match": "type"
+          },
+          "$.headers.origin": {
+            "match": "type"
+          },
+          "$.body.type": {
+            "match": "regex",
+            "regex": "^Christmas|Anniversary|Birthday$"
+          },
+          "$.body.name": {
+            "match": "type"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "access-control-expose-headers": "Location",
+          "Location": "http://127.0.0.1:62717/rest/api/v1/greetings/f229a83e-fff8-450d-b557-552367a37391",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "message": "Merry Christmas Max Planck !"
+        },
+        "matchingRules": {
+          "$.headers.access-control-expose-headers": {
+            "match": "type"
+          },
+          "$.headers.Location": {
+            "match": "regex",
+            "regex": ".+\\/rest\\/api\\/v1\\/greetings\\/[a-z0-9]{8}(-[a-z0-9]{4}){3}-[a-z0-9]{12}"
+          },
+          "$.body.message": {
+            "match": "regex",
+            "regex": ".* (Christmas|Anniversary|Birthday) .* !"
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
