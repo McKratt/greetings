@@ -12,16 +12,16 @@
         <maven.compiler.source>17</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <cucumber.version>7.2.3</cucumber.version>
-        <testcontainer.version>1.16.3</testcontainer.version>
+        <cucumber.version>7.3.1</cucumber.version>
+        <testcontainer.version>1.17.1</testcontainer.version>
         <jupiter.version>5.8.2</jupiter.version>
         <junit-platform.version>1.8.2</junit-platform.version>
         <assertj.version>3.22.0</assertj.version>
-        <rest-assured.version>4.5.0</rest-assured.version>
-        <logback.version>1.2.10</logback.version>
-        <awaitility.version>4.1.1</awaitility.version>
+        <rest-assured.version>5.0.1</rest-assured.version>
+        <logback.version>1.2.11</logback.version>
+        <awaitility.version>4.2.0</awaitility.version>
         <dbsetup.version>2.1.0</dbsetup.version>
-        <postgresql.version>42.3.3</postgresql.version>
+        <postgresql.version>42.3.4</postgresql.version>
         <argLine></argLine>
     </properties>
     <dependencies>
