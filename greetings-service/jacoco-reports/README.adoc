@@ -11,7 +11,7 @@ For multi-modules, you have to add a new module `jacoco-reports` (or name it as 
 ----
 <properties>
     ...
-    <jacoco.version>0.8.7</jacoco.version>
+    <jacoco.version>${jacoco.version}</jacoco.version>
     <sonar.coverage.exclusions>
         ...
         jacoco-reports/**
