@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest // No needs to add @Transactional, @DataJpaTest does that for us.
 // needed to include the adapter and the mapper inside the context, because @DataJpaTest restraint the context to only Data concerned beans
 @Import({GreetingRepositoryJPAAdapter.class})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @TestPropertySource(properties = {
         "spring.jpa.hibernate.ddl-auto=validate"
 })
@@ -30,6 +30,9 @@ class GreetingRepositoryJPAAdapterIT {
 
     @Autowired
     private GreetingJpaRepository repository;
+    @Autowired
+    private GreetingTypeJpaRepository typeRepository;
+
 
     @Test
     void put_should_save_in_db() {
@@ -63,9 +66,7 @@ class GreetingRepositoryJPAAdapterIT {
         entity.setIdentifier(identifier.toString());
         var creationTime = LocalDateTime.now();
         entity.setCreatedAt(creationTime);
-        var type = GreetingType.CHRISTMAS;
-        var typeEntity = new GreetingTypeJpaEntity();
-        typeEntity.setName(type.toString().toUpperCase(Locale.ROOT));
+        var typeEntity = typeRepository.findByName(GreetingType.CHRISTMAS.toString()).get();
         entity.setType(typeEntity);
 
         if (!TestTransaction.isActive()) {

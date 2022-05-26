@@ -4,6 +4,9 @@ create table T_TYPES
     S_NAME     varchar(255)
 );
 
+ALTER TABLE T_TYPES
+    ADD PRIMARY KEY (PK_T_TYPES);
+
 CREATE TABLE T_GREETINGS
 (
     PK_T_GREETINGS bigint auto_increment,
@@ -12,3 +15,6 @@ CREATE TABLE T_GREETINGS
     FK_TYPE        bigint      NOT NULL,
     TS_CREATEDAT   timestamp   NOT NULL
 );
+
+ALTER TABLE T_GREETINGS
+    ADD PRIMARY KEY (PK_T_GREETINGS);
