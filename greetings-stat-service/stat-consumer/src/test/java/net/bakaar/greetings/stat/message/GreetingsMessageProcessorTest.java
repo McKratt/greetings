@@ -37,11 +37,10 @@ class GreetingsMessageProcessorTest {
         var payload = "Here is a payload";
         given(message.payload()).willReturn(payload);
         var handler = mock(GreetingMessagePayloadHandler.class);
-        // FIXME once lenient BDD is implemented : https://github.com/mockito/mockito/issues/1597
-        lenient().when(handler.canHandle(type)).thenReturn(true);
+        given(handler.canHandle(type)).willReturn(true);
         given(handler.handle(any())).willReturn(Mono.empty());
-//        given(handler.canHandle(type)).willReturn(true);
         var handler2 = mock(GreetingMessagePayloadHandler.class);
+        // The handler2 may not be interrogated depending on the order in the Set.
         lenient().when(handler2.canHandle(type)).thenReturn(false);
         // FIXME once lenient BDD is implemented : https://github.com/mockito/mockito/issues/1597
 //        given(handler2.canHandle(type)).willReturn(false);
@@ -94,8 +93,7 @@ class GreetingsMessageProcessorTest {
         var payload = "Here is a payload";
         given(message.payload()).willReturn(payload);
         var handler = mock(GreetingMessagePayloadHandler.class);
-        // FIXME once lenient BDD is implemented : https://github.com/mockito/mockito/issues/1597
-        lenient().when(handler.canHandle(type)).thenReturn(true);
+        given(handler.canHandle(type)).willReturn(true);
         var exception = mock(RuntimeException.class);
         given(handler.handle(any())).willThrow(exception);
         ReflectionTestUtils.setField(processor, "handlers", Set.of(handler));
