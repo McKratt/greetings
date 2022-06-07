@@ -26,13 +26,27 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-greetings-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-greetings-m2-
-      - name: Build + Analysis Greetings Service
+      - name: Build
         working-directory: ./greetings-service
-        run: mvn -B -Pcoverage clean verify sonar:sonar --file pom.xml
+        run: mvn -B -Pcoverage clean compile
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Unit Test
+        working-directory: ./greetings-service
+        run: mvn -B -Pcoverage test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Integration Test
+        working-directory: ./greetings-service
+        run: mvn -B -Pcoverage verify -DskipUTs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Sonar Analysis
+        working-directory: ./greetings-service
+        run: mvn -B -Pcoverage org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
-
   build_stats:
     name: Build Stats
     runs-on: ubuntu-latest
@@ -49,9 +63,24 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-stats-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-stats-m2-
-      - name: Build + Analysis Stats Service
+      - name: Build
         working-directory: ./greetings-stat-service
-        run: mvn -B -Pcoverage clean verify sonar:sonar --file pom.xml
+        run: mvn -B -Pcoverage clean compile
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Unit Test
+        working-directory: ./greetings-stat-service
+        run: mvn -B -Pcoverage test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Integration Test
+        working-directory: ./greetings-stat-service
+        run: mvn -B -Pcoverage verify -DskipUTs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Sonar Analysis
+        working-directory: ./greetings-stat-service
+        run: mvn -B -Pcoverage org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
