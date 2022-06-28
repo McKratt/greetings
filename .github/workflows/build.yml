@@ -5,14 +5,34 @@ name: Build + Sonar Analysis + Deploy To DockerHub
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, feature/* ]
   pull_request:
     branches: [ master ]
 
 jobs:
+  build_greetings_ui:
+    name: Build Greetings UI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./greetings-ui
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Build
+        run: npm install
+      - name: Tests
+        run: npm test
+      - name: Pact
+        run: npm run pact
   build_greetings:
     name: Build Greetings
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./greetings-service
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -27,17 +47,14 @@ jobs:
           key: ${{ runner.os }}-greetings-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-greetings-m2-
       - name: Build
-        working-directory: ./greetings-service
         run: mvn -B -Pcoverage clean compile
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Unit Test
-        working-directory: ./greetings-service
         run: mvn -B -Pcoverage test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Integration Test
-        working-directory: ./greetings-service
         run: mvn -B -Pcoverage verify -DskipUTs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -50,6 +67,9 @@ jobs:
   build_stats:
     name: Build Stats
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./greetings-stat-service
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -64,17 +84,14 @@ jobs:
           key: ${{ runner.os }}-stats-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-stats-m2-
       - name: Build
-        working-directory: ./greetings-stat-service
         run: mvn -B -Pcoverage clean compile
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Unit Test
-        working-directory: ./greetings-stat-service
         run: mvn -B -Pcoverage test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Integration Test
-        working-directory: ./greetings-stat-service
         run: mvn -B -Pcoverage verify -DskipUTs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -90,6 +107,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_greetings
     if: success() && github.ref == 'refs/heads/master'
+    defaults:
+      run:
+        working-directory: ./greetings-service
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -115,6 +135,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_stats
     if: success() && github.ref == 'refs/heads/master'
+    defaults:
+      run:
+        working-directory: ./greetings-stat-service
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -140,6 +163,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ deploy_stats, deploy_greetings ]
     if: success()
+    defaults:
+      run:
+        working-directory: ./greetings-e2e
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -149,7 +175,6 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
       - name: E2E Tests
-        working-directory: ./greetings-e2e
         run: mvn -B test --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
