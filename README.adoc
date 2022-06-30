@@ -6,6 +6,16 @@
 
 image::https://github.com/McKratt/greetings/actions/workflows/build.yml/badge.svg[https://github.com/McKratt/greetings/actions]
 
+=== Greetings UI
+
+image::https://sonarcloud.io/api/project_badges/measure?project=greetings-ui&metric=alert_status[https://sonarcloud.io/dashboard?id=greetings-ui]
+
+image::https://sonarcloud.io/api/project_badges/measure?project=greetings-ui&metric=sqale_rating[https://sonarcloud.io/dashboard?id=greetings-ui]
+
+image::https://sonarcloud.io/api/project_badges/measure?project=greetings-ui&metric=vulnerabilities[https://sonarcloud.io/dashboard?id=greetings-ui]
+
+image::https://sonarcloud.io/api/project_badges/measure?project=greetings-ui&metric=coverage[https://sonarcloud.io/dashboard?id=greetings-ui]
+
 === Greetings Service
 
 image::https://sonarcloud.io/api/project_badges/measure?project=greetings-service&metric=alert_status[https://sonarcloud.io/dashboard?id=greetings-service]
