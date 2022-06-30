@@ -16,6 +16,9 @@ jobs:
     defaults:
       run:
         working-directory: ./greetings-ui
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -27,6 +30,8 @@ jobs:
         run: npm test
       - name: Pact
         run: npm run pact
+      - name: Sonar
+        uses: SonarSource/sonarcloud-github-action@master
   build_greetings:
     name: Build Greetings
     runs-on: ubuntu-latest
