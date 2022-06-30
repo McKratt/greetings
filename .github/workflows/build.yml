@@ -32,6 +32,8 @@ jobs:
         run: npm run pact
       - name: Sonar
         uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: ./greetings-ui
   build_greetings:
     name: Build Greetings
     runs-on: ubuntu-latest
