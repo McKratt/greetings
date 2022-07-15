@@ -47,12 +47,12 @@ class GreetingsControllerTest {
         var command = new CreateGreetingCommand(type, name);
         var greeting = mock(Greeting.class);
         given(service.createGreeting(any())).willReturn(greeting);
-        var message = mock(GreetingMessage.class);
-        given(mapper.mapToMessage(greeting)).willReturn(message);
+        var message = mock(IdentifiedGreetingMessage.class);
+        given(mapper.mapToIdentifiedMessage(greeting)).willReturn(message);
         // When
-        var receivedMessage = controller.createGreeting(command).getBody();
+        var receivedMessage = controller.createGreeting(command);
         // Then
-        verify(mapper).mapToMessage(greeting);
+        verify(mapper).mapToIdentifiedMessage(greeting);
         var captor = ArgumentCaptor.forClass(CreateGreetingCommand.class);
         verify(service).createGreeting(captor.capture());
         var createdCommand = captor.getValue();
@@ -60,21 +60,6 @@ class GreetingsControllerTest {
         assertThat(createdCommand.type()).isEqualTo(type);
         assertThat(receivedMessage).isSameAs(message);
     }
-
-    @Test
-    void createGreeting_should_set_location_in_header() {
-        // Given
-        var command = mock(CreateGreetingCommand.class);
-        var greeting = mock(Greeting.class);
-        given(service.createGreeting(any())).willReturn(greeting);
-        var identifier = UUID.randomUUID();
-        given(greeting.getIdentifier()).willReturn(identifier);
-        // When
-        var response = controller.createGreeting(command);
-        // Then
-        assertThat(response.getHeaders().getLocation().toString()).contains(identifier.toString());
-    }
-
     @Test
     void updateGreeting_should_map_greeting_to_message() {
         // Given

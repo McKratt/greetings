@@ -1,11 +1,14 @@
 package net.bakaar.greetings.rest.glue;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import net.bakaar.greetings.domain.CreateGreetingCommand;
 import net.bakaar.greetings.domain.GreetingRepository;
+import net.bakaar.greetings.rest.IdentifiedGreetingMessage;
 import net.bakaar.greetings.rest.UpdateGreetingCommandDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,6 +38,8 @@ public class GreetingsCreationSteps {
     private TestRestTemplate restTemplate;
     @Autowired
     private GreetingRepository repository;
+    @Autowired
+    private ObjectMapper jsonMapper;
 
     @LocalServerPort
     private int port;
@@ -64,11 +69,12 @@ public class GreetingsCreationSteps {
     }
 
     @When("I change the type to {word}")
-    public void i_change_the_type_to(String type) {
+    public void i_change_the_type_to(String type) throws JsonProcessingException {
         var updateGreetingCommand = new UpdateGreetingCommandDTO();
         updateGreetingCommand.setNewType(type);
+        var identifier = jsonMapper.readValue(response.getBody(), IdentifiedGreetingMessage.class).id();
         var request = RequestEntity
-                .put(URI.create(response.getHeaders().getLocation().getPath()))
+                .put(URI.create(format("http://localhost:%s/rest/api/v1/greetings/%s", port, identifier)))
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
                 .body(updateGreetingCommand);
@@ -82,19 +88,10 @@ public class GreetingsCreationSteps {
     }
 
     @Then("a Greeting is created")
-    public void a_greeting_is_created() {
-        var identifier = extractIdentifierFromUrl(response.getHeaders().get("location").toString()).get();
+    public void a_greeting_is_created() throws JsonProcessingException {
+        var identifier = jsonMapper.readValue(response.getBody(), IdentifiedGreetingMessage.class).id();
         var greeting = repository.find(UUID.fromString(identifier));
         assertThat(greeting).isNotEmpty();
-    }
-
-    private Optional<String> extractIdentifierFromUrl(String url) {
-        var pattern = Pattern.compile("([a-f0-9]{8}(-[a-f0-9]{4}){4}[a-f0-9]{8})");
-        var match = pattern.matcher(url);
-        if (match.find()) {
-            return Optional.ofNullable(match.group(1));
-        }
-        return Optional.empty();
     }
 
     @Then("I get an error")

@@ -13,8 +13,7 @@
         "path": "/rest/api/v1/greetings",
         "headers": {
           "Content-Type": "application/json",
-          "Accept": "application/json",
-          "origin": "http://localhost:99"
+          "Accept": "application/json"
         },
         "body": {
           "type": "Christmas",
@@ -22,9 +21,6 @@
         },
         "matchingRules": {
           "$.headers.Accept": {
-            "match": "type"
-          },
-          "$.headers.origin": {
             "match": "type"
           },
           "$.body.type": {
@@ -39,20 +35,16 @@
       "response": {
         "status": 201,
         "headers": {
-          "access-control-expose-headers": "Location",
-          "Location": "http://127.0.0.1:62717/rest/api/v1/greetings/f229a83e-fff8-450d-b557-552367a37391",
           "Content-Type": "application/json"
         },
         "body": {
+          "id": "ce118b6e-d8e1-11e7-9296-cec278b6b50a",
           "message": "Merry Christmas Max Planck !"
         },
         "matchingRules": {
-          "$.headers.access-control-expose-headers": {
-            "match": "type"
-          },
-          "$.headers.Location": {
+          "$.body.id": {
             "match": "regex",
-            "regex": ".+\\/rest\\/api\\/v1\\/greetings\\/[a-z0-9]{8}(-[a-z0-9]{4}){3}-[a-z0-9]{12}"
+            "regex": "^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$"
           },
           "$.body.message": {
             "match": "regex",

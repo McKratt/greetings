@@ -39,8 +39,7 @@ pactWith({
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Accept': Matchers.string('application/json'),
-            'origin': Matchers.like("http://localhost:99")
+            'Accept': Matchers.string('application/json')
           },
           body: {
             type: Matchers.term({
@@ -53,14 +52,10 @@ pactWith({
         willRespondWith: {
           status: 201,
           headers: {
-            'access-control-expose-headers': Matchers.string('Location'),
-            'Location': Matchers.term({
-              generate: provider.mockService.baseUrl + '/rest/api/v1/greetings/f229a83e-fff8-450d-b557-552367a37391',
-              matcher: '.+/rest/api/v1/greetings/[a-z0-9]{8}(-[a-z0-9]{4}){3}-[a-z0-9]{12}'
-            }),
             'Content-Type': 'application/json'
           },
           body: {
+            id: Matchers.uuid(),
             message: Matchers.term({
               generate: 'Merry Christmas Max Planck !',
               matcher: '.* (Christmas|Anniversary|Birthday) .* \!'

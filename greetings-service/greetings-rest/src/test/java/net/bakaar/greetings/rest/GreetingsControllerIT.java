@@ -61,8 +61,6 @@ class GreetingsControllerIT {
         response.andExpect(
                 status().isCreated()
         ).andExpect(
-                header().string("location", format("http://localhost/rest/api/v1/greetings/%s", identifier))
-        ).andExpect(
                 header().string(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON.toString())
         );
     }

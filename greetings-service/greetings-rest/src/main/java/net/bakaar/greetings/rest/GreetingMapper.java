@@ -12,4 +12,8 @@ public class GreetingMapper {
     public GreetingJson mapToJson(Greeting greeting) {
         return new GreetingJson(greeting.getType().name(), greeting.getName());
     }
+
+    public IdentifiedGreetingMessage mapToIdentifiedMessage(Greeting greeting) {
+        return new IdentifiedGreetingMessage(greeting.getIdentifier().toString(), greeting.getMessage());
+    }
 }

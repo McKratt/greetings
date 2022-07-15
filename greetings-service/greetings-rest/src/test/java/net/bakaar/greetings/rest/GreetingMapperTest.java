@@ -3,7 +3,11 @@ package net.bakaar.greetings.rest;
 import net.bakaar.greetings.domain.Greeting;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -14,14 +18,29 @@ class GreetingMapperTest {
     @Test
     void mapToMessage_should_getMessage() {
         // Given
-        String expectedMessage = "My Expected Message";
-        Greeting greeting = mock(Greeting.class);
+        var expectedMessage = "My Expected Message";
+        var greeting = mock(Greeting.class);
         given(greeting.getMessage()).willReturn(expectedMessage);
         // When
-        GreetingMessage receivedMessage = mapper.mapToMessage(greeting);
+        var receivedMessage = mapper.mapToMessage(greeting);
         // Then
         assertThat(receivedMessage).isNotNull()
                 .extracting(GreetingMessage::message).isEqualTo(expectedMessage);
+    }
+
+    @Test
+    void mapToIdentifiedMessage_should_getMessage() {
+        // Given
+        var expectedMessage = "My Expected Message";
+        var greeting = mock(Greeting.class);
+        given(greeting.getMessage()).willReturn(expectedMessage);
+        var identifier = UUID.randomUUID();
+        given(greeting.getIdentifier()).willReturn(identifier);
+        // When
+        var receivedMessage = mapper.mapToIdentifiedMessage(greeting);
+        // Then
+        assertThat(receivedMessage).isNotNull()
+                .extracting(IdentifiedGreetingMessage::message, IdentifiedGreetingMessage::id).isEqualTo(List.of(expectedMessage, identifier.toString()));
     }
 
     @Test
