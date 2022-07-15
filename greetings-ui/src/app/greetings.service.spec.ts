@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 
-import {GreetingsService} from './greetings.service';
+import {GreetingsService, GreetingType} from './greetings.service';
 import {ConfigService} from "./config.service";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {of} from "rxjs";
@@ -21,6 +21,7 @@ describe('GreetingsService', () => {
       expect(service).toBeTruthy();
     });
   });
+
   describe('ut', () => {
     const httpPostMethod = jest.fn()
     const configServiceMethod = jest.fn();
@@ -37,18 +38,14 @@ describe('GreetingsService', () => {
     });
     test('should use config service and post', (done) => {
       const name: string = 'Marie Currie';
-      const type: string = 'Anniversary';
+      const type: GreetingType = 'Anniversary';
       const id: string = '8b362bc0-27a8-4e24-a5ed-6ec07b8e5db0';
       const baseUrl: string = 'http://test.org';
       configServiceMethod.mockReturnValue(baseUrl);
       httpPostMethod.mockImplementation(() => {
         return of({
-          body: {
-            message: `Joyful ${type} ${name} !`
-          },
-          headers: new HttpHeaders({
-            Location: `${baseUrl}/rest/api/v1/greetings/${id}`
-          })
+          message: `Joyful ${type} ${name} !`,
+          id: `${id}`
         })
       });
       try {

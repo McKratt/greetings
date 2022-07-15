@@ -25,12 +25,9 @@ public class GreetingsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @CrossOrigin(exposedHeaders = "Location")
-    public ResponseEntity<GreetingMessage> createGreeting(@RequestBody CreateGreetingCommand command) {
+    public IdentifiedGreetingMessage createGreeting(@RequestBody CreateGreetingCommand command) {
         Greeting createdGreeting = applicationService.createGreeting(command);
-        return ResponseEntity
-                .created(fromCurrentRequest().path("/{identifier}").buildAndExpand(createdGreeting.getIdentifier()).toUri())
-                .body(mapper.mapToMessage(createdGreeting));
+        return mapper.mapToIdentifiedMessage(createdGreeting);
     }
 
     @PutMapping("/{identifier}")

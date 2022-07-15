@@ -1,5 +1,7 @@
 package net.bakaar.greetings.servicetest.glue;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -9,6 +11,7 @@ import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
 import net.bakaar.greetings.message.GreetingsMessage;
 import net.bakaar.greetings.message.producer.GreetingsProducerProperties;
+import net.bakaar.greetings.rest.IdentifiedGreetingMessage;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -77,6 +80,8 @@ public class GreetingsBootstrapCreationSteps {
     private GreetingsProducerProperties messageProperties;
     @Autowired
     private KafkaAdmin kafkaAdmin;
+    @Autowired
+    private ObjectMapper jsonMapper;
 
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
@@ -124,15 +129,15 @@ public class GreetingsBootstrapCreationSteps {
     }
 
     @Then("a Greeting is created")
-    public void a_greeting_is_created() {
+    public void a_greeting_is_created() throws JsonProcessingException {
         Consumer<String, GreetingsMessage> consumer = createConsumer();
         ConsumerRecord<String, GreetingsMessage> record = KafkaTestUtils.getSingleRecord(consumer, messageProperties.getTopicName(), 10000L);
         var message = record.value();
         assertThat(message).isNotNull();
         assertThat(message.type()).isEqualTo(URI.create("https://bakaar.net/greetings/events/greeting-created"));
-        var uuid = extractIdentifierFromUrl(response.getHeader("location"));
+        var uuid = jsonMapper.readValue(response.getBody().asString(), IdentifiedGreetingMessage.class).id();
         assertThat(uuid).isNotEmpty();
-        assertThat(message.payload()).contains(uuid.get());
+        assertThat(message.payload()).contains(uuid);
     }
 
     @NotNull
@@ -146,16 +151,6 @@ public class GreetingsBootstrapCreationSteps {
         embeddedKafka.consumeFromAnEmbeddedTopic(consumer, topic);
         return consumer;
     }
-
-    private Optional<String> extractIdentifierFromUrl(String url) {
-        var pattern = Pattern.compile("([a-f0-9]{8}(-[a-f0-9]{4}){4}[a-f0-9]{8})");
-        var match = pattern.matcher(url);
-        if (match.find()) {
-            return Optional.ofNullable(match.group(1));
-        }
-        return Optional.empty();
-    }
-
 
     @Then("I get an error")
     // FIXME put the status code to 400 once the error handling done
