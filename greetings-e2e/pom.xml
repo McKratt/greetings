@@ -12,24 +12,40 @@
         <maven.compiler.source>17</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <cucumber.version>7.4.1</cucumber.version>
-        <testcontainer.version>1.17.2</testcontainer.version>
-        <jupiter.version>5.8.2</jupiter.version>
-        <junit-platform.version>1.8.2</junit-platform.version>
+        <cucumber.version>7.7.0</cucumber.version>
+        <testcontainer.version>1.17.3</testcontainer.version>
         <assertj.version>3.23.1</assertj.version>
-        <rest-assured.version>5.1.1</rest-assured.version>
-        <logback.version>1.2.11</logback.version>
+        <rest-assured.version>5.2.0</rest-assured.version>
+        <logback.version>1.4.0</logback.version>
         <awaitility.version>4.2.0</awaitility.version>
         <dbsetup.version>2.1.0</dbsetup.version>
-        <postgresql.version>42.4.1</postgresql.version>
+        <postgresql.version>42.5.0</postgresql.version>
+        <junit-bom.version>5.9.0</junit-bom.version>
         <argLine></argLine>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>${rest-assured.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-codec</groupId>
+                    <artifactId>commons-codec</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -87,13 +103,11 @@
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite</artifactId>
-            <version>${junit-platform.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${jupiter.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
