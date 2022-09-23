@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.0-M4</version>
+        <version>3.0.0-M5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>net.bakaar</groupId>
@@ -81,12 +81,24 @@
                 <artifactId>junit5spring</artifactId>
                 <version>${pact.version}</version>
                 <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.antlr</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>au.com.dius.pact.consumer</groupId>
                 <artifactId>junit5</artifactId>
                 <version>${pact.version}</version>
                 <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.antlr</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
