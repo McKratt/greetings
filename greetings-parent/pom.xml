@@ -20,7 +20,7 @@
         <pact.version>4.4.3</pact.version>
         <jacoco.version>0.8.8</jacoco.version>
         <awaitility.version>4.2.0</awaitility.version>
-        <spring.cloud.contract.version>4.0.0-M3</spring.cloud.contract.version>
+        <spring.cloud.contract.version>4.0.0-M4</spring.cloud.contract.version>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
         <sonar.organization>mckratt</sonar.organization>
