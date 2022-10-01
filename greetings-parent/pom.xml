@@ -14,8 +14,8 @@
     <packaging>pom</packaging>
     <properties>
         <java.version>17</java.version>
-        <cucumber.version>7.7.0</cucumber.version>
-        <junit-bom.version>5.9.0</junit-bom.version>
+        <cucumber.version>7.8.0</cucumber.version>
+        <junit-bom.version>5.9.1</junit-bom.version>
         <testcontainer.version>1.17.3</testcontainer.version>
         <pact.version>4.3.14</pact.version>
         <jacoco.version>0.8.8</jacoco.version>
