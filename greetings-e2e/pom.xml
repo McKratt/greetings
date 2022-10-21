@@ -12,11 +12,11 @@
         <maven.compiler.source>17</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <cucumber.version>7.8.0</cucumber.version>
-        <testcontainer.version>1.17.3</testcontainer.version>
+        <cucumber.version>7.8.1</cucumber.version>
+        <testcontainer.version>1.17.5</testcontainer.version>
         <assertj.version>3.23.1</assertj.version>
         <rest-assured.version>5.2.0</rest-assured.version>
-        <logback.version>1.4.1</logback.version>
+        <logback.version>1.4.4</logback.version>
         <awaitility.version>4.2.0</awaitility.version>
         <dbsetup.version>2.1.0</dbsetup.version>
         <postgresql.version>42.5.0</postgresql.version>
