@@ -32,6 +32,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.net.URI;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Optional;
@@ -131,7 +132,7 @@ public class GreetingsBootstrapCreationSteps {
     @Then("a Greeting is created")
     public void a_greeting_is_created() throws JsonProcessingException {
         Consumer<String, GreetingsMessage> consumer = createConsumer();
-        ConsumerRecord<String, GreetingsMessage> record = KafkaTestUtils.getSingleRecord(consumer, messageProperties.getTopicName(), 10000L);
+        ConsumerRecord<String, GreetingsMessage> record = KafkaTestUtils.getSingleRecord(consumer, messageProperties.getTopicName(), Duration.ofMillis(10000));
         var message = record.value();
         assertThat(message).isNotNull();
         assertThat(message.type()).isEqualTo(URI.create("https://bakaar.net/greetings/events/greeting-created"));

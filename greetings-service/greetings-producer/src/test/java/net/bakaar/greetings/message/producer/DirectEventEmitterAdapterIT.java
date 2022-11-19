@@ -19,6 +19,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.UUID;
 
 import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
@@ -63,7 +64,7 @@ class DirectEventEmitterAdapterIT {
         var factory = new DefaultKafkaConsumerFactory<String, GreetingsMessage>(consumerProps);
         var consumer = factory.createConsumer();
         embeddedKafka.consumeFromAnEmbeddedTopic(consumer, topicName);
-        ConsumerRecord<String, GreetingsMessage> record = KafkaTestUtils.getSingleRecord(consumer, topicName, 10000L);
+        ConsumerRecord<String, GreetingsMessage> record = KafkaTestUtils.getSingleRecord(consumer, topicName, Duration.ofMillis(10000));
         var receivedMessage = record.value();
         assertThat(receivedMessage).isNotNull();
         assertThat(receivedMessage.type()).isEqualTo(URI.create("https://bakaar.net/greetings/events/greeting-created"));
