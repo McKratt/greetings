@@ -105,6 +105,17 @@
                     <version>${maven-surefire-plugin.version}</version>
                     <configuration>
                         <skipTests>${skipUTs}</skipTests>
+                        <perCoreThreadCount>true</perCoreThreadCount>
+                        <parallel>all</parallel>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven-failsafe-plugin.version}</version>
+                    <configuration>
+                        <perCoreThreadCount>true</perCoreThreadCount>
+                        <parallel>all</parallel>
                     </configuration>
                 </plugin>
             </plugins>

@@ -54,15 +54,18 @@ jobs:
           key: ${{ runner.os }}-greetings-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-greetings-m2-
       - name: Build
-        run: mvn -B -Pcoverage clean compile
+        working-directory: ./greetings-service
+        run: mvn -B -T 1C -Pcoverage clean compile
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Unit Test
-        run: mvn -B -Pcoverage test
+        working-directory: ./greetings-service
+        run: mvn -B -T 1C -Pcoverage test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Integration Test
-        run: mvn -B -Pcoverage verify -DskipUTs
+        working-directory: ./greetings-service
+        run: mvn -B -T 1C -Pcoverage verify -DskipUTs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Sonar Analysis
@@ -91,15 +94,18 @@ jobs:
           key: ${{ runner.os }}-stats-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-stats-m2-
       - name: Build
-        run: mvn -B -Pcoverage clean compile
+        working-directory: ./greetings-stat-service
+        run: mvn -B -T 1C -Pcoverage clean compile
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Unit Test
-        run: mvn -B -Pcoverage test
+        working-directory: ./greetings-stat-service
+        run: mvn -B -T 1C -Pcoverage test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Integration Test
-        run: mvn -B -Pcoverage verify -DskipUTs
+        working-directory: ./greetings-stat-service
+        run: mvn -B -T 1C -Pcoverage verify -DskipUTs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Sonar Analysis
