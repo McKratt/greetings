@@ -18,17 +18,44 @@ import java.util.UUID;
 
 import static com.ninja_squad.dbsetup.Operations.*;
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.hamcrest.Matchers.equalTo;
 
-public class GreetingsCreationSteps {
+public class E2eGreetingsCreationSteps {
 
     private static final DockerComposeContainer environment = new DockerComposeContainer(
             new File("src/test/resources/compose-test.yaml"))
-            .withExposedService("greetings_1", 8080);
+            .withExposedService("greetings_1", 8080)
+            .withExposedService("stats_1", 8080);
 
     static {
         environment.start();
+        System.out.println("Verify greetings service version...");
+        var version = given()
+                .log().all(true)
+                .filters(new ResponseLoggingFilter())
+                .accept("application/json")
+                .get(String.format("http://localhost:%d/actuator/info", environment.getServicePort("greetings", 8080)))
+                .then()
+                .extract()
+                .jsonPath()
+                .get("app.version");
+        System.out.println("Greeting Version : [" + version + "]");
+        assertThat(version).isEqualTo("1.0.0");
+        System.out.println("Verify stat service version...");
+        var statVersion = given()
+                .log().all(true)
+                .filters(new ResponseLoggingFilter())
+                .accept("application/json")
+                .get(String.format("http://localhost:%d/actuator/info", environment.getServicePort("stats", 8080)))
+                .then()
+                .extract()
+                .jsonPath()
+                .get("app.version");
+        System.out.println("Stat Version : [" + statVersion + "]");
+        assertThat(statVersion).isEqualTo("1.0.0");
     }
 
     private final RequestSpecification request = given().log().all(true).contentType("application/json")
