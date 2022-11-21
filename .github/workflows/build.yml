@@ -43,7 +43,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Sonar Analysis
         working-directory: ./greetings-service
-        run: mvn -B -Pcoverage org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -DskipTests
+        run: mvn -B -Pcoverage org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -DskipTests -DskipUTs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
@@ -80,7 +80,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Sonar Analysis
         working-directory: ./greetings-stat-service
-        run: mvn -B -Pcoverage org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -DskipTests
+        run: mvn -B -Pcoverage org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -DskipTests -DskipUTs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
@@ -105,7 +105,7 @@ jobs:
           restore-keys: ${{ runner.os }}-greetings-m2-
       - name: Package + deploy
         working-directory: ./greetings-service
-        run: mvn -B -DskipTests -PbuildImage package --file pom.xml
+        run: mvn -B -DskipTests -DskipUTs -PbuildImage package --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
@@ -130,7 +130,7 @@ jobs:
           restore-keys: ${{ runner.os }}-stats-m2-
       - name: Package + deploy
         working-directory: ./greetings-stat-service
-        run: mvn -B -DskipTests -PbuildImage package --file pom.xml
+        run: mvn -B -DskipTests -DskipUTs -PbuildImage package --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
