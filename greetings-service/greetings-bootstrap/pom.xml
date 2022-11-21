@@ -87,6 +87,7 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
+                            <excludeDevtools>true</excludeDevtools>
                             <!-- Why this exclusion here : https://docs.spring.io/spring-boot/docs/current/maven-plugin/reference/htmlsingle/#packaging.examples.exclude-dependency -->
                             <excludes>
                                 <exclude>
@@ -95,9 +96,9 @@
                                 </exclude>
                             </excludes>
                             <image>
-                                <name>bakaar/greetings-service:1-latest</name>
+                                <name>bakaar/greetings-service:1-layers</name>
                                 <!-- -Dspring-boot.build-image.publish=true -->
-                                <publish>true</publish>
+                                <!--                                <publish>true</publish>-->
                                 <env>
                                     <BP_JVM_VERSION>${java.version}.*</BP_JVM_VERSION>
                                 </env>
