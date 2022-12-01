@@ -5,7 +5,7 @@ name: Build + Sonar Analysis + Deploy To DockerHub
 
 on:
   push:
-    branches: [ master, feature/* ]
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
