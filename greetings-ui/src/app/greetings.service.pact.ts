@@ -4,7 +4,6 @@ import {ConfigService} from "./config.service";
 import {Matchers} from '@pact-foundation/pact';
 import {TestBed} from "@angular/core/testing";
 import {HttpClientModule} from "@angular/common/http";
-import {Greeting} from "./greeting";
 import {firstValueFrom} from "rxjs";
 
 pactWith({
@@ -30,8 +29,8 @@ pactWith({
   });
 
   describe('Create Greetings endpoint', () => {
-    beforeEach(async () => {
-      await provider.addInteraction({
+    beforeEach(() => {
+      provider.addInteraction({
         state: '',
         uponReceiving: 'A request for a new Greeting Message',
         withRequest: {
@@ -65,11 +64,14 @@ pactWith({
       });
     });
 
-    test('should create new greetings', async () => {
-      const greeting: Greeting = await firstValueFrom(service.createNewGreeting('Birthday', 'Albert Einstein'))
-      expect(greeting).toBeTruthy();
-      expect(greeting.id).toMatch(/^[a-z0-9]{8}(-[a-z0-9]{4}){3}-[a-z0-9]{12}$/);
-      expect(greeting.message).toBeTruthy();
+    test('should create new greetings', (done) => {
+      firstValueFrom(service.createNewGreeting('Birthday', 'Albert Einstein'))
+        .then((greeting) => {
+          expect(greeting).toBeTruthy();
+          expect(greeting.id).toMatch(/^[a-z0-9]{8}(-[a-z0-9]{4}){3}-[a-z0-9]{12}$/);
+          expect(greeting.message).toBeTruthy();
+          done();
+        });
     });
   });
 });
