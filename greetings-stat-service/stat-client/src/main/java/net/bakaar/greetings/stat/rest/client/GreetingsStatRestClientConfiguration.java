@@ -10,8 +10,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 @EnableConfigurationProperties(GreetingsStatRestClientProperties.class)
 public class GreetingsStatRestClientConfiguration {
     @Bean
-    GreetingsRepository greetingsRepository(GreetingsStatRestClientProperties properties) {
-        return new GreetingsRepositoryAdapter(WebClient.builder().build(), properties);
+    GreetingsRepository greetingsRepository(WebClient.Builder clientBuilder, GreetingsStatRestClientProperties properties) {
+        return new GreetingsRepositoryAdapter(clientBuilder.baseUrl(properties.getUrl()).build());
     }
 
 }

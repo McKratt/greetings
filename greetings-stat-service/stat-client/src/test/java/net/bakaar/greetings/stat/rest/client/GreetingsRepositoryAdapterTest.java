@@ -35,14 +35,12 @@ class GreetingsRepositoryAdapterTest {
     void should_call_the_client_with_correct_url() {
         // Given
         var identifier = UUID.randomUUID();
-        var url = "The/url";
-        given(properties.getUrl()).willReturn(url);
         var greeting = mock(Greeting.class);
 
         var requestHeaderUriSpec = mock(WebClient.RequestHeadersUriSpec.class);
         given(client.get()).willReturn(requestHeaderUriSpec);
         var requestHeaderSpec = mock(WebClient.RequestHeadersSpec.class);
-        given(requestHeaderUriSpec.uri(anyString())).willReturn(requestHeaderSpec);
+        given(requestHeaderUriSpec.uri(anyString(), anyString())).willReturn(requestHeaderSpec);
         given(requestHeaderSpec.accept(any())).willReturn(requestHeaderSpec);
         var responseSpec = mock(WebClient.ResponseSpec.class);
         given(requestHeaderSpec.retrieve()).willReturn(responseSpec);
@@ -52,9 +50,8 @@ class GreetingsRepositoryAdapterTest {
                 .expectNext(greeting)
                 .verifyComplete();
         // Then
-        verify(properties).getUrl();
         verify(requestHeaderSpec).accept(MediaType.APPLICATION_JSON);
-        verify(requestHeaderUriSpec).uri(url + "/" + identifier);
+        verify(requestHeaderUriSpec).uri("/rest/api/v1/greetings/{id}", identifier.toString());
         verify(responseSpec).bodyToMono(Greeting.class);
     }
 }

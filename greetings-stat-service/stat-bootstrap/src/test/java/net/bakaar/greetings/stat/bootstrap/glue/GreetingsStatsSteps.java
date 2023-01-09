@@ -90,7 +90,7 @@ public class GreetingsStatsSteps {
         registry.add("spring.flyway.password", dbContainer::getPassword);
         registry.add("greetings.message.topic", () -> topic);
         registry.add("spring.kafka.bootstrap-servers", () -> "${spring.embedded.kafka.brokers}");
-        registry.add("greetings.stat.rest.client.url", () -> "http://localhost:${wiremock.server.port}/rest/api/v1/greetings");
+        registry.add("greetings.stat.rest.client.url", () -> "http://localhost:${wiremock.server.port}");
     }
 
     @When("I create a greeting")
