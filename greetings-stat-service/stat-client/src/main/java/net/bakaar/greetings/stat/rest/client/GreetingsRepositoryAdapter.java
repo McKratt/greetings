@@ -13,13 +13,12 @@ import java.util.UUID;
 public class GreetingsRepositoryAdapter implements GreetingsRepository {
 
     private final WebClient client;
-    private final GreetingsStatRestClientProperties properties;
 
     @Override
     public Mono<Greeting> getGreetingForIdentifier(UUID identifier) {
         return client.
                 get()
-                .uri(properties.getUrl() + "/" + identifier.toString())
+                .uri("/rest/api/v1/greetings/{id}", identifier.toString())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(Greeting.class);

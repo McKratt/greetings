@@ -84,5 +84,5 @@ services:
       SPRING_FLYWAY_PASSWORD: 123456
       SPRING_KAFKA_BOOTSTRAP-SERVERS: "broker:29092"
       GREETINGS_MESSAGE_TOPIC: "greetings-topic"
-      GREETINGS_STAT_REST_CLIENT_URL: "greetings:8080/rest/api/v1/greetings"
+      GREETINGS_STAT_REST_CLIENT_URL: "greetings:8080"
       JAVA_TOOL_OPTIONS: "--enable-preview -Djava.net.preferIPv4Stack=true"

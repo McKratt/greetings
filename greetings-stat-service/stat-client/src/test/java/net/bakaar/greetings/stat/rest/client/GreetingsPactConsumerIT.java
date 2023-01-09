@@ -10,28 +10,18 @@ import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.test.StepVerifier;
 
-import java.util.Collections;
 import java.util.UUID;
 
 import static java.util.Collections.singletonMap;
 
-@WebFluxTest
 @ExtendWith({PactConsumerTestExt.class})
 @PactTestFor(providerName = "greetings-service", pactVersion = PactSpecVersion.V3)
-@ContextConfiguration(classes = GreetingsStatRestClientConfiguration.class)
 class GreetingsPactConsumerIT {
-
     private final String stringIdentifier = "03e805ff-5860-49a6-88bc-a1dcda0dd4b4";
     private final UUID identifier = UUID.fromString(stringIdentifier);
-    @Autowired
-    private GreetingsStatRestClientProperties properties;
-    @Autowired
-    private GreetingsRepositoryAdapter client;
 
     @Pact(consumer = "greetings-stat-service")
     public RequestResponsePact pactForGetAGreeting(PactDslWithProvider builder) {
@@ -47,13 +37,13 @@ class GreetingsPactConsumerIT {
                         .stringMatcher("name", "[A-Z].*", "Fermi")
                         .stringMatcher("type", "[A-Z]+", "CHRISTMAS")
                 )
-                .headers(singletonMap("Content-Type","application/json"))
+                .headers(singletonMap("Content-Type", "application/json"))
                 .toPact();
     }
 
     @Test
     void should_read_greetings_from_pact(MockServer mockServer) {
-        properties.setUrl(mockServer.getUrl() + "/rest/api/v1/greetings");
+        var client = new GreetingsRepositoryAdapter(WebClient.builder().baseUrl(mockServer.getUrl()).build());
         StepVerifier
                 .create(client.getGreetingForIdentifier(identifier))
                 .expectNextCount(1)
