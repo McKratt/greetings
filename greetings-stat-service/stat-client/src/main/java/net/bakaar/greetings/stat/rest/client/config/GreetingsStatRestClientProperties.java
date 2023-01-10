@@ -1,4 +1,4 @@
-package net.bakaar.greetings.stat.rest.client;
+package net.bakaar.greetings.stat.rest.client.config;
 
 import lombok.Getter;
 import lombok.Setter;

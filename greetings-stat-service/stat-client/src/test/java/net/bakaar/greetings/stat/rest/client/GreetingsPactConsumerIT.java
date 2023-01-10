@@ -11,6 +11,8 @@ import au.com.dius.pact.core.model.annotations.Pact;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.support.WebClientAdapter;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import reactor.test.StepVerifier;
 
 import java.util.UUID;
@@ -43,9 +45,11 @@ class GreetingsPactConsumerIT {
 
     @Test
     void should_read_greetings_from_pact(MockServer mockServer) {
-        var client = new GreetingsRepositoryAdapter(WebClient.builder().baseUrl(mockServer.getUrl()).build());
+        var webClient = WebClient.builder().baseUrl(mockServer.getUrl()).build();
+        var factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient)).build();
+        var adapter = new GreetingsRepositoryAdapter(factory.createClient(GreetingsRestClient.class));
         StepVerifier
-                .create(client.getGreetingForIdentifier(identifier))
+                .create(adapter.getGreetingForIdentifier(identifier))
                 .expectNextCount(1)
                 .verifyComplete();
     }
