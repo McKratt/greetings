@@ -10,9 +10,9 @@ import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.support.WebClientAdapter;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import reactor.test.StepVerifier;
 
 import java.util.UUID;
@@ -24,11 +24,6 @@ import static java.util.Collections.singletonMap;
 class GreetingsPactConsumerIT {
     private final String stringIdentifier = "03e805ff-5860-49a6-88bc-a1dcda0dd4b4";
     private final UUID identifier = UUID.fromString(stringIdentifier);
-
-    @DynamicPropertySource
-    static void registerPgProperties(DynamicPropertyRegistry registry) {
-        registry.add("greetings.stat.rest.client.url", () -> "http://localhost");
-    }
 
     @Pact(consumer = "greetings-stat-service")
     public RequestResponsePact pactForGetAGreeting(PactDslWithProvider builder) {
@@ -50,9 +45,11 @@ class GreetingsPactConsumerIT {
 
     @Test
     void should_read_greetings_from_pact(MockServer mockServer) {
-        var client = new GreetingsRepositoryAdapter(WebClient.builder().baseUrl(mockServer.getUrl()).build());
+        WebClient webClient = WebClient.builder().baseUrl(mockServer.getUrl()).build();
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient)).build();
+        var adapter = new GreetingsRepositoryAdapter(factory.createClient(GreetingsRestClient.class));
         StepVerifier
-                .create(client.getGreetingForIdentifier(identifier))
+                .create(adapter.getGreetingForIdentifier(identifier))
                 .expectNextCount(1)
                 .verifyComplete();
     }
