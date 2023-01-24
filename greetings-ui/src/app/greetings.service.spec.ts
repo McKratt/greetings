@@ -1,10 +1,10 @@
-import {TestBed} from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import {GreetingsService, GreetingType} from './greetings.service';
-import {ConfigService} from "./config.service";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {of} from "rxjs";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
+import { GreetingsService, GreetingType } from "./greetings.service";
+import { ConfigService } from "./config.service";
+import { HttpClient } from "@angular/common/http";
+import { of } from "rxjs";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 
 describe('GreetingsService', () => {
   let service: GreetingsService;
@@ -33,20 +33,19 @@ describe('GreetingsService', () => {
       post: httpPostMethod
     };
     beforeEach(() => {
-      // @ts-ignore
-      service = new GreetingsService(configService, httpClient);
+      service = new GreetingsService(configService, <HttpClient>httpClient);
     });
     test('should use config service and post', (done) => {
-      const name: string = 'Marie Currie';
-      const type: GreetingType = 'Anniversary';
-      const id: string = '8b362bc0-27a8-4e24-a5ed-6ec07b8e5db0';
-      const baseUrl: string = 'http://test.org';
+      const name = "Marie Currie";
+      const type: GreetingType = "Anniversary";
+      const id = "8b362bc0-27a8-4e24-a5ed-6ec07b8e5db0";
+      const baseUrl = "http://test.org";
       configServiceMethod.mockReturnValue(baseUrl);
       httpPostMethod.mockImplementation(() => {
         return of({
           message: `Joyful ${type} ${name} !`,
           id: `${id}`
-        })
+        });
       });
       try {
         service.createNewGreeting(type, name).subscribe(

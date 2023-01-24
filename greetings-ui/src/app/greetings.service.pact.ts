@@ -1,10 +1,10 @@
-import {pactWith} from "jest-pact";
-import {GreetingsService} from "./greetings.service";
-import {ConfigService} from "./config.service";
-import {Matchers} from '@pact-foundation/pact';
-import {TestBed} from "@angular/core/testing";
-import {HttpClientModule} from "@angular/common/http";
-import {firstValueFrom} from "rxjs";
+import { pactWith } from "jest-pact";
+import { GreetingsService } from "./greetings.service";
+import { ConfigService } from "./config.service";
+import { Matchers } from "@pact-foundation/pact";
+import { TestBed } from "@angular/core/testing";
+import { HttpClientModule } from "@angular/common/http";
+import { firstValueFrom } from "rxjs";
 
 pactWith({
   consumer: 'greetings-ui',
@@ -57,7 +57,7 @@ pactWith({
             id: Matchers.uuid(),
             message: Matchers.term({
               generate: 'Merry Christmas Max Planck !',
-              matcher: '.* (Christmas|Anniversary|Birthday) .* \!'
+              matcher: ".* (Christmas|Anniversary|Birthday) .* !"
             })
           }
         }
