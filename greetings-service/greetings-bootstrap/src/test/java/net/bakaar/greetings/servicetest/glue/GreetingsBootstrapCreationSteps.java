@@ -34,9 +34,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;

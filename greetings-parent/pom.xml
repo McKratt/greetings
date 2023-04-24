@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.9</version>
+        <version>2.7.11</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>net.bakaar</groupId>
@@ -14,11 +14,11 @@
     <packaging>pom</packaging>
     <properties>
         <java.version>17</java.version>
-        <cucumber.version>7.11.1</cucumber.version>
+        <cucumber.version>7.11.2</cucumber.version>
         <junit-bom.version>5.9.2</junit-bom.version>
-        <testcontainer.version>1.17.6</testcontainer.version>
-        <pact.version>4.5.2</pact.version>
-        <jacoco.version>0.8.8</jacoco.version>
+        <testcontainer.version>1.18.0</testcontainer.version>
+        <pact.version>4.5.6</pact.version>
+        <jacoco.version>0.8.9</jacoco.version>
         <awaitility.version>4.2.0</awaitility.version>
         <spring.cloud.contract.version>3.1.6</spring.cloud.contract.version>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>

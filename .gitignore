@@ -39,7 +39,8 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
+.angular
+dist
 /connect.lock
 coverage
 /libpeerconnection.log
