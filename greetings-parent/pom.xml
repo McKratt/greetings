@@ -30,6 +30,9 @@
             **/*Application.java,
             jacoco-report/**
         </sonar.coverage.exclusions>
+        <!-- Spring Boot versions override-->
+        <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0</maven-failsafe-plugin.version>
     </properties>
     <dependencyManagement>
         <dependencies>
