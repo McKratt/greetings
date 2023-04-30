@@ -25,7 +25,7 @@
     <properties>
         <sonar.projectName>greetings-stat-service</sonar.projectName>
         <sonar.projectKey>greetings-stat-service</sonar.projectKey>
-        <aggregate.report.dir>jacoco-stat-reports/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
+        <aggregate.report.dir>stat-bootstrap/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
         <sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
     <dependencies>
@@ -95,12 +95,4 @@
             </plugin>
         </plugins>
     </build>
-    <profiles>
-        <profile>
-            <id>coverage</id>
-            <modules>
-                <module>jacoco-stat-reports</module>
-            </modules>
-        </profile>
-    </profiles>
 </project>
