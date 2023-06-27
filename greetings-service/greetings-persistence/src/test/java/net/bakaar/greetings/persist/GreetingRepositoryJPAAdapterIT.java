@@ -36,18 +36,18 @@ class GreetingRepositoryJPAAdapterIT {
 
     @Test
     void put_should_save_in_db() {
-        // Given
+        // Arrange
         var type = "anniversary";
         var name = "Alicia";
         var greeting = Greeting.of(type).to(name).build();
-        // When
+        // Act
         if (!TestTransaction.isActive()) {
             TestTransaction.start();
         }
         TestTransaction.flagForCommit();
         adapter.put(greeting);
         TestTransaction.end();
-        // Then
+        // Assert
         var founds = repository.findAll();
         assertThat(founds).isNotEmpty().hasSize(1);
         var saved = founds.iterator().next();
@@ -58,7 +58,7 @@ class GreetingRepositoryJPAAdapterIT {
 
     @Test
     void put_should_take_the_existing_one() {
-        // Given
+        // Arrange
         var entity = new GreetingJpaEntity();
         var name = "Julie";
         entity.setName(name);
@@ -77,12 +77,12 @@ class GreetingRepositoryJPAAdapterIT {
         TestTransaction.end();
         var newType = GreetingType.ANNIVERSARY;
         var greeting = Greeting.of(newType.toString().toLowerCase(Locale.ROOT)).to(name).withIdentifier(identifier.toString()).build();
-        // When
+        // Act
         TestTransaction.start();
         TestTransaction.flagForCommit();
         adapter.put(greeting);
         TestTransaction.end();
-        // Then
+        // Assert
         var founds = repository.findAll();
         assertThat(founds).isNotEmpty().hasSize(1);
         var saved = founds.iterator().next();

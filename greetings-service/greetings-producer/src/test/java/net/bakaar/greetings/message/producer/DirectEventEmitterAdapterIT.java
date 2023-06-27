@@ -48,15 +48,15 @@ class DirectEventEmitterAdapterIT {
 
     @Test
     void should_send_createdEvent_to_kafka() {
-        // Given
+        // Arrange
         var identifier = UUID.randomUUID();
         var greeting = mock(Greeting.class);
         given(greeting.getIdentifier()).willReturn(identifier);
         embeddedKafka.addTopics(topicName);
-        // When
+        // Act
         var event = GreetingCreated.of(greeting);
         emitter.emit(event);
-        // Then
+        // Assert
         var consumerProps = KafkaTestUtils.consumerProps("testGroup", "true", this.embeddedKafka);
         consumerProps.put(VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         consumerProps.put(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);

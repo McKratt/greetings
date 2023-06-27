@@ -13,13 +13,13 @@ class GreetingCreatedTest {
 
     @Test
     void should_get_identifier_from_greeting() {
-        // Given
+        // Arrange
         var greeting = mock(Greeting.class);
         var identifier = UUID.randomUUID();
         given(greeting.getIdentifier()).willReturn(identifier);
-        // When
+        // Act
         var event = GreetingCreated.of(greeting);
-        // Then
+        // Assert
         assertThat(event).isNotNull();
         assertThat(event.getIdentifier()).isEqualTo(identifier);
     }

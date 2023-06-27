@@ -71,14 +71,14 @@ class StatConsumerMessagePactIT {
     @Test
     @PactTestFor(pactMethod = "createPact")
     void message_should_be_sent(List<Message> messages) throws IOException {
-        // Given
+        // Arrange
         assertThat(processor).as("Processor should not be null").isNotNull();
         assertThat(messages).hasSize(1);
         given(service.handle(any())).willReturn(Mono.empty());
         var message = jsonMapper.readValue(messages.get(0).getContents().valueAsString(), GreetingsMessage.class);
-        // When
+        // Act
         processor.processMessage(message, mock(Acknowledgment.class));
-        // Then
+        // Assert
         var captor = ArgumentCaptor.forClass(GreetingCreated.class);
         verify(service).handle(captor.capture());
         var event = captor.getValue();

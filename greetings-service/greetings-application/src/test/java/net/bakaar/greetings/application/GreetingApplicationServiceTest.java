@@ -37,12 +37,12 @@ class GreetingApplicationServiceTest {
 
     @Test
     void create_should_call_repository_and_emit_event() {
-        // Given
+        // Arrange
         given(repository.put(any())).willAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
-        // When
+        // Act
         var command = new CreateGreetingCommand("christmas", "Vivianne");
         var returnedGreeting = service.createGreeting(command);
-        // Then
+        // Assert
         var greetingCaptor = ArgumentCaptor.forClass(Greeting.class);
         verify(repository).put(greetingCaptor.capture());
         var eventCaptor = ArgumentCaptor.forClass(GreetingsEvent.class);
@@ -56,53 +56,53 @@ class GreetingApplicationServiceTest {
 
     @Test
     void changeType_should_read_repo() {
-        // Given
+        // Arrange
         var greeting = mock(Greeting.class);
         var identifier = UUID.randomUUID();
         given(repository.find(identifier)).willReturn(Optional.of(greeting));
         given(repository.put(any())).willAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
         var type = "type";
         var command = new UpdateGreetingCommand(identifier, type);
-        // When
+        // Act
         var returnedGreeting = service.changeType(command);
-        // Then
+        // Assert
         assertThat(returnedGreeting).isSameAs(greeting);
         verify(greeting).updateTypeFor(type);
     }
 
     @Test
     void changeType_should_send_exception_if_not_found() {
-        // Given
+        // Arrange
         var identifier = UUID.randomUUID();
         given(repository.find(identifier)).willReturn(Optional.empty());
         var command = new UpdateGreetingCommand(identifier, "birthday");
-        // When
+        // Act
         var thrown = catchThrowable(() -> service.changeType(command));
-        // Then
+        // Assert
         assertThat(thrown).isNotNull().isInstanceOf(GreetingNotFoundException.class);
     }
 
     @Test
     void read_should_throw_exception_if_identifier_not_found() {
-        // Given
+        // Arrange
         var identifier = UUID.randomUUID();
         given(repository.find(any())).willReturn(Optional.empty());
-        // When
+        // Act
         Throwable thrown = catchThrowable(() -> service.read(identifier));
-        // Then
+        // Assert
         assertThat(thrown).isInstanceOf(GreetingNotFoundException.class);
         assertThat(thrown.getMessage()).contains(identifier.toString());
     }
 
     @Test
     void read_should_call_the_repository() {
-        // Given
+        // Arrange
         var identifier = UUID.randomUUID();
         var greeting = mock(Greeting.class);
         given(repository.find(any())).willReturn(Optional.of(greeting));
-        // When
+        // Act
         var returnedGreeting = service.read(identifier);
-        // Then
+        // Assert
         verify(repository).find(identifier);
         assertThat(returnedGreeting).isSameAs(greeting);
     }

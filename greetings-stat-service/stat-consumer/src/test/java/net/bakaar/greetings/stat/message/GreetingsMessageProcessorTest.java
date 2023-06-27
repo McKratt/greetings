@@ -30,7 +30,7 @@ class GreetingsMessageProcessorTest {
 
     @Test
     void service_should_choose_the_correct_event_handler() {
-        // Given
+        // Arrange
         var message = mock(GreetingsMessage.class);
         var type = URI.create("http://test/events/type1");
         given(message.type()).willReturn(type);
@@ -45,9 +45,9 @@ class GreetingsMessageProcessorTest {
         // FIXME once lenient BDD is implemented : https://github.com/mockito/mockito/issues/1597
 //        given(handler2.canHandle(type)).willReturn(false);
         ReflectionTestUtils.setField(processor, "handlers", Set.of(handler2, handler));
-        // When
+        // Act
         processor.processMessage(message, ack);
-        // Then
+        // Assert
         verify(ack).acknowledge();
         verify(handler).canHandle(type);
         verify(handler).handle(payload);
@@ -55,13 +55,13 @@ class GreetingsMessageProcessorTest {
 
     @Test
     void should_throw_an_exception_if_no_handler_found() {
-        // Given
+        // Arrange
         var message = mock(GreetingsMessage.class);
         var type = URI.create("http://test/events/type1");
         given(message.type()).willReturn(type);
-        // When
+        // Act
         var thrown = catchThrowable(() -> processor.processMessage(message, ack));
-        // Then
+        // Assert
         verify(ack, never()).acknowledge();
         assertThat(thrown).isNotNull();
         assertThat(thrown.getMessage()).contains(type.toString());
@@ -69,16 +69,16 @@ class GreetingsMessageProcessorTest {
 
     @Test
     void should_throw_an_exception_if_no_correct_handler_found() {
-        // Given
+        // Arrange
         var message = mock(GreetingsMessage.class);
         var type = URI.create("http://test/events/type1");
         given(message.type()).willReturn(type);
         var handler = mock(GreetingMessagePayloadHandler.class);
         given(handler.canHandle(type)).willReturn(false);
         ReflectionTestUtils.setField(processor, "handlers", Set.of(handler));
-        // When
+        // Act
         var thrown = catchThrowable(() -> processor.processMessage(message, ack));
-        // Then
+        // Assert
         verify(ack, never()).acknowledge();
         assertThat(thrown).isNotNull();
         assertThat(thrown.getMessage()).contains(type.toString());
@@ -86,7 +86,7 @@ class GreetingsMessageProcessorTest {
 
     @Test
     void should_not_ack_if_handler_failed(CapturedOutput output) {
-        // Given
+        // Arrange
         var message = mock(GreetingsMessage.class);
         var type = URI.create("http://test/events/type1");
         given(message.type()).willReturn(type);
@@ -97,9 +97,9 @@ class GreetingsMessageProcessorTest {
         var exception = mock(RuntimeException.class);
         given(handler.handle(any())).willThrow(exception);
         ReflectionTestUtils.setField(processor, "handlers", Set.of(handler));
-        // When
+        // Act
         var thrown = catchThrowable(() -> processor.processMessage(message, ack));
-        // Then
+        // Assert
         verify(ack, never()).acknowledge();
         assertThat(thrown).isSameAs(exception);// the exception is never returned outside the subscriber.
     }

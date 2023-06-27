@@ -35,15 +35,15 @@ class DirectEventEmitterAdapterTest {
 
     @Test
     void should_transform_payload_to_json_and_call_kafka() throws JsonProcessingException {
-        // Given
+        // Arrange
         var type = "https://bakaar.net/greetings/events/greeting-created";
         var payload = "I'm a payload";
         given(jsonMapper.writeValueAsString(event)).willReturn(payload);
         var topic = "MyTopic";
         given(properties.getTopicName()).willReturn(topic);
-        // When
+        // Act
         adapter.emit(event);
-        // Then
+        // Assert
         var captor = ArgumentCaptor.forClass(GreetingsMessage.class);
         verify(template).send(eq(topic), captor.capture());
         var message = captor.getValue();
@@ -54,12 +54,12 @@ class DirectEventEmitterAdapterTest {
 
     @Test
     void should_throw_a_runtimeException() throws JsonProcessingException {
-        // Given
+        // Arrange
         var e = mock(JsonProcessingException.class);
         given(jsonMapper.writeValueAsString(any())).willThrow(e);
-        // When
+        // Act
         var thrown = catchThrowable(() -> adapter.emit(event));
-        // Then
+        // Assert
         verify(template, never()).send(any(), any());
         assertThat(thrown).isInstanceOf(ProducerException.class);
         assertThat(thrown.getCause()).isSameAs(e);

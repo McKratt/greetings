@@ -32,11 +32,11 @@ class GreetingTest {
 
     @Test
     void builder_should_build_with_mandatory_fields() {
-        // Given
+        // Arrange
         var name = "Anna";
-        // When
+        // Act
         var greeting = Greeting.of("birthday").to(name).build();
-        // Then
+        // Assert
         assertThat(greeting).isNotNull();
         assertThat(greeting.getType()).isSameAs(BIRTHDAY);
         assertThat(greeting.getMessage()).contains(name);
@@ -45,11 +45,11 @@ class GreetingTest {
 
     @Test
     void should_not_set_identifier_if_set_in_builder() {
-        // Given
+        // Arrange
         var identifier = UUID.randomUUID();
-        // When
+        // Act
         var greeting = Greeting.of("anniversary").to("Chouquette").withIdentifier(identifier.toString()).build();
-        // Then
+        // Assert
         assertThat(greeting).isNotNull();
         assertThat(greeting.getIdentifier()).isEqualTo(identifier);
     }
@@ -57,42 +57,42 @@ class GreetingTest {
     @ParameterizedTest
     @ValueSource(strings = {"", " ", "  "})
     void builder_should_set_identifier_if_empty(String identifier) {
-        // Given
-        // When
+        // Arrange
+        // Act
         var greeting = Greeting.of("anniversary").to("Chouquette").withIdentifier(identifier).build();
-        // Then
+        // Assert
         assertThat(greeting).isNotNull();
         assertThat(greeting.getIdentifier()).isNotNull();
     }
 
     @Test
     void builder_should_throw_exception_if_name_null() {
-        // Given
-        // When
+        // Arrange
+        // Act
         var thrown = catchThrowable(() -> Greeting.of("christmas").to(null).build());
-        // Then
+        // Assert
         assertThat(thrown).isNotNull().isInstanceOf(GreetingMissingNameException.class);
     }
 
     @Test
     void builder_should_throw_exception_if_type_null() {
-        // Given
-        // When
+        // Arrange
+        // Act
         var thrown = catchThrowable(() -> Greeting.of(null).to("Theo").build());
-        // Then
+        // Assert
         assertThat(thrown).isNotNull().isInstanceOf(GreetingMissingTypeException.class);
     }
 
     @Test
     void getMessage_should_call_the_enum_method() {
-        // Given
+        // Arrange
         var name = "Nathan";
         var greeting = Greeting.of("Christmas").to(name).build();
         var spiedType = spy(greeting.getType());
         ReflectionTestUtils.setField(greeting, "type", spiedType);
-        // When
+        // Act
         var message = greeting.getMessage();
-        // Then
+        // Assert
         assertThat(message).isNotEmpty().isNotBlank();
         verify(spiedType).createMessage(name);
     }
@@ -100,22 +100,22 @@ class GreetingTest {
     @ParameterizedTest
     @MethodSource
     void updateType_should_change_the_type(String firstType, String newType, GreetingType updatedType) {
-        // Given
+        // Arrange
         var greeting = Greeting.of(firstType).to("Chouquette").build();
-        // When
+        // Act
         greeting.updateTypeFor(newType);
-        // Then
+        // Assert
         assertThat(greeting.getType()).isSameAs(updatedType);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"birthday", "anniversary"})
     void updateType_should_not_change_the_type_if_previous_type_is_not_correct(String newType) {
-        // Given
+        // Arrange
         var greeting = Greeting.of("christmas").to("Babette").build();
-        // When
+        // Act
         var thrown = catchThrowable(() -> greeting.updateTypeFor(newType));
-        // Then
+        // Assert
         assertThat(thrown).isNotNull().isInstanceOf(GreetingUnmodifiableTypeException.class);
     }
 }
