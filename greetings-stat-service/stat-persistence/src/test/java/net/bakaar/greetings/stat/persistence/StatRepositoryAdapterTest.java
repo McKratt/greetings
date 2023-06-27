@@ -28,13 +28,13 @@ class StatRepositoryAdapterTest {
 
     @Test
     void should_save_with_names_uppercase() {
-        // Given
+        // Arrange
         var stats = mock(GreetingsStats.class);
         given(stats.getCounters()).willReturn(Map.of("birthday", 0L));
         given(repository.saveAll(any(Iterable.class))).willAnswer(invocation -> Flux.fromIterable(invocation.getArgument(0)));
-        // When
+        // Act
         adapter.put(stats);
-        // Then
+        // Assert
         var captor = ArgumentCaptor.forClass(Iterable.class);
         verify(repository).saveAll(captor.capture());
         var counter = (Counter) captor.getValue().iterator().next();
@@ -44,13 +44,13 @@ class StatRepositoryAdapterTest {
 
     @Test
     void should_save_all_the_counters() {
-        // Given
+        // Arrange
         var stats = mock(GreetingsStats.class);
         given(stats.getCounters()).willReturn(Map.of("birthday", 0L, "anniversary", 0L));
         given(repository.saveAll(any(Iterable.class))).willAnswer(invocation -> Flux.fromIterable(invocation.getArgument(0)));
-        // When
+        // Act
         adapter.put(stats);
-        // Then
+        // Assert
         var captor = ArgumentCaptor.forClass(Iterable.class);
         verify(repository).saveAll(captor.capture());
         var list = captor.getValue();
@@ -59,14 +59,14 @@ class StatRepositoryAdapterTest {
 
     @Test
     void should_pop_all_the_existing_counter() throws ExecutionException, InterruptedException {
-        // Given
+        // Arrange
         var key1 = "key1";
         var key2 = "key2";
         var key3 = "key3";
         given(repository.findAll()).willReturn(Flux.just(new Counter().setName(key1), new Counter().setName(key2), new Counter().setName(key3)));
-        // When
+        // Act
         var stats = adapter.pop().get();
-        // Then
+        // Assert
         assertThat(stats.getCounters()).containsKeys(key1, key2, key3);
     }
 }

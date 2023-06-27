@@ -46,10 +46,10 @@ class CreatedGreetingEventPayloadHandlerTest {
             "http://bakaar.net/greetings/events/greeting-created"
     })
     void canHandle_should_return_false(String type) {
-        // Given
-        // When
+        // Arrange
+        // Act
         assertThat(handler.canHandle(URI.create(type))).isFalse();
-        // Then
+        // Assert
     }
 
     @Test
@@ -59,26 +59,26 @@ class CreatedGreetingEventPayloadHandlerTest {
 
     @Test
     void handle_should_call_jsonMapper_and_service() throws JsonProcessingException {
-        // Given
+        // Arrange
         var payload = "Payload";
         var event = mock(GreetingCreated.class);
         given(jsonMapper.readValue(payload, GreetingCreated.class)).willReturn(event);
         given(service.handle(any())).willReturn(Mono.empty());
-        // When
+        // Act
         StepVerifier.create(handler.handle(payload))
                 .expectComplete()
                 .verify();
-        // Then
+        // Assert
         verify(jsonMapper).readValue(payload, GreetingCreated.class);
         verify(service).handle(event);
     }
 
     @Test
     void handle_should_throw_exception() throws JsonProcessingException {
-        // Given
+        // Arrange
         var cause = new JsonEOFException(null, null, null);
         given(jsonMapper.readValue(anyString(), any(Class.class))).willThrow(cause);
-        // When
+        // Act
         StepVerifier.create(handler.handle("Whatever"))
                 .expectErrorMatches(throwable -> throwable instanceof JsonDeserializationException &&
                         throwable.getCause().equals(cause))

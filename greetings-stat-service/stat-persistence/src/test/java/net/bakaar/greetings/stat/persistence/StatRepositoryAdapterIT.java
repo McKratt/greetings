@@ -37,11 +37,11 @@ class StatRepositoryAdapterIT {
 
     @Test
     void put_should_save_all_the_counters() {
-        // Given
+        // Arrange
         var stats = new GreetingsStats(new HashMap<>(Map.of("BIRTHDAY", 0L, "ANNIVERSARY", 0L, "CHRISTMAS", 0L)));
-        // When
+        // Act
         repository.put(stats);
-        // Then
+        // Assert
         StepVerifier.create(template.select(Counter.class).count())
                 .expectNext(3L)
                 .verifyComplete();
@@ -49,7 +49,7 @@ class StatRepositoryAdapterIT {
 
     @Test
     void pop_should_get_counter_in_db() throws ExecutionException, InterruptedException {
-        // Given
+        // Arrange
         var counter = new Counter();
         var count = 64L;
         var type = "TOTO";
@@ -58,10 +58,10 @@ class StatRepositoryAdapterIT {
         StepVerifier.create(template.insert(counter))
                 .expectNextCount(1L)
                 .verifyComplete();
-        // When
+        // Act
 //        await().until();
         var stats = repository.pop().get();
-        // Then
+        // Assert
         assertThat(stats).isNotNull();
         assertThat(stats.getCounters()).hasSize(1);
         assertThat(stats.getStatsFor(type.toUpperCase())).isPresent().get().isEqualTo(count);

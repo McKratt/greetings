@@ -31,7 +31,7 @@ class StatApplicationServiceTest {
 
     @Test
     void should_call_repositories() {
-        // Given
+        // Arrange
         var identifier = UUID.randomUUID();
         var event = mock(GreetingCreated.class);
         given(event.identifier()).willReturn(identifier);
@@ -42,9 +42,9 @@ class StatApplicationServiceTest {
         given(greetingsRepository.getGreetingForIdentifier(any())).willReturn(Mono.just(greeting));
         var type = "CHRISTMAS";
         given(greeting.type()).willReturn(type);
-        // When
+        // Act
         StepVerifier.create(service.handle(event)).verifyComplete();
-        // Then
+        // Assert
         verify(statRepository).pop();
         verify(greetingsRepository).getGreetingForIdentifier(identifier);
         verify(stats).increaseCounterFor(type);
@@ -53,33 +53,33 @@ class StatApplicationServiceTest {
 
     @Test
     void should_call_repository() {
-        // Given
+        // Arrange
         var stats = mock(GreetingsStats.class);
         given(statRepository.pop()).willReturn(CompletableFuture.completedFuture(stats));
-        // When
+        // Act
         StepVerifier.create(service.retrieveGreetingsStats())
                 .expectNext(stats)
                 .verifyComplete();
-        // Then
+        // Assert
         verify(statRepository).pop();
     }
 
     @Test
     void should_propagate_exception_when_pop_failed() {
-        // Given
+        // Arrange
         var exception = mock(RuntimeException.class);
         given(statRepository.pop()).willThrow(exception);
-        // When
+        // Act
         StepVerifier.create(service.retrieveGreetingsStats())
                 .expectErrorSatisfies((ex) -> assertThat(ex).isSameAs(exception))
                 .verify();
-        // Then
+        // Assert
         verify(statRepository).pop();
     }
 
     @Test
     void should_propagate_exception_when_put_failed() {
-        // Given
+        // Arrange
         var identifier = UUID.randomUUID();
         var event = mock(GreetingCreated.class);
         given(event.identifier()).willReturn(identifier);
@@ -92,11 +92,11 @@ class StatApplicationServiceTest {
         given(greeting.type()).willReturn(type);
         var exception = mock(RuntimeException.class);
         doThrow(exception).when(statRepository).put(any());
-        // When
+        // Act
         StepVerifier.create(service.handle(event))
                 .expectErrorSatisfies((ex) -> assertThat(ex).isSameAs(exception))
                 .verify();
-        // Then
+        // Assert
         verify(statRepository).pop();
         verify(greetingsRepository).getGreetingForIdentifier(identifier);
         verify(stats).increaseCounterFor(type);

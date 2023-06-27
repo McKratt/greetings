@@ -8,11 +8,11 @@ class GreetingNotFoundExceptionTest {
 
     @Test
     void should_set_message() {
-        // Given
+        // Arrange
         var message = "toto";
-        // When
+        // Act
         var exception = new GreetingNotFoundException(message);
-        // Then
+        // Assert
         assertThat(exception).extracting(Throwable::getMessage).isEqualTo(message);
     }
 }

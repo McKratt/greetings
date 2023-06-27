@@ -31,10 +31,10 @@ class ActuatorInfoIT {
 
     @Test
     void should_return_version_number() {
-        // Given
-        // When
+        // Arrange
+        // Act
         var response = template.getForEntity("/actuator/info", String.class);
-        // Then
+        // Assert
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).contains("\"version\":\"2.0.0\"");

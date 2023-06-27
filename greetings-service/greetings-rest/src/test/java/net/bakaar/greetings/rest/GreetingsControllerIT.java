@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
-import static java.lang.String.format;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -40,13 +39,13 @@ class GreetingsControllerIT {
 
     @Test
     void createGreeting_should_respond_with_correct_location_and_content_type() throws Exception {
-        // Given
+        // Arrange
         var greeting = mock(Greeting.class);
         var identifier = UUID.randomUUID();
         given(greeting.getIdentifier()).willReturn(identifier);
 
         given(service.createGreeting(any())).willReturn(greeting);
-        // When
+        // Act
         var response = mockMvc.perform(
                 post(basePath)
                         .accept(APPLICATION_JSON, APPLICATION_PROBLEM_JSON)
@@ -57,7 +56,7 @@ class GreetingsControllerIT {
                                 }""")
                         .contentType(APPLICATION_JSON)
         );
-        // Then
+        // Assert
         response.andExpect(
                 status().isCreated()
         ).andExpect(
@@ -67,13 +66,13 @@ class GreetingsControllerIT {
 
     @Test
     void updateGreeting_should_answer_with_correct_content_type() throws Exception {
-        // Given
+        // Arrange
         var greeting = mock(Greeting.class);
         var identifier = UUID.randomUUID();
         var type = "anniversary";
         var command = new UpdateGreetingCommand(identifier, type);
         given(service.changeType(command)).willReturn(greeting);
-        // When
+        // Act
         var response = mockMvc.perform(
                 put(basePath + "/" + identifier)
                         .accept(APPLICATION_JSON, APPLICATION_PROBLEM_JSON)
@@ -84,7 +83,7 @@ class GreetingsControllerIT {
                                 """.formatted(type))
                         .contentType(APPLICATION_JSON)
         );
-        // Then
+        // Assert
         response.andExpect(
                 status().isOk()
         ).andExpect(
@@ -94,16 +93,16 @@ class GreetingsControllerIT {
 
     @Test
     void read_should_return_correct_content_type() throws Exception {
-        // Given
+        // Arrange
         var greeting = Greeting.of("Birthday").to("Noa").build();
         var identifier = UUID.randomUUID();
         given(service.read(identifier)).willReturn(greeting);
-        // When
+        // Act
         var response = mockMvc.perform(
                 get(basePath + "/" + identifier)
                         .accept(APPLICATION_JSON, APPLICATION_PROBLEM_JSON)
         );
-        // Then
+        // Assert
         response.andExpect(
                 status().isOk()
         ).andExpect(

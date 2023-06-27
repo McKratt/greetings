@@ -29,10 +29,10 @@ class GreetingsStatsTest {
             "CHRISTMAS"
     })
     void should_return_the_corresponding_stat(String type) {
-        // Given
-        // When
+        // Arrange
+        // Act
         var stat = stats.getStatsFor(type);
-        // Then
+        // Assert
         assertThat(stat).isPresent().get().isEqualTo(1L);
     }
 
@@ -49,30 +49,30 @@ class GreetingsStatsTest {
             "CHRISTMAS",
     })
     void should_increase_the_correct_counter(String type) {
-        // Given
-        // When
+        // Arrange
+        // Act
         var returnedStats = stats.increaseCounterFor(type);
-        // Then
+        // Assert
         var stat = returnedStats.getStatsFor(type);
         assertThat(stat).isPresent().get().isEqualTo(2L);
     }
 
     @Test
     void should_return_0_if_the_counter_no_present() {
-        // Given
-        // When
+        // Arrange
+        // Act
         var stat = stats.getStatsFor("Easter");
-        // Then
+        // Assert
         assertThat(stat).isPresent().get().isEqualTo(0L);
     }
 
     @Test
     void should_create_and_return_1_if_counter_doesnt_exist() {
-        // Given
+        // Arrange
         final String type = "Easter";
-        // When
+        // Act
         var returnedStats = stats.increaseCounterFor(type);
-        // Then
+        // Assert
         var stat = returnedStats.getStatsFor(type);
         assertThat(stat).isPresent().get().isEqualTo(1L);
     }

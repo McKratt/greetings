@@ -41,7 +41,7 @@ class GreetingsControllerTest {
 
     @Test
     void createGreeting_should_map_greeting_to_message() {
-        // Given
+        // Arrange
         var name = "name";
         var type = "type";
         var command = new CreateGreetingCommand(type, name);
@@ -49,9 +49,9 @@ class GreetingsControllerTest {
         given(service.createGreeting(any())).willReturn(greeting);
         var message = mock(IdentifiedGreetingMessage.class);
         given(mapper.mapToIdentifiedMessage(greeting)).willReturn(message);
-        // When
+        // Act
         var receivedMessage = controller.createGreeting(command);
-        // Then
+        // Assert
         verify(mapper).mapToIdentifiedMessage(greeting);
         var captor = ArgumentCaptor.forClass(CreateGreetingCommand.class);
         verify(service).createGreeting(captor.capture());
@@ -62,7 +62,7 @@ class GreetingsControllerTest {
     }
     @Test
     void updateGreeting_should_map_greeting_to_message() {
-        // Given
+        // Arrange
         var type = "type";
         var identifier = UUID.randomUUID();
         var command = new UpdateGreetingCommandDTO();
@@ -71,9 +71,9 @@ class GreetingsControllerTest {
         given(service.changeType(any())).willReturn(greeting);
         var message = mock(GreetingMessage.class);
         given(mapper.mapToMessage(greeting)).willReturn(message);
-        // When
+        // Act
         var receivedMessage = controller.updateGreeting(identifier, command).getBody();
-        // Then
+        // Assert
         verify(mapper).mapToMessage(greeting);
         var captor = ArgumentCaptor.forClass(UpdateGreetingCommand.class);
         verify(service).changeType(captor.capture());
@@ -85,15 +85,15 @@ class GreetingsControllerTest {
 
     @Test
     void read_should_call_application_service() {
-        // Given
+        // Arrange
         var identifier = UUID.randomUUID();
         var greeting = mock(Greeting.class);
         var greetingJson = mock(GreetingJson.class);
         given(service.read(any())).willReturn(greeting);
         given(mapper.mapToJson(greeting)).willReturn(greetingJson);
-        // When
+        // Act
         var returnedGreeting = controller.readGreeting(identifier);
-        // Then
+        // Assert
         verify(service).read(identifier);
         assertThat(returnedGreeting).isSameAs(greetingJson);
     }

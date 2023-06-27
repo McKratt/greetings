@@ -56,30 +56,30 @@ class GreetingTypeTest {
     @ParameterizedTest
     @MethodSource
     void of_should_return_type(String type, GreetingType expected) {
-        // Given
-        // When
+        // Arrange
+        // Act
         var returnedType = GreetingType.of(type);
-        // Then
+        // Assert
         assertThat(returnedType).isSameAs(expected);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"birth", "christ", "bithday"})
     void of_should_throw_exception_if_type_unknown(String type) {
-        // Given
-        // When
+        // Arrange
+        // Act
         var thrown = catchThrowable(() -> GreetingType.of(type));
-        // Then
+        // Assert
         assertThat(thrown).isNotNull().isInstanceOf(GreetingWrongTypeException.class).extracting(Throwable::getMessage).asString().contains(type);
     }
 
     @ParameterizedTest
     @MethodSource
     void createMessage_should_return_the_correct_message(GreetingType type, String name, String expectedMessage) {
-        // Given
-        // When
+        // Arrange
+        // Act
         var message = type.createMessage(name);
-        // Then
+        // Assert
         assertThat(message).isEqualTo(expectedMessage);
     }
 

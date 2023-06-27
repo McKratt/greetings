@@ -27,16 +27,16 @@ class StatRestControllerTest {
 
     @Test
     void should_call_application_service() {
-        // Given
+        // Arrange
         var stats = mock(GreetingsStats.class);
         var counters = mock(Map.class);
         given(stats.getCounters()).willReturn(counters);
         given(service.retrieveGreetingsStats()).willReturn(Mono.just(stats));
-        // When
+        // Act
         StepVerifier.create(controller.getAllStats())
                 .expectNextMatches(json -> json.counters().equals(counters))
                 .verifyComplete();
-        // Then
+        // Assert
         verify(service).retrieveGreetingsStats();
     }
 }

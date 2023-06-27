@@ -33,7 +33,7 @@ class GreetingRepositoryJPAAdapterTest {
 
     @Test
     void find_should_call_repository() {
-        // Given
+        // Arrange
         var jpaEntity = new GreetingJpaEntity();
         var identifier = UUID.randomUUID();
         jpaEntity.setIdentifier(identifier.toString());
@@ -45,9 +45,9 @@ class GreetingRepositoryJPAAdapterTest {
         jpaEntity.setType(typeJpaEntity);
         given(jpaRepository.findByIdentifier(any())).willReturn(Optional.of(jpaEntity));
 
-        // When
+        // Act
         var foundGreeting = adapter.find(identifier);
-        // Then
+        // Assert
         verify(jpaRepository).findByIdentifier(identifier.toString());
         assertThat(foundGreeting).isNotEmpty();
         var greeting = foundGreeting.get();
@@ -58,12 +58,12 @@ class GreetingRepositoryJPAAdapterTest {
 
     @Test
     void find_should_return_empty_if_not_found() {
-        // Given
+        // Arrange
         var identifier = UUID.randomUUID();
         given(jpaRepository.findByIdentifier(any())).willReturn(Optional.empty());
-        // When
+        // Act
         var foundGreeting = adapter.find(identifier);
-        // Then
+        // Assert
         assertThat(foundGreeting).isEmpty();
         verify(jpaRepository).findByIdentifier(identifier.toString());
     }
@@ -86,11 +86,11 @@ class GreetingRepositoryJPAAdapterTest {
 
         @Test
         void put_should_map_to_entity_and_save_it() {
-            // Given
+            // Arrange
 
-            // When
+            // Act
             var returned = adapter.put(greeting);
-            // Then
+            // Assert
             var jpaEntityCaptor = ArgumentCaptor.forClass(GreetingJpaEntity.class);
             verify(typeJpaRepository).findByName("BIRTHDAY");
             verify(jpaRepository).save(jpaEntityCaptor.capture());
@@ -107,11 +107,11 @@ class GreetingRepositoryJPAAdapterTest {
 
         @Test
         void put_should_check_if_greeting_already_exists_use_the_existing_one() {
-            // Given
+            // Arrange
             given(jpaRepository.findByIdentifier(any())).willReturn(Optional.of(jpaEntity));
-            // When
+            // Act
             var returned = adapter.put(greeting);
-            // Then
+            // Assert
             verify(jpaRepository).findByIdentifier(greeting.getIdentifier().toString());
             verify(typeJpaRepository).findByName("BIRTHDAY");
             verify(jpaRepository).save(jpaEntity);

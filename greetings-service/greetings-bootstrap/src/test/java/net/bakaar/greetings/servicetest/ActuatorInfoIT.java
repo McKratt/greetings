@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,10 +26,10 @@ class ActuatorInfoIT {
 
     @Test
     void should_return_version_number() {
-        // Given
-        // When
+        // Arrange
+        // Act
         var response = template.getForEntity("/actuator/info", String.class);
-        // Then
+        // Assert
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).contains("\"version\":\"2.0.0\"");
