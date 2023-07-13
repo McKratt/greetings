@@ -1,40 +1,41 @@
 version: "3.8"
 services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.1
-    hostname: zookeeper
+  kafka:
+    #    From documentation https://docs.confluent.io/platform/current/installation/docker/config-reference.html#config-reference :
+    #    docker run -d \
+    #    --name=kafka-kraft \
+    #    -h kafka-kraft \
+    #    -p 9101:9101 \
+    #    -e KAFKA_NODE_ID=1 \
+    #    -e KAFKA_LISTENER_SECURITY_PROTOCOL_MAP='CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT' \
+    #    -e KAFKA_ADVERTISED_LISTENERS='PLAINTEXT://kafka-kraft:29092,PLAINTEXT_HOST://localhost:9092' \
+    #    -e KAFKA_JMX_PORT=9101 \
+    #    -e KAFKA_JMX_HOSTNAME=localhost \
+    #    -e KAFKA_PROCESS_ROLES='broker,controller' \
+    #    -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
+    #    -e KAFKA_CONTROLLER_QUORUM_VOTERS='1@kafka-kraft:29093' \
+    #    -e KAFKA_LISTENERS='PLAINTEXT://kafka-kraft:29092,CONTROLLER://kafka-kraft:29093,PLAINTEXT_HOST://0.0.0.0:9092' \
+    #    -e KAFKA_INTER_BROKER_LISTENER_NAME='PLAINTEXT' \
+    #    -e KAFKA_CONTROLLER_LISTENER_NAMES='CONTROLLER' \
+    #    -e CLUSTER_ID='MkU3OEVBNTcwNTJENDM2Qk' \
+    #    confluentinc/cp-kafka:7.4.0
+    image: confluentinc/cp-kafka:7.4.0
+    hostname: kafka-kraft
     ports:
-      - "2181:2181"
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-  broker:
-    image: confluentinc/cp-server:7.0.1
-    hostname: broker
-    depends_on:
-      - zookeeper
-    ports:
-      - "9092:9092"
       - "9101:9101"
     environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka-kraft:29092,PLAINTEXT_HOST://localhost:9092'
       KAFKA_JMX_PORT: 9101
       KAFKA_JMX_HOSTNAME: localhost
-      #      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
-      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
-      CONFLUENT_METRICS_ENABLE: 'true'
-      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka-kraft:29093'
+      KAFKA_LISTENERS: 'PLAINTEXT://kafka-kraft:29092,CONTROLLER://kafka-kraft:29093,PLAINTEXT_HOST://0.0.0.0:9092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
   db_greeting:
     image: postgres:13.5-alpine
     ports:
@@ -54,7 +55,7 @@ services:
   greetings:
     depends_on:
       - db_greeting
-      - broker
+      - kafka
     image: bakaar/greetings-service:2.0.0-sb3
     ports:
       - "9080:8080"
@@ -62,7 +63,7 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://db_greeting:5432/greetings"
       SPRING_DATASOURCE_USERNAME: greeting
       SPRING_DATASOURCE_PASSWORD: 123456
-      SPRING_KAFKA_BOOTSTRAP-SERVERS: "broker:29092"
+      SPRING_KAFKA_BOOTSTRAP-SERVERS: "kafka-kraft:29092"
       JAVA_TOOL_OPTIONS: "--enable-preview"
       GREETINGS_MESSAGE_PRODUCER_TOPIC-NAME: "greetings-topic"
       GREETINGS_MESSAGE_PRODUCER_NUM-PARTITION: 1
@@ -70,7 +71,7 @@ services:
   stats:
     depends_on:
       - dbStat
-      - broker
+      - kafka
       - greetings
     image: bakaar/greetings-stat-service:2.0.0-sb3
     ports:
@@ -82,7 +83,7 @@ services:
       SPRING_FLYWAY_URL: "jdbc:postgresql://dbStat:5432/stats"
       SPRING_FLYWAY_USER: stat
       SPRING_FLYWAY_PASSWORD: 123456
-      SPRING_KAFKA_BOOTSTRAP-SERVERS: "broker:29092"
+      SPRING_KAFKA_BOOTSTRAP-SERVERS: "kafka-kraft:29092"
       GREETINGS_MESSAGE_TOPIC: "greetings-topic"
       GREETINGS_STAT_REST_CLIENT_URL: "greetings:8080"
       JAVA_TOOL_OPTIONS: "--enable-preview -Djava.net.preferIPv4Stack=true"
