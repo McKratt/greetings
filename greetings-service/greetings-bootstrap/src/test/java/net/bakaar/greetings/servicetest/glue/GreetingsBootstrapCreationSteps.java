@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
@@ -53,7 +54,9 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 public class GreetingsBootstrapCreationSteps {
 
     public static final String topic = "test-topic";
-    private static final PostgreSQLContainer dbContainer = new PostgreSQLContainer("postgres")
+
+    @ServiceConnection
+    static final PostgreSQLContainer dbContainer = new PostgreSQLContainer("postgres")
             .withDatabaseName("greetings")
             .withUsername("foo")
             .withPassword("secret");
@@ -84,11 +87,6 @@ public class GreetingsBootstrapCreationSteps {
 
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url",
-                () -> String.format("jdbc:postgresql://localhost:%d/%s",
-                        dbContainer.getFirstMappedPort(), dbContainer.getDatabaseName()));
-        registry.add("spring.datasource.username", dbContainer::getUsername);
-        registry.add("spring.datasource.password", dbContainer::getPassword);
         registry.add("greetings.message.producer.topicName", () -> topic);
         registry.add("greetings.message.producer.numPartition", () -> 1);
         registry.add("greetings.message.producer.replication", () -> 1);
