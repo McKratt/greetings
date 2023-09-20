@@ -13,13 +13,14 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
     <properties>
-        <java.version>20</java.version>
+        <java.version>21</java.version>
         <cucumber.version>7.12.1</cucumber.version>
         <junit-bom.version>5.9.3</junit-bom.version>
         <testcontainer.version>1.18.3</testcontainer.version>
         <pact.version>4.6.0</pact.version>
         <jacoco.version>0.8.10</jacoco.version>
         <awaitility.version>4.2.0</awaitility.version>
+        <to-string-verifier.version>1.4.8</to-string-verifier.version>
         <spring.cloud.contract.version>4.0.3</spring.cloud.contract.version>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
@@ -95,6 +96,12 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
                 <version>${spring.cloud.contract.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.jparams</groupId>
+                <artifactId>to-string-verifier</artifactId>
+                <version>${to-string-verifier.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
