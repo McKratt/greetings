@@ -60,12 +60,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Unit Test
         working-directory: ./greetings-service
-        run: mvn -B -T 1C -Pcoverage test
+        run: mvn -B -T 1C -Pcoverage -Dmaven.main.skip test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Integration Test
         working-directory: ./greetings-service
-        run: mvn -B -T 1C -Pcoverage verify -DskipUTs
+        run: mvn -B -T 1C -Pcoverage verify -Dmaven.main.skip -Dmaven.test.skip -DskipUTs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Sonar Analysis
