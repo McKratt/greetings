@@ -46,7 +46,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'oracle'
+          distribution: 'temurin'
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -86,7 +86,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'oracle'
+          distribution: 'temurin'
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -129,7 +129,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'oracle'
+          distribution: 'temurin'
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -157,7 +157,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'oracle'
+          distribution: 'temurin'
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -185,7 +185,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'oracle'
+          distribution: 'temurin'
           cache: 'maven'
       - name: E2E Tests
         run: mvn -B test --file pom.xml
