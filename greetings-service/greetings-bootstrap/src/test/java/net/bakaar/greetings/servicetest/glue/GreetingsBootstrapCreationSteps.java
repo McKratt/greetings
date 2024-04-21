@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
@@ -18,19 +17,13 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.hamcrest.Matchers;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
-import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.net.URI;
 import java.time.Duration;
@@ -40,30 +33,16 @@ import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
+import static net.bakaar.greetings.servicetest.glue.CucumberSpringContextConfiguration.topic;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @Slf4j
-@EmbeddedKafka(partitions = 1, topics = GreetingsBootstrapCreationSteps.topic)
-@CucumberContextConfiguration
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+
 public class GreetingsBootstrapCreationSteps {
-
-    public static final String topic = "test-topic";
-
-    @ServiceConnection
-    static final PostgreSQLContainer dbContainer = new PostgreSQLContainer("postgres")
-            .withDatabaseName("greetings")
-            .withUsername("foo")
-            .withPassword("secret");
-
-    static {
-        dbContainer.start();
-    }
 
     private final String identifier = UUID.randomUUID().toString();
     private final RequestSpecification request = given()
@@ -85,13 +64,6 @@ public class GreetingsBootstrapCreationSteps {
     @Autowired
     private ObjectMapper jsonMapper;
 
-    @DynamicPropertySource
-    static void registerPgProperties(DynamicPropertyRegistry registry) {
-        registry.add("greetings.message.producer.topicName", () -> topic);
-        registry.add("greetings.message.producer.numPartition", () -> 1);
-        registry.add("greetings.message.producer.replication", () -> 1);
-        registry.add("spring.kafka.bootstrap-servers", () -> "${spring.embedded.kafka.brokers}");
-    }
 
     @Given("an existing {word} greeting")
     public void an_existing_greeting(String type) {

@@ -2,7 +2,6 @@ package net.bakaar.greetings.stat.bootstrap.glue;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.spring.CucumberContextConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import net.bakaar.greetings.message.GreetingsMessage;
 import net.bakaar.greetings.stat.persistence.CounterRepository;
@@ -11,21 +10,14 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.junit.jupiter.api.AfterAll;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
-import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.net.URI;
 import java.time.Duration;
@@ -34,21 +26,14 @@ import java.util.UUID;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
-import static net.bakaar.greetings.stat.bootstrap.glue.GreetingsStatsSteps.topic;
+import static net.bakaar.greetings.stat.bootstrap.glue.CucumberSpringContextConfiguration.greetings;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @Slf4j
-@CucumberContextConfiguration
-@EmbeddedKafka(partitions = 1, topics = topic)
-@SpringBootTest(webEnvironment = RANDOM_PORT, properties = {
-        "spring.profiles.active=test"
-})
-@AutoConfigureWireMock(port = 0)
 public class GreetingsStatsSteps {
 
     public static final String topic = "test-topic";
@@ -62,36 +47,6 @@ public class GreetingsStatsSteps {
     private int port;
     @Autowired
     private CounterRepository counterRepository;
-
-    private static final PostgreSQLContainer dbContainer = new PostgreSQLContainer("postgres")
-            .withDatabaseName("stats")
-            .withUsername("foo")
-            .withPassword("secret");
-
-    static {
-        dbContainer.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        dbContainer.stop();
-    }
-
-    @DynamicPropertySource
-    static void registerProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.r2dbc.url",
-                () -> String.format("r2dbc:postgresql://localhost:%d/%s",
-                        dbContainer.getFirstMappedPort(), dbContainer.getDatabaseName()));
-        registry.add("spring.r2dbc.password", dbContainer::getPassword);
-        registry.add("spring.r2dbc.username", dbContainer::getUsername);
-        registry.add("spring.flyway.url", () -> format("jdbc:postgresql://localhost:%d/%s",
-                dbContainer.getFirstMappedPort(), dbContainer.getDatabaseName()));
-        registry.add("spring.flyway.user", dbContainer::getUsername);
-        registry.add("spring.flyway.password", dbContainer::getPassword);
-        registry.add("greetings.message.topic", () -> topic);
-        registry.add("spring.kafka.bootstrap-servers", () -> "${spring.embedded.kafka.brokers}");
-        registry.add("greetings.stat.rest.client.url", () -> "http://localhost:${wiremock.server.port}");
-    }
 
     @When("I create a greeting")
     public void i_create_a_greetings() {
@@ -110,7 +65,7 @@ public class GreetingsStatsSteps {
         producer.send(new ProducerRecord<>(topic, identifier.toString(), message));
         producer.flush();
         // Stub the answer from greetings service
-        stubFor(get(urlEqualTo(format("/rest/api/v1/greetings/%s", identifier))).willReturn(aResponse()
+        greetings.stubFor(get(urlEqualTo(format("/rest/api/v1/greetings/%s", identifier))).willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
                 .withBody("""
