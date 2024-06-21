@@ -22,9 +22,7 @@ public class GreetingsMessageProcessor {
         handlers.stream()
                 .filter(handler -> handler.canHandle(message.type()))
                 .findFirst()
-                .orElseThrow(() -> {
-                    throw new HandlerNotFoundException(message.type());
-                })
+                .orElseThrow(() -> new HandlerNotFoundException(message.type()))
                 .handle(message.payload())
                 .onErrorMap(exception -> exception) // makes the exception go out to block the Thread.
                 .subscribe(null,

@@ -46,7 +46,7 @@ class GreetingsPactConsumerIT {
     @Test
     void should_read_greetings_from_pact(MockServer mockServer) {
         var webClient = WebClient.builder().baseUrl(mockServer.getUrl()).build();
-        var factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient)).build();
+        var factory = HttpServiceProxyFactory.builderFor(WebClientAdapter.create(webClient)).build();
         var adapter = new GreetingsRepositoryAdapter(factory.createClient(GreetingsRestClient.class));
         StepVerifier
                 .create(adapter.getGreetingForIdentifier(identifier))

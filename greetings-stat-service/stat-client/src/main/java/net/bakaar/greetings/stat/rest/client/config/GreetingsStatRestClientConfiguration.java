@@ -17,7 +17,7 @@ public class GreetingsStatRestClientConfiguration {
     @Bean
     GreetingsRestClient client(GreetingsStatRestClientProperties properties, WebClient.Builder builder) {
         WebClient client = builder.baseUrl(properties.getUrl()).build();
-        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(client)).build();
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(WebClientAdapter.create(client)).build();
 
         return factory.createClient(GreetingsRestClient.class);
     }

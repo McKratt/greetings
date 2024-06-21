@@ -8,13 +8,13 @@
     <artifactId>greetings-e2e</artifactId>
     <version>1.0.0</version>
     <properties>
-        <maven.compiler.target>21</maven.compiler.target>
-        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
+        <maven.compiler.source>22</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <cucumber.version>7.17.0</cucumber.version>
-        <testcontainer.version>1.19.7</testcontainer.version>
-        <assertj.version>3.25.3</assertj.version>
+        <cucumber.version>7.18.0</cucumber.version>
+        <testcontainer.version>1.19.8</testcontainer.version>
+        <assertj.version>3.26.0</assertj.version>
         <rest-assured.version>5.4.0</rest-assured.version>
         <logback.version>1.5.6</logback.version>
         <awaitility.version>4.2.1</awaitility.version>
