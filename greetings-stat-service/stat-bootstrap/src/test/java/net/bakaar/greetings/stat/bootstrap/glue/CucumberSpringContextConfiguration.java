@@ -9,7 +9,6 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 
 import static net.bakaar.greetings.stat.bootstrap.glue.GreetingsStatsSteps.topic;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -23,7 +22,6 @@ public class CucumberSpringContextConfiguration {
 
     public static final WireMockServer greetings = new WireMockServer(0);
 
-    @Container
     private static final PostgreSQLContainer dbContainer = new PostgreSQLContainer("postgres")
             .withDatabaseName("stats")
             .withUsername("foo")
