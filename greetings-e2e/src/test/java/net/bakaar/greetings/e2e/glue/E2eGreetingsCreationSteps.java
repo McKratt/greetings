@@ -19,7 +19,6 @@ import java.util.UUID;
 import static com.ninja_squad.dbsetup.Operations.*;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -37,7 +36,7 @@ public class E2eGreetingsCreationSteps {
                 .log().all(true)
                 .filters(new ResponseLoggingFilter())
                 .accept("application/json")
-                .get(String.format("http://localhost:%d/actuator/info", environment.getServicePort("greetings", 8080)))
+                .get(String.format("http://localhost:%d/actuator/info", environment.getServicePort("greetings_1", 8080)))
                 .then()
                 .extract()
                 .jsonPath()
@@ -49,7 +48,7 @@ public class E2eGreetingsCreationSteps {
                 .log().all(true)
                 .filters(new ResponseLoggingFilter())
                 .accept("application/json")
-                .get(String.format("http://localhost:%d/actuator/info", environment.getServicePort("stats", 8080)))
+                .get(String.format("http://localhost:%d/actuator/info", environment.getServicePort("stats_1", 8080)))
                 .then()
                 .extract()
                 .jsonPath()
@@ -65,7 +64,7 @@ public class E2eGreetingsCreationSteps {
     private Response response;
     private final String identifier = UUID.randomUUID().toString();
     private final String url = String.format("http://localhost:%d/rest/api/v1/greetings",
-            environment.getServicePort("greetings", 8080));
+            environment.getServicePort("greetings_1", 8080));
 
     @AfterAll
     static void afterAll() {
