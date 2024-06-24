@@ -21,9 +21,10 @@ public class StatRepositoryAdapter implements StatRepository {
     @Override
     public void put(GreetingsStats stats) {
         repository.saveAll(stats.getCounters()
-                .entrySet().stream()
-                .map(entry -> new Counter().setName(entry.getKey().toUpperCase(Locale.ROOT)).setCount(entry.getValue()))
-                .toList())
+                        .entrySet().stream()
+                        .map(entry -> new Counter().setName(entry.getKey().toUpperCase(Locale.ROOT)).setCount(entry.getValue()))
+                        .toList())
+                .doOnError(Mono::error)
                 .subscribe();
     }
 
