@@ -20,12 +20,14 @@ public class StatRepositoryAdapter implements StatRepository {
 
     @Override
     public void put(GreetingsStats stats) {
-        repository.saveAll(stats.getCounters()
-                        .entrySet().stream()
-                        .map(entry -> new Counter().setName(entry.getKey().toUpperCase(Locale.ROOT)).setCount(entry.getValue()))
-                        .toList())
-                .doOnError(Mono::error)
-                .subscribe();
+        stats.getCounters().forEach((key, value) ->
+                repository.findByName(key.toUpperCase(Locale.ROOT))
+                        .doOnError(Mono::error)
+                        .flatMap(found -> repository.save(found.setCount(value.longValue())))
+                        .doOnError(Mono::error)
+                        .switchIfEmpty(repository.save(new Counter().setCount(value).setName(key.toUpperCase(Locale.ROOT))))
+                        .doOnError(Mono::error)
+                        .subscribe());
     }
 
     @Override

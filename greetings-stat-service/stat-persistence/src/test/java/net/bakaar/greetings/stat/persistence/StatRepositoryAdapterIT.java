@@ -66,7 +66,6 @@ class StatRepositoryAdapterIT {
         repository.put(stats);
         // Assert
         StepVerifier.create(template.select(Counter.class).all())
-                .expectNextCount(1)
                 .assertNext(counter -> {
                     assertThat(counter.getName()).isEqualTo(name);
                     assertThat(counter.getCount()).isEqualTo(initialCounter + 1);
