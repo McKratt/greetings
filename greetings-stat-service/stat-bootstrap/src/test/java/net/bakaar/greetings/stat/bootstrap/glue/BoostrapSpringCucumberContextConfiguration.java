@@ -18,7 +18,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(classes = {StatSpringBootApplication.class}, webEnvironment = RANDOM_PORT, properties = {
         "spring.profiles.active=test"
 })
-public class CucumberSpringContextConfiguration {
+public class BoostrapSpringCucumberContextConfiguration {
 
     public static final WireMockServer greetings = new WireMockServer(0);
 
