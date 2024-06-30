@@ -1,6 +1,6 @@
 package net.bakaar.greetings.stat.bootstrap;
 
-import net.bakaar.greetings.stat.persistence.CounterRepository;
+import net.bakaar.greetings.stat.domain.StatRepository;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @EnableAutoConfiguration(exclude = {R2dbcAutoConfiguration.class, DataSourceAutoConfiguration.class})
 class ActuatorInfoIT {
     @MockBean
-    private CounterRepository repository;
+    private StatRepository repository;
     @MockBean
     private Flyway flyway;
     @Autowired

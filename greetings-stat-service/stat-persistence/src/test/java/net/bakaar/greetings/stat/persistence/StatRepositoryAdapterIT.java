@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.test.context.ContextConfiguration;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.HashMap;
@@ -17,7 +18,9 @@ import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataR2dbcTest
+@DataR2dbcTest(properties = {
+        "spring.r2dbc.url=r2dbc:h2:mem:///test?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+})
 @Import({StatRepositoryAdapter.class})
 @ContextConfiguration(classes = StatPersistenceTestApplication.class)
 class StatRepositoryAdapterIT {
@@ -31,7 +34,7 @@ class StatRepositoryAdapterIT {
     @AfterEach
     void tearDown() {
         template.select(Counter.class).all().subscribe(
-                counter -> template.delete(counter).subscribe()
+                counter -> template.delete(counter).doOnError(Mono::error).subscribe()
         );
     }
 
@@ -48,6 +51,28 @@ class StatRepositoryAdapterIT {
     }
 
     @Test
+    void should_increase_existing_counter() throws ExecutionException, InterruptedException {
+        // Arrange
+        var ety = new Counter();
+        var name = "BIRTHDAY";
+        ety.setName(name);
+        var initialCounter = 5L;
+        ety.setCount(initialCounter);
+        template.insert(ety).block();
+        var stats = repository.pop().get();
+        assertThat(stats.getStatsFor(name)).contains(initialCounter);
+        // Act
+        stats = stats.increaseCounterFor(name);
+        repository.put(stats);
+        // Assert
+        StepVerifier.create(template.select(Counter.class).all())
+                .assertNext(counter -> {
+                    assertThat(counter.getName()).isEqualTo(name);
+                    assertThat(counter.getCount()).isEqualTo(initialCounter + 1);
+                }).verifyComplete();
+    }
+
+    @Test
     void pop_should_get_counter_in_db() throws ExecutionException, InterruptedException {
         // Arrange
         var counter = new Counter();
@@ -59,7 +84,6 @@ class StatRepositoryAdapterIT {
                 .expectNextCount(1L)
                 .verifyComplete();
         // Act
-//        await().until();
         var stats = repository.pop().get();
         // Assert
         assertThat(stats).isNotNull();

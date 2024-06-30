@@ -22,7 +22,7 @@ public class StatPersistenceTestApplication {
         template.getDatabaseClient().sql("""
                 CREATE TABLE T_COUNTER
                 (PK_T_COUNTER SERIAL PRIMARY KEY,
-                S_NAME VARCHAR(255),
+                                S_NAME VARCHAR(255) NOT NULL UNIQUE,
                 L_COUNT NUMBER)""")
                 .fetch()
                 .rowsUpdated()

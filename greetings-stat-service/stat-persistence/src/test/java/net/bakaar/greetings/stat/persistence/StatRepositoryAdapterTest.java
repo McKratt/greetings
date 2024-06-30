@@ -8,15 +8,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class StatRepositoryAdapterTest {
@@ -31,13 +32,14 @@ class StatRepositoryAdapterTest {
         // Arrange
         var stats = mock(GreetingsStats.class);
         given(stats.getCounters()).willReturn(Map.of("birthday", 0L));
-        given(repository.saveAll(any(Iterable.class))).willAnswer(invocation -> Flux.fromIterable(invocation.getArgument(0)));
+        given(repository.findByName(anyString())).willReturn(Mono.empty());
+        given(repository.save(any(Counter.class))).willAnswer(invocationOnMock -> Mono.just(invocationOnMock.getArgument(0)));
         // Act
         adapter.put(stats);
         // Assert
-        var captor = ArgumentCaptor.forClass(Iterable.class);
-        verify(repository).saveAll(captor.capture());
-        var counter = (Counter) captor.getValue().iterator().next();
+        var captor = ArgumentCaptor.forClass(Counter.class);
+        verify(repository).save(captor.capture());
+        var counter = captor.getValue();
         assertThat(counter).isNotNull();
         assertThat(counter.getName()).isEqualTo("BIRTHDAY");
     }
@@ -47,13 +49,14 @@ class StatRepositoryAdapterTest {
         // Arrange
         var stats = mock(GreetingsStats.class);
         given(stats.getCounters()).willReturn(Map.of("birthday", 0L, "anniversary", 0L));
-        given(repository.saveAll(any(Iterable.class))).willAnswer(invocation -> Flux.fromIterable(invocation.getArgument(0)));
+        given(repository.findByName(anyString())).willReturn(Mono.empty());
+        given(repository.save(any(Counter.class))).willAnswer(invocationOnMock -> Mono.just(invocationOnMock.getArgument(0)));
         // Act
         adapter.put(stats);
         // Assert
-        var captor = ArgumentCaptor.forClass(Iterable.class);
-        verify(repository).saveAll(captor.capture());
-        var list = captor.getValue();
+        var captor = ArgumentCaptor.forClass(Counter.class);
+        verify(repository, times(2)).save(captor.capture());
+        var list = captor.getAllValues();
         assertThat(list).isNotNull().hasSize(2);
     }
 
