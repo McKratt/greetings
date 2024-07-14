@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class GreetingsStatsTest {
 
-    private final GreetingsStats stats = new GreetingsStats(
+    private GreetingsStats stats = new GreetingsStats(
             new HashMap<>(
                     Map.of("BIRTHDAY", 1L, "ANNIVERSARY", 1L, "CHRISTMAS", 1L)
             ));
@@ -34,6 +34,7 @@ class GreetingsStatsTest {
         var stat = stats.getStatsFor(type);
         // Assert
         assertThat(stat).isPresent().get().isEqualTo(1L);
+        assertThat(stats.isEmpty()).isFalse();
     }
 
     @ParameterizedTest
@@ -75,5 +76,17 @@ class GreetingsStatsTest {
         // Assert
         var stat = returnedStats.getStatsFor(type);
         assertThat(stat).isPresent().get().isEqualTo(1L);
+    }
+
+    @Test
+    void should_return_empty_if_no_counters() {
+        stats = new GreetingsStats(new HashMap<>());
+        assertThat(stats.isEmpty()).isTrue();
+    }
+
+    @Test
+    void should_return_empty_if_no_counters_null() {
+        stats = new GreetingsStats(null);
+        assertThat(stats.isEmpty()).isTrue();
     }
 }

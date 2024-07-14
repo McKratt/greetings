@@ -34,7 +34,7 @@ class StatRestControllerTest {
         given(service.retrieveGreetingsStats()).willReturn(Mono.just(stats));
         // Act
         StepVerifier.create(controller.getAllStats())
-                .expectNextMatches(json -> json.counters().equals(counters))
+                .expectNextMatches(json -> json.getBody().counters().equals(counters))
                 .verifyComplete();
         // Assert
         verify(service).retrieveGreetingsStats();

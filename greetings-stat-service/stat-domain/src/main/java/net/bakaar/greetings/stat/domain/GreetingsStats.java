@@ -24,4 +24,8 @@ public class GreetingsStats {
                 .orElseGet(() -> counters.put(type.toUpperCase(Locale.ROOT), 1L));
         return this;
     }
+
+    public boolean isEmpty() {
+        return counters == null || counters.isEmpty();
+    }
 }

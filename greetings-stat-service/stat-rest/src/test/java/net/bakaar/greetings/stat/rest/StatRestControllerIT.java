@@ -10,6 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.BDDMockito.given;
@@ -47,5 +48,18 @@ class StatRestControllerIT {
                             }
                         }""");
 
+    }
+
+    @Test
+    void should_respond_with_204() {
+        // Arrange
+        given(service.retrieveGreetingsStats()).willReturn(Mono.just(new GreetingsStats(new HashMap<>())));
+        // Act
+        client.get()
+                .uri("/rest/api/v1/stats")
+                .accept(APPLICATION_JSON)
+                .exchange()
+                // Assert
+                .expectStatus().isNoContent();
     }
 }
