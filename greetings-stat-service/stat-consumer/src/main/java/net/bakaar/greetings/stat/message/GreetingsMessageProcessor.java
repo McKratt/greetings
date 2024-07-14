@@ -24,7 +24,7 @@ public class GreetingsMessageProcessor {
                 .findFirst()
                 .orElseThrow(() -> new HandlerNotFoundException(message.type()))
                 .handle(message.payload())
-                .onErrorMap(exception -> exception) // makes the exception go out to block the Thread.
+                .onErrorMap(exception -> exception) // makes the exception go out to block the Process.
                 .subscribe(null,
                         null,
                         ack::acknowledge);
