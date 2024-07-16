@@ -1,5 +1,15 @@
-# Docker
+# Build the Docker image
 
-There is no docker file here, use the spring boot maven plugin ability to build the docker image
+## Locally with docker cli
 
-`mvn spring-boot:build-image`
+```shell
+cd stat-boostrap
+docker build -t bakaar/greetings-stat-service:2.0.0-sb3 -f src/docker/Dockerfile .
+```
+
+## Locally with Maven
+
+```shell
+cd stat-bootstrap
+mvn -PbuildImage -DskipUTs -DskipITs package
+```

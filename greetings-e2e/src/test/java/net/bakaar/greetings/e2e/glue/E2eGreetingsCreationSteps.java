@@ -19,6 +19,7 @@ import java.util.UUID;
 import static com.ninja_squad.dbsetup.Operations.*;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -63,8 +64,10 @@ public class E2eGreetingsCreationSteps {
 
     private Response response;
     private final String identifier = UUID.randomUUID().toString();
-    private final String url = String.format("http://localhost:%d/rest/api/v1/greetings",
+    private final String greetingsUrl = String.format("http://localhost:%d/rest/api/v1/greetings",
             environment.getServicePort("greetings_1", 8080));
+    private final String statsUrl = String.format("http://localhost:%d/rest/api/v1/stats",
+            environment.getServicePort("stats_1", 8080));
 
     @AfterAll
     static void afterAll() {
@@ -98,7 +101,7 @@ public class E2eGreetingsCreationSteps {
                 {
                    "type": "%s",
                    "name": "%s"
-                }""".formatted(type, name)).post(url);
+                }""".formatted(type, name)).post(greetingsUrl);
     }
 
     @When("I change the type to {word}")
@@ -107,7 +110,20 @@ public class E2eGreetingsCreationSteps {
                 {
                   "newType":"%s"
                 }
-                """.formatted(type)).put(url + "/" + identifier);
+                """.formatted(type)).put(greetingsUrl + "/" + identifier);
+    }
+
+    @When("I create a greeting")
+    public void i_create_a_greeting() {
+        iCreateAGreetingForName("CHRISTMAS", "Charles");
+    }
+
+    @Then("the counter should be {int}")
+    public void the_counter_should_be(Integer counter) {
+        await().until(() -> request.get(statsUrl).statusCode() != 204);
+        assertThat(request.get(statsUrl)
+                .jsonPath()
+                .<Integer>get("counters.CHRISTMAS")).isEqualTo(counter);
     }
 
     @Then("the greeting is now a {word} one")

@@ -164,12 +164,16 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-stats-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-stats-m2-
-      - name: Package + deploy
+      - name: Package Jar + Build Image
         working-directory: ./greetings-stat-service
-        run: mvn -B -DskipTests -DskipUTs -PbuildImage package --file pom.xml
+        run: mvn -B -DskipTests -DskipUTs package --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+      - name: Deploy image
+        run: mvn -B docker:push
+        env:
+          registry.username: ${{ secrets.DOCKER_USERNAME }}
+          registry.password: ${{ secrets.REGISTRY_TOKEN }}
 
   e2e:
     name: E2E Tests
