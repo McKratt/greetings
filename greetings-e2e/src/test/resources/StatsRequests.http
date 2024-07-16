@@ -1,0 +1,16 @@
+### Send POST create a greeting
+POST http://localhost:9080/rest/api/v1/greetings
+Content-Type: application/json
+
+{
+  "type": "CHRISTMAS",
+  "name": "Marie Curie"
+}
+
+### GET a message
+GET http://localhost:9080/rest/api/v1/greetings/9d0b4ffc-0c07-4278-ba03-e0fa509cae07
+
+### GET all stats
+GET http://localhost:9081/rest/api/v1/stats
+
+###
