@@ -166,7 +166,7 @@ jobs:
           restore-keys: ${{ runner.os }}-stats-m2-
       - name: Package Jar + Build Image
         working-directory: ./greetings-stat-service
-        run: mvn -B -DskipTests -DskipUTs package --file pom.xml
+        run: mvn -B -DskipTests -DskipUTs -PbuildImage package --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy image
