@@ -55,7 +55,7 @@ jobs:
           restore-keys: ${{ runner.os }}-greetings-m2-
       - name: Build
         working-directory: ./greetings-service
-        run: mvn -B -T 1C -Pcoverage clean compile
+        run: mvn -B -T 1C clean compile
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Unit Test
@@ -65,12 +65,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Integration Test
         working-directory: ./greetings-service
-        run: mvn -B -T 1C -Pcoverage verify -Dmaven.main.skip -Dmaven.test.skip -DskipUTs
+        run: mvn -B -T 1C -Pcoverage verify -Dmaven.main.skip -DskipUTs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Sonar Analysis
         working-directory: ./greetings-service
-        run: mvn -B -Pcoverage org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -DskipTests -DskipUTs
+        run: mvn -B -Pcoverage org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dmaven.test.skip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
@@ -95,22 +95,22 @@ jobs:
           restore-keys: ${{ runner.os }}-stats-m2-
       - name: Build
         working-directory: ./greetings-stat-service
-        run: mvn -B -T 1C -Pcoverage clean compile
+        run: mvn -B -T 1C clean compile
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Unit Test
         working-directory: ./greetings-stat-service
-        run: mvn -B -T 1C -Pcoverage test
+        run: mvn -B -T 1C -Pcoverage test -Dmaven.main.skip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Integration Test
         working-directory: ./greetings-stat-service
-        run: mvn -B -T 1C -Pcoverage verify -DskipUTs
+        run: mvn -B -T 1C -Pcoverage verify -Dmaven.main.skip -DskipUTs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Sonar Analysis
         working-directory: ./greetings-stat-service
-        run: mvn -B -Pcoverage org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -DskipTests -DskipUTs
+        run: mvn -B -Pcoverage org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dmaven.test.skip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
