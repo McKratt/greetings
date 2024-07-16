@@ -171,6 +171,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy image
         run: mvn -B docker:push
+        working-directory: ./greetings-stat-service/stat-bootstrap
         env:
           registry.username: ${{ secrets.DOCKER_USERNAME }}
           registry.password: ${{ secrets.REGISTRY_TOKEN }}
