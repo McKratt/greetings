@@ -170,11 +170,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy image
-        run: mvn -B docker:push
+        run: mvn -B docker:push -Dregistry.username=${REGISTRY_USERNAME} -Dregistry.password=${REGISTRY_PASSWORD}
         working-directory: ./greetings-stat-service/stat-bootstrap
         env:
-          registry.username: ${{ secrets.DOCKER_USERNAME }}
-          registry.password: ${{ secrets.REGISTRY_TOKEN }}
+          REGISTRY_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_TOKEN }}
 
   e2e:
     name: E2E Tests
