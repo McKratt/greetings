@@ -309,6 +309,11 @@
     de-indent "^1.0.2"
     he "^1.2.0"
 
+"@vue/devtools-api@^6.6.3":
+  version "6.6.3"
+  resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.6.3.tgz#b23a588154cba8986bba82b6e1d0248bde3fd1a0"
+  integrity sha512-0MiMsFma/HqA6g3KLKn+AGpL1kgKhFWszC9U29NfpWK5LE7bjeXxySWJrOJ77hBz+TBrBQ7o4QJqbPbqbs8rJw==
+
 "@vue/language-core@2.0.29":
   version "2.0.29"
   resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-2.0.29.tgz#19462d786cd7a1c21dbe575b46970a57094e0357"
@@ -540,6 +545,13 @@ vscode-uri@^3.0.8:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/vscode-uri/-/vscode-uri-3.0.8.tgz#1770938d3e72588659a172d0fd4642780083ff9f"
   integrity sha512-AyFQ0EVmsOZOlAnxoFOGOq1SQDWAB7C6aqMGS23svWAllfOaxbuFvcT8D1i8z3Gyn8fraVeZNNmN6e9bxxXkKw==
+
+vue-router@4:
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.4.3.tgz#58a39dc804632bfb6d26f052aa8f6718bd130299"
+  integrity sha512-sv6wmNKx2j3aqJQDMxLFzs/u/mjA9Z5LCgy6BE0f7yFWMjrPLnS/sPNn8ARY/FXw6byV18EFutn5lTO6+UsV5A==
+  dependencies:
+    "@vue/devtools-api" "^6.6.3"
 
 vue-tsc@^2.0.29:
   version "2.0.29"
