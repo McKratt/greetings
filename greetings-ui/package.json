@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@material-tailwind/html": "^2.2.2",
     "vue": "^3.4.35",
     "vue-router": "4"
   },
