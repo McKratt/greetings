@@ -1,0 +1,5 @@
+export enum EventType {
+    CHRISTMAS = 'CHRISTMAS',
+    BIRTHDAY = 'BIRTHDAY',
+    ANNIVERSARY = 'ANNIVERSARY',
+}
