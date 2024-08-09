@@ -24,12 +24,15 @@
       </div>
     </div>
   </nav>
-  <main>
+  <main class="main-content">
     <RouterView/>
   </main>
 </template>
 
 <style scoped>
+.main-content {
+  @apply flex flex-col justify-around w-screen h-screen
+}
 .main-nav {
   @apply block w-full max-w-screen-xl px-6 py-3 mx-auto text-white bg-white border shadow-md rounded-xl border-white/80 bg-opacity-80 backdrop-blur-2xl backdrop-saturate-200
 }
