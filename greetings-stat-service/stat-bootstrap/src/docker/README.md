@@ -4,7 +4,7 @@
 
 ```shell
 cd stat-boostrap
-docker build -t bakaar/greetings-stat-service:2.0.0-sb3 -f src/docker/Dockerfile .
+docker build -t bakaar/greetings-stat-composables:2.0.0-sb3 -f src/docker/Dockerfile .
 ```
 
 ## Locally with Maven
