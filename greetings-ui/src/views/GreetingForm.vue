@@ -3,6 +3,8 @@ import GreetingInput from "../components/GreetingInput.vue";
 import {Greeting} from "../models/greeting.model.ts";
 import {EventType} from "../models/event-type.model.ts";
 import GreetingDropdown from "../components/GreetingDropdown.vue";
+import {greetingRepository} from "../composables/GreetingsRepository.ts";
+import router from "../router.ts";
 
 let name: string = '';
 let type: string = '';
@@ -20,6 +22,8 @@ function updateType(value: string): void {
 function submit(): void {
   const payload: Greeting = new Greeting(EventType[type as keyof typeof EventType], name)
   console.log(JSON.stringify(payload))
+  let message = greetingRepository.createGreeting(payload)
+  router.push(`/messages/${message.id}`)
 }
 </script>
 

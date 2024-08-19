@@ -16,6 +16,10 @@ export default createRouter({
         {
             path: '/stats',
             component: () => import('./views/Stats.vue'),
+        },
+        {
+            path: '/messages/:id',
+            component: ()=> import('./views/Message.vue')
         }
     ]
 })
