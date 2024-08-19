@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./greetings-service
+        working-directory: ./greetings-composables
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 25
@@ -54,22 +54,22 @@ jobs:
           key: ${{ runner.os }}-greetings-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-greetings-m2-
       - name: Build
-        working-directory: ./greetings-service
+        working-directory: ./greetings-composables
         run: mvn -B -T 1C clean compile
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Unit Test
-        working-directory: ./greetings-service
+        working-directory: ./greetings-composables
         run: mvn -B -T 1C -Pcoverage -Dmaven.main.skip test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Integration Test
-        working-directory: ./greetings-service
+        working-directory: ./greetings-composables
         run: mvn -B -T 1C -Pcoverage verify -Dmaven.main.skip -DskipUTs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Sonar Analysis
-        working-directory: ./greetings-service
+        working-directory: ./greetings-composables
         run: mvn -B -Pcoverage org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dmaven.test.skip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./greetings-stat-service
+        working-directory: ./greetings-stat-composables
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 25
@@ -94,22 +94,22 @@ jobs:
           key: ${{ runner.os }}-stats-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-stats-m2-
       - name: Build
-        working-directory: ./greetings-stat-service
+        working-directory: ./greetings-stat-composables
         run: mvn -B -T 1C clean compile
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Unit Test
-        working-directory: ./greetings-stat-service
+        working-directory: ./greetings-stat-composables
         run: mvn -B -T 1C -Pcoverage test -Dmaven.main.skip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Integration Test
-        working-directory: ./greetings-stat-service
+        working-directory: ./greetings-stat-composables
         run: mvn -B -T 1C -Pcoverage verify -Dmaven.main.skip -DskipUTs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Sonar Analysis
-        working-directory: ./greetings-stat-service
+        working-directory: ./greetings-stat-composables
         run: mvn -B -Pcoverage org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dmaven.test.skip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -122,7 +122,7 @@ jobs:
     if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/spring_boot_3')
     defaults:
       run:
-        working-directory: ./greetings-service
+        working-directory: ./greetings-composables
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 25
@@ -137,7 +137,7 @@ jobs:
           key: ${{ runner.os }}-greetings-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-greetings-m2-
       - name: Package + deploy
-        working-directory: ./greetings-service
+        working-directory: ./greetings-composables
         run: mvn -B -DskipTests -DskipUTs -PbuildImage package --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -150,7 +150,7 @@ jobs:
     if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/spring_boot_3')
     defaults:
       run:
-        working-directory: ./greetings-stat-service
+        working-directory: ./greetings-stat-composables
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 25
@@ -165,13 +165,13 @@ jobs:
           key: ${{ runner.os }}-stats-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-stats-m2-
       - name: Package Jar + Build Image
-        working-directory: ./greetings-stat-service
+        working-directory: ./greetings-stat-composables
         run: mvn -B -DskipTests -DskipUTs -PbuildImage package --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy image
         run: mvn -B docker:push -Dregistry.username=${REGISTRY_USERNAME} -Dregistry.password=${REGISTRY_PASSWORD}
-        working-directory: ./greetings-stat-service/stat-bootstrap
+        working-directory: ./greetings-stat-composables/stat-bootstrap
         env:
           REGISTRY_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           REGISTRY_PASSWORD: ${{ secrets.REGISTRY_TOKEN }}
