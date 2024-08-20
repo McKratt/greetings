@@ -3,9 +3,13 @@
 </script>
 
 <template>
-  <p>Message work</p>
+  <article class="main-content">
+    <p>Message work</p>
+  </article>
 </template>
 
 <style scoped>
-
+.main-content {
+  @apply mx-auto
+}
 </style>
