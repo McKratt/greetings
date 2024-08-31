@@ -12,18 +12,18 @@
         <maven.compiler.source>22</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <cucumber.version>7.18.0</cucumber.version>
-        <testcontainer.version>1.19.8</testcontainer.version>
-        <assertj.version>3.26.0</assertj.version>
-        <rest-assured.version>5.4.0</rest-assured.version>
-        <logback.version>1.5.6</logback.version>
-        <awaitility.version>4.2.1</awaitility.version>
+        <cucumber.version>7.18.1</cucumber.version>
+        <testcontainer.version>1.20.1</testcontainer.version>
+        <assertj.version>3.26.3</assertj.version>
+        <rest-assured.version>5.5.0</rest-assured.version>
+        <logback.version>1.5.7</logback.version>
+        <awaitility.version>4.2.2</awaitility.version>
         <dbsetup.version>2.1.0</dbsetup.version>
-        <postgresql.version>42.7.3</postgresql.version>
-        <junit-bom.version>5.10.2</junit-bom.version>
-        <maven-surefire-plugin.version>3.3.0</maven-surefire-plugin.version>
-        <maven-install-plugin.version>3.1.2</maven-install-plugin.version>
-        <maven-deploy-plugin.version>3.1.2</maven-deploy-plugin.version>
+        <postgresql.version>42.7.4</postgresql.version>
+        <junit-bom.version>5.11.0</junit-bom.version>
+        <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
+        <maven-install-plugin.version>3.1.3</maven-install-plugin.version>
+        <maven-deploy-plugin.version>3.1.3</maven-deploy-plugin.version>
         <mavan-compiler-plugin.version>3.13.0</mavan-compiler-plugin.version>
         <argLine></argLine>
     </properties>

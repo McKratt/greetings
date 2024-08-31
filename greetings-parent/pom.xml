@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.2</version>
+        <version>3.3.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>net.bakaar</groupId>
@@ -14,14 +14,14 @@
     <packaging>pom</packaging>
     <properties>
         <java.version>22</java.version>
-        <cucumber.version>7.18.0</cucumber.version>
-        <junit-bom.version>5.10.2</junit-bom.version>
-        <testcontainer.version>1.19.8</testcontainer.version>
-        <pact.version>4.6.10</pact.version>
+        <cucumber.version>7.18.1</cucumber.version>
+        <junit-bom.version>5.11.0</junit-bom.version>
+        <testcontainer.version>1.20.1</testcontainer.version>
+        <pact.version>4.6.14</pact.version>
         <jacoco.version>0.8.12</jacoco.version>
-        <awaitility.version>4.2.1</awaitility.version>
+        <awaitility.version>4.2.2</awaitility.version>
         <to-string-verifier.version>1.4.8</to-string-verifier.version>
-        <wiremock.version>3.6.0</wiremock.version>
+        <wiremock.version>3.9.1</wiremock.version>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
         <sonar.organization>mckratt</sonar.organization>
@@ -31,7 +31,7 @@
             **/*Application.java,
             jacoco-report/**
         </sonar.coverage.exclusions>
-        <docker-maven-plugin.version>0.44.0</docker-maven-plugin.version>
+        <docker-maven-plugin.version>0.45.0</docker-maven-plugin.version>
     </properties>
     <dependencyManagement>
         <dependencies>
