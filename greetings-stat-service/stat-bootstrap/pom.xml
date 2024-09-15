@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>stat-bootstrap</artifactId>
     <properties>
-        <image.name>bakaar/greetings-stat-service:${project.version}-sb3</image.name>
+        <image.name>bakaar/greetings-stat-service:${project.version}-sb3-aot</image.name>
         <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}
         </sonar.coverage.jacoco.xmlReportPaths>
     </properties>
@@ -130,6 +130,12 @@
                     </layers>
                 </configuration>
                 <executions>
+                    <execution>
+                        <id>process-aot</id>
+                        <goals>
+                            <goal>process-aot</goal>
+                        </goals>
+                    </execution>
                     <execution>
                         <id>repackage</id>
                         <goals>
