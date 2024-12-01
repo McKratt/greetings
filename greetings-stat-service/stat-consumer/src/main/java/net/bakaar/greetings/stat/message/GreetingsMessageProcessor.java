@@ -14,8 +14,12 @@ import java.util.Set;
 @Slf4j
 public class GreetingsMessageProcessor {
 
-    @Autowired
     private final Set<GreetingMessagePayloadHandler> handlers = new HashSet<>();
+
+    @Autowired
+    public void setHandlers(Set<GreetingMessagePayloadHandler> handlers) {
+        this.handlers.addAll(handlers);
+    }
 
     @KafkaListener(topics = "${greetings.message.topic}")
     public void processMessage(GreetingsMessage message, Acknowledgment ack) {

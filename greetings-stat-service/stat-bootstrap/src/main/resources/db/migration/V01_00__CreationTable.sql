@@ -1,6 +1,6 @@
-CREATE TABLE T_COUNTER
+CREATE TABLE t_counter
 (
-    PK_T_COUNTER SERIAL PRIMARY KEY NOT NULL,
-    S_NAME VARCHAR(255) NOT NULL UNIQUE,
-    L_COUNT      INTEGER            NOT NULL
+    pk_t_counter SERIAL PRIMARY KEY NOT NULL,
+    s_name       VARCHAR(255)       NOT NULL UNIQUE,
+    l_count      INTEGER            NOT NULL
 );

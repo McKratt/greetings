@@ -71,7 +71,7 @@ class StatApplicationServiceTest {
         given(statRepository.pop()).willThrow(exception);
         // Act
         StepVerifier.create(service.retrieveGreetingsStats())
-                .expectErrorSatisfies((ex) -> assertThat(ex).isSameAs(exception))
+                .expectErrorSatisfies(ex -> assertThat(ex).isSameAs(exception))
                 .verify();
         // Assert
         verify(statRepository).pop();
@@ -94,7 +94,7 @@ class StatApplicationServiceTest {
         doThrow(exception).when(statRepository).put(any());
         // Act
         StepVerifier.create(service.handle(event))
-                .expectErrorSatisfies((ex) -> assertThat(ex).isSameAs(exception))
+                .expectErrorSatisfies(ex -> assertThat(ex).isSameAs(exception))
                 .verify();
         // Assert
         verify(statRepository).pop();

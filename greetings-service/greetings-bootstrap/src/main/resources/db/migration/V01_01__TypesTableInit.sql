@@ -1,6 +1,6 @@
-INSERT INTO T_TYPES (PK_T_TYPES, S_NAME)
+INSERT INTO t_types (pk_t_types, s_name)
 VALUES (1, 'ANNIVERSARY');
-INSERT INTO T_TYPES (PK_T_TYPES, S_NAME)
+INSERT INTO t_types (pk_t_types, s_name)
 VALUES (2, 'CHRISTMAS');
-INSERT INTO T_TYPES (PK_T_TYPES, S_NAME)
+INSERT INTO t_types (pk_t_types, s_name)
 VALUES (3, 'BIRTHDAY');
