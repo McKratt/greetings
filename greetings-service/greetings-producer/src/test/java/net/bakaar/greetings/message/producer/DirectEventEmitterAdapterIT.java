@@ -33,7 +33,7 @@ import static org.mockito.Mockito.mock;
 @EnableAutoConfiguration
 class DirectEventEmitterAdapterIT {
 
-    private static final String topicName = "test_topic";
+    private static final String TEST_TOPIC = "test_topic";
     @Autowired
     private EmbeddedKafkaBroker embeddedKafka;
 
@@ -43,7 +43,7 @@ class DirectEventEmitterAdapterIT {
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.kafka.bootstrap-servers", () -> "${spring.embedded.kafka.brokers}");
-        registry.add("greetings.message.producer.topicName", () -> topicName);
+        registry.add("greetings.message.producer.topicName", () -> TEST_TOPIC);
     }
 
     @Test
@@ -52,7 +52,7 @@ class DirectEventEmitterAdapterIT {
         var identifier = UUID.randomUUID();
         var greeting = mock(Greeting.class);
         given(greeting.getIdentifier()).willReturn(identifier);
-        embeddedKafka.addTopics(topicName);
+        embeddedKafka.addTopics(TEST_TOPIC);
         // Act
         var event = GreetingCreated.of(greeting);
         emitter.emit(event);
@@ -63,9 +63,9 @@ class DirectEventEmitterAdapterIT {
         consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "net.bakaar.*");
         var factory = new DefaultKafkaConsumerFactory<String, GreetingsMessage>(consumerProps);
         var consumer = factory.createConsumer();
-        embeddedKafka.consumeFromAnEmbeddedTopic(consumer, topicName);
-        ConsumerRecord<String, GreetingsMessage> record = KafkaTestUtils.getSingleRecord(consumer, topicName, Duration.ofMillis(10000));
-        var receivedMessage = record.value();
+        embeddedKafka.consumeFromAnEmbeddedTopic(consumer, TEST_TOPIC);
+        ConsumerRecord<String, GreetingsMessage> consumedRecord = KafkaTestUtils.getSingleRecord(consumer, TEST_TOPIC, Duration.ofMillis(10000));
+        var receivedMessage = consumedRecord.value();
         assertThat(receivedMessage).isNotNull();
         assertThat(receivedMessage.type()).isEqualTo(URI.create("https://bakaar.net/greetings/events/greeting-created"));
         assertThat(receivedMessage.payload()).contains(identifier.toString());

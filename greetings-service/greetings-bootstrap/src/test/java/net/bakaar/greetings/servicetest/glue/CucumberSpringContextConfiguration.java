@@ -10,12 +10,12 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-@EmbeddedKafka(partitions = 1, topics = CucumberSpringContextConfiguration.topic)
+@EmbeddedKafka(partitions = 1, topics = CucumberSpringContextConfiguration.TEST_TOPIC)
 @CucumberContextConfiguration
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 public class CucumberSpringContextConfiguration {
 
-    public static final String topic = "test-topic";
+    public static final String TEST_TOPIC = "test-topic";
 
     @ServiceConnection
     static final PostgreSQLContainer dbContainer = new PostgreSQLContainer("postgres")
@@ -29,7 +29,7 @@ public class CucumberSpringContextConfiguration {
 
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
-        registry.add("greetings.message.producer.topicName", () -> topic);
+        registry.add("greetings.message.producer.topicName", () -> TEST_TOPIC);
         registry.add("greetings.message.producer.numPartition", () -> 1);
         registry.add("greetings.message.producer.replication", () -> 1);
         registry.add("spring.kafka.bootstrap-servers", () -> "${spring.embedded.kafka.brokers}");

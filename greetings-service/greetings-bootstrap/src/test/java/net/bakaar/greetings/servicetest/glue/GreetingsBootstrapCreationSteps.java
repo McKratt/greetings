@@ -33,7 +33,7 @@ import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
-import static net.bakaar.greetings.servicetest.glue.CucumberSpringContextConfiguration.topic;
+import static net.bakaar.greetings.servicetest.glue.CucumberSpringContextConfiguration.TEST_TOPIC;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -74,7 +74,7 @@ public class GreetingsBootstrapCreationSteps {
 
     @When("I create a(n) {word} greeting for {word}")
     public void iCreateAGreetingForName(String type, String name) {
-        await().until(() -> !kafkaAdmin.describeTopics(topic).isEmpty());
+        await().until(() -> !kafkaAdmin.describeTopics(TEST_TOPIC).isEmpty());
         response = request
                 .body("""
                         {
@@ -100,8 +100,8 @@ public class GreetingsBootstrapCreationSteps {
     @Then("a Greeting is created")
     public void a_greeting_is_created() throws JsonProcessingException {
         Consumer<String, GreetingsMessage> consumer = createConsumer();
-        ConsumerRecord<String, GreetingsMessage> record = KafkaTestUtils.getSingleRecord(consumer, messageProperties.getTopicName(), Duration.ofMillis(10000));
-        var message = record.value();
+        ConsumerRecord<String, GreetingsMessage> consumedRecord = KafkaTestUtils.getSingleRecord(consumer, messageProperties.getTopicName(), Duration.ofMillis(10000));
+        var message = consumedRecord.value();
         assertThat(message).isNotNull();
         assertThat(message.type()).isEqualTo(URI.create("https://bakaar.net/greetings/events/greeting-created"));
         var uuid = jsonMapper.readValue(response.getBody().asString(), IdentifiedGreetingMessage.class).id();
@@ -117,7 +117,7 @@ public class GreetingsBootstrapCreationSteps {
         consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "net.bakaar.*");
         var factory = new DefaultKafkaConsumerFactory<String, GreetingsMessage>(consumerProps);
         Consumer<String, GreetingsMessage> consumer = factory.createConsumer();
-        embeddedKafka.consumeFromAnEmbeddedTopic(consumer, topic);
+        embeddedKafka.consumeFromAnEmbeddedTopic(consumer, TEST_TOPIC);
         return consumer;
     }
 
