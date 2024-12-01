@@ -13,7 +13,7 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
     <properties>
-        <java.version>22</java.version>
+        <java.version>23</java.version>
         <cucumber.version>7.20.1</cucumber.version>
         <junit-bom.version>5.11.3</junit-bom.version>
         <testcontainer.version>1.20.4</testcontainer.version>
@@ -22,6 +22,7 @@
         <awaitility.version>4.2.2</awaitility.version>
         <to-string-verifier.version>1.4.8</to-string-verifier.version>
         <wiremock.version>3.10.0</wiremock.version>
+        <docker-maven-plugin.version>0.45.1Ø</docker-maven-plugin.version>
         <sonar.host.url>http://sonarcloud.io</sonar.host.url>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
         <sonar.organization>mckratt</sonar.organization>
@@ -31,7 +32,7 @@
             **/*Application.java,
             jacoco-report/**
         </sonar.coverage.exclusions>
-        <docker-maven-plugin.version>0.45.1Ø</docker-maven-plugin.version>
+        <maven.compiler.proc>full</maven.compiler.proc>
     </properties>
     <dependencyManagement>
         <dependencies>
