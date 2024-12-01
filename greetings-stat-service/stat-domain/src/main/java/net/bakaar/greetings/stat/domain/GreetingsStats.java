@@ -7,8 +7,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Getter
+@RequiredArgsConstructor
 public class GreetingsStats {
     /**
      * Key should be uppercase.
