@@ -22,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import java.net.URI;
 import java.util.UUID;
 
-import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -48,7 +47,7 @@ public class GreetingsCreationSteps {
     public void an_existing_greeting(String type) {
         var command = new CreateGreetingCommand(type, "George");
         var request = RequestEntity
-                .post(URI.create(format("http://localhost:%s/rest/api/v1/greetings", port)))
+                .post(URI.create("http://localhost:%s/rest/api/v1/greetings".formatted(port)))
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
                 .body(command);
@@ -59,7 +58,7 @@ public class GreetingsCreationSteps {
     public void iCreateAGreetingForName(String type, String name) {
         var command = new CreateGreetingCommand(type, name);
         var request = RequestEntity
-                .post(URI.create(format("http://localhost:%s/rest/api/v1/greetings", port)))
+                .post(URI.create("http://localhost:%s/rest/api/v1/greetings".formatted(port)))
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
                 .body(command);
@@ -72,7 +71,7 @@ public class GreetingsCreationSteps {
         updateGreetingCommand.setNewType(type);
         var identifier = jsonMapper.readValue(response.getBody(), IdentifiedGreetingMessage.class).id();
         var request = RequestEntity
-                .put(URI.create(format("http://localhost:%s/rest/api/v1/greetings/%s", port, identifier)))
+                .put(URI.create("http://localhost:%s/rest/api/v1/greetings/%s".formatted(port, identifier)))
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
                 .body(updateGreetingCommand);

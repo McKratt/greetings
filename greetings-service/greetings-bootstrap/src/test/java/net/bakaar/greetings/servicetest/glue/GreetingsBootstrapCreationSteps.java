@@ -32,7 +32,6 @@ import java.util.Locale;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
-import static java.lang.String.format;
 import static net.bakaar.greetings.servicetest.glue.CucumberSpringContextConfiguration.TEST_TOPIC;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
@@ -82,14 +81,14 @@ public class GreetingsBootstrapCreationSteps {
                           "name": "%s"
                         }""".formatted(type, name))
                 .contentType("application/json")
-                .post(format("http://localhost:%d/rest/api/v1/greetings", port));
+                .post("http://localhost:%d/rest/api/v1/greetings".formatted(port));
     }
 
     @When("I change the type to {word}")
     public void i_change_the_type_to(String type) {
         response = request
-                .body(format("{\"newType\":\"%s\"}", type))
-                .put(format("http://localhost:%d/rest/api/v1/greetings/%s", port, identifier));
+                .body("{\"newType\":\"%s\"}".formatted(type))
+                .put("http://localhost:%d/rest/api/v1/greetings/%s".formatted(port, identifier));
     }
 
     @Then("I get the message {string}")

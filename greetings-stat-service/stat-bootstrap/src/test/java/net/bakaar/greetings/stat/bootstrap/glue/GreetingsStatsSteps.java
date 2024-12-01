@@ -30,7 +30,6 @@ import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
-import static java.lang.String.format;
 import static net.bakaar.greetings.stat.bootstrap.glue.BoostrapSpringCucumberContextConfiguration.greetings;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
@@ -91,7 +90,7 @@ public class GreetingsStatsSteps {
         producer.send(new ProducerRecord<>(topic, identifier.toString(), message));
         producer.flush();
         // Stub the answer from greetings service
-        greetings.stubFor(get(urlEqualTo(format("/rest/api/v1/greetings/%s", identifier))).willReturn(aResponse()
+        greetings.stubFor(get(urlEqualTo("/rest/api/v1/greetings/%s".formatted(identifier))).willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
                 .withBody("""
@@ -129,11 +128,11 @@ public class GreetingsStatsSteps {
             log.debug(type + " counter = " + (counterDb != null ? counterDb.getCount() : "unknown"));
             return counterDb != null && counterDb.getCount() > 0;
         });
-        given().get(format("http://localhost:%d/rest/api/v1/stats", port))
+        given().get("http://localhost:%d/rest/api/v1/stats".formatted(port))
                 .then()
                 .log().all(true)
                 .statusCode(200)
                 .contentType("application/json")
-                .body(containsString(format(":%d", counter)), containsString(format("\"%s\":", type.toUpperCase())));
+                .body(containsString(":%d".formatted(counter)), containsString("\"%s\":".formatted(type.toUpperCase())));
     }
 }

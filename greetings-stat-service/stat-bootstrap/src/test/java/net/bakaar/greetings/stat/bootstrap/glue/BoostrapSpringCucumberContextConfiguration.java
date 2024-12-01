@@ -42,7 +42,7 @@ public class BoostrapSpringCucumberContextConfiguration {
     @DynamicPropertySource
     static void registerProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.r2dbc.url",
-                () -> String.format("r2dbc:postgresql://localhost:%d/%s",
+                () -> "r2dbc:postgresql://localhost:%d/%s".formatted(
                         dbContainer.getFirstMappedPort(), dbContainer.getDatabaseName()));
         registry.add("spring.r2dbc.password", dbContainer::getPassword);
         registry.add("spring.r2dbc.username", dbContainer::getUsername);

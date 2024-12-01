@@ -13,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static java.lang.String.format;
-
 @Service
 @RequiredArgsConstructor
 public class GreetingApplicationService {
@@ -39,7 +37,7 @@ public class GreetingApplicationService {
     public Greeting read(UUID identifier) {
         return repository.find(identifier)
                 .orElseThrow(() ->
-                        new GreetingNotFoundException(format("Greeting with identifier %s not found", identifier))
+                        new GreetingNotFoundException("Greeting with identifier %s not found".formatted(identifier))
                 );
     }
 }
