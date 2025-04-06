@@ -143,26 +143,31 @@
                                     <artifactId>lombok</artifactId>
                                 </exclude>
                             </excludes>
-                            <image>
-                                <name>bakaar/greetings-service:${project.version}-sb3</name>
-                                <!-- -Dspring-boot.build-image.publish=true -->
-                                <publish>true</publish>
-                                <env>
-                                    <BP_JVM_VERSION>${java.version}.*</BP_JVM_VERSION>
-                                </env>
-                            </image>
-                            <docker>
-                                <publishRegistry>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>jib-maven-plugin</artifactId>
+                        <version>${jib-maven-plugin.version}</version>
+                        <configuration>
+                            <to>
+                                <image>bakaar/greetings-service:${project.version}-sb3</image>
+                                <auth>
                                     <username>bakaar</username>
                                     <password>${env.REGISTRY_TOKEN}</password>
-                                </publishRegistry>
-                            </docker>
+                                </auth>
+                            </to>
+                            <container>
+                                <jvmFlags>
+                                    <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
+                                </jvmFlags>
+                            </container>
                         </configuration>
                         <executions>
                             <execution>
                                 <phase>package</phase>
                                 <goals>
-                                    <goal>build-image</goal>
+                                    <goal>build</goal>
                                 </goals>
                             </execution>
                         </executions>
