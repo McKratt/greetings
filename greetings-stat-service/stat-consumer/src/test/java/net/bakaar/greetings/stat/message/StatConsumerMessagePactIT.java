@@ -20,9 +20,9 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import reactor.core.publisher.Mono;
 
@@ -50,7 +50,7 @@ class StatConsumerMessagePactIT {
     @Autowired
     @Qualifier("greetingCreatedPayloadHandler")
     private GreetingMessagePayloadHandler handler;
-    @MockBean
+    @MockitoBean
     private StatApplicationService service;
     // FIXME, find the ObjectMapper, injected in the JsonDeserializer
 //    @Autowired

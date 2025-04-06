@@ -6,7 +6,7 @@ import net.bakaar.greetings.stat.application.GreetingsRepository;
 import net.bakaar.greetings.stat.domain.StatRepository;
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -14,8 +14,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @AutoConfigureWebClient
 public class StatRestSpringCucumberContextConfiguration {
-    @MockBean
+    @MockitoBean
     private GreetingsRepository repository;
-    @MockBean
+    @MockitoBean
     private StatRepository statRepository;
 }
