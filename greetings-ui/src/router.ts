@@ -19,7 +19,7 @@ export default createRouter({
         },
         {
             path: '/messages/:id',
-            component: ()=> import('./views/Message.vue')
+            component: () => import('./views/Message.vue')
         }
     ]
 })

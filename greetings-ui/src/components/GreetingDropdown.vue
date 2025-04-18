@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const emit = defineEmits<{
   typeSelected: [type: string]
 }>()
@@ -16,7 +16,7 @@ function sendValue(): void {
 <template>
   <div class="dropdown-container">
     <select
-        class="peer select" @change="sendValue" v-model="type">
+        v-model="type" class="peer select" @change="sendValue">
       <option v-for="val in values" :value="val">{{ val }}</option>
     </select>
     <label

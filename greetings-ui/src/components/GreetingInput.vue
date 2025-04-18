@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 defineProps<{
   label: string;
@@ -15,7 +15,7 @@ function handleInput(): void {
 
 <template>
   <div class="input-container">
-    <input v-model="value" placeholder=" " class="form-input peer" @input="handleInput"
+    <input v-model="value" class="form-input peer" placeholder=" " @input="handleInput"
     /><label
       class="form-label before:content[' '] after:content[' ']">
     {{ label }}
