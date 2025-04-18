@@ -150,6 +150,9 @@
                         <artifactId>jib-maven-plugin</artifactId>
                         <version>${jib-maven-plugin.version}</version>
                         <configuration>
+                            <from>
+                                <image>eclipse-temurin:23-jre-alpine</image>
+                            </from>
                             <to>
                                 <image>bakaar/greetings-service:${project.version}-sb3</image>
                                 <auth>
