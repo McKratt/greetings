@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 </script>
 
@@ -8,14 +8,14 @@
       <div class="nav-menu-container">
         <ul class="main-menu-list">
           <li class="menu-list-item">
-            <RouterLink to="/form"
-                        class="menu-item">
+            <RouterLink class="menu-item"
+                        to="/form">
               Form (Home)
             </RouterLink>
           </li>
           <li class="menu-list-item">
-            <RouterLink to="/stats"
-                        class="menu-item">
+            <RouterLink class="menu-item"
+                        to="/stats">
               Stats
             </RouterLink>
           </li>

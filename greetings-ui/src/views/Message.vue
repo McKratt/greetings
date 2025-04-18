@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {greetingRepository} from "../composables/GreetingsRepository";
 import {onMounted, ref} from 'vue';
 import {useRoute} from 'vue-router';
