@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import GreetingInput from "../components/GreetingInput.vue";
 import {Greeting} from "../models/greeting.model.ts";
 import {EventType} from "../models/event-type.model.ts";

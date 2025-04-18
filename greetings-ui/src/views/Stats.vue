@@ -1,9 +1,9 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 </script>
 
 <template>
-<p> Stats Component</p>
+  <p> Stats Component</p>
 </template>
 
 <style scoped>
