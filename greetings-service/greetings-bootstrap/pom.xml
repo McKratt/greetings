@@ -164,6 +164,7 @@
                                 <jvmFlags>
                                     <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
                                 </jvmFlags>
+                                <mainClass>net.bakaar.greetings.GreetingsApplication</mainClass>
                             </container>
                         </configuration>
                         <executions>

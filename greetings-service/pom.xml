@@ -26,7 +26,7 @@
         <sonar.projectKey>greetings-service</sonar.projectKey>
         <aggregate.report.dir>greetings-bootstrap/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
         <sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
-        <jib-maven-plugin.version>3.4.0</jib-maven-plugin.version>
+        <jib-maven-plugin.version>3.4.5</jib-maven-plugin.version>
     </properties>
     <dependencies>
         <dependency>
