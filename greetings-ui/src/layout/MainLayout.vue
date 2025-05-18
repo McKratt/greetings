@@ -30,11 +30,11 @@
 
 <style scoped>
 .main-content {
-  @apply flex flex-col justify-around w-screen h-screen block w-full max-w-screen-xl mx-auto
+  @apply flex flex-col justify-around h-screen w-full max-w-(--breakpoint-xl) mx-auto
 }
 
 .main-nav {
-  @apply block w-full max-w-screen-xl px-6 py-3 mx-auto text-white bg-white border shadow-md rounded-xl border-white/80 bg-opacity-80 backdrop-blur-2xl backdrop-saturate-200
+  @apply block w-full max-w-(--breakpoint-xl) px-6 py-3 mx-auto text-white bg-white border shadow-md rounded-xl border-white/80 bg-opacity-80 backdrop-blur-2xl backdrop-saturate-200
 }
 
 .nav-container {
