@@ -28,12 +28,20 @@ mvn clean install -Pcoverage
 ```
 
 #### Frontend (UI)
-The UI component uses npm for building:
+
+The UI component is built with Vue 3, TypeScript, and Vite. It uses yarn for package management:
 
 ```bash
 cd greetings-ui
-npm install
-npm run build
+yarn install
+yarn build
+```
+
+For development, you can use:
+
+```bash
+cd greetings-ui
+yarn dev
 ```
 
 ### Docker Image Creation
@@ -171,7 +179,7 @@ The project follows a hexagonal architecture pattern:
   - stat-client: Client for greetings-service
   - stat-bootstrap: Application bootstrap and configuration
 
-- **greetings-ui**: Angular-based frontend
+- **greetings-ui**: Vue 3-based frontend with TypeScript and Vite
 
 ### Debugging
 - Spring Boot Actuator endpoints are available for monitoring
