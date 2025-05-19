@@ -5,6 +5,7 @@ import {EventType} from "../models/event-type.model.ts";
 import GreetingDropdown from "../components/GreetingDropdown.vue";
 import {greetingRepository} from "../composables/GreetingsRepository.ts";
 import router from "../router.ts";
+import Button from 'primevue/button';
 
 let name: string = '';
 let type: string = '';
@@ -28,21 +29,15 @@ function submit(): void {
 </script>
 
 <template>
-  <form class="main-form">
-    <GreetingInput label="Name" @update="updateName"/>
-    <GreetingDropdown :values="types" label="Choose a type" @typeSelected="updateType"/>
-    <button class="form-button" type="button" @click="submit">
-      Generate Message
-    </button>
-  </form>
+  <div class="card flex justify-center">
+    <form class="flex flex-col gap-4 w-full max-w-md mx-auto">
+      <GreetingInput label="Name" @update="updateName"/>
+      <GreetingDropdown :values="types" label="Choose a type" @typeSelected="updateType"/>
+      <Button label="Generate Message" @click="submit"/>
+    </form>
+  </div>
 </template>
 
 <style scoped>
-.main-form {
-  @apply w-72 flex flex-col space-y-4 mx-auto
-}
-
-.form-button {
-  @apply align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none
-}
+/* No custom styles needed - using PrimeVue components with default Tailwind CSS */
 </style>
