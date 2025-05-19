@@ -1,59 +1,46 @@
 <script lang="ts" setup>
+import Menubar from 'primevue/menubar';
+import {ref} from 'vue';
+import {useRouter} from "vue-router";
 
+const items = ref([
+  {
+    label: 'Form (Home)',
+    icon: 'pi pi-home',
+    route: '/form'
+  },
+  {
+    label: 'Stats',
+    icon: 'pi pi-chart-bar',
+    route: '/stats'
+  }
+]);
+const router = useRouter();
 </script>
 
 <template>
-  <nav class="main-nav">
-    <div class="nav-container">
-      <div class="nav-menu-container">
-        <ul class="main-menu-list">
-          <li class="menu-list-item">
-            <RouterLink class="menu-item"
-                        to="/form">
-              Form (Home)
-            </RouterLink>
-          </li>
-          <li class="menu-list-item">
-            <RouterLink class="menu-item"
-                        to="/stats">
-              Stats
-            </RouterLink>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <main class="main-content">
+  <div class="card">
+    <Menubar :model="items">
+      <template #item="{ item, props, hasSubmenu }">
+        <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+          <a :href="href" v-bind="props.action" @click="navigate">
+            <span :class="item.icon"/>
+            <span>{{ item.label }}</span>
+          </a>
+        </router-link>
+        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+          <span :class="item.icon"/>
+          <span>{{ item.label }}</span>
+          <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down"/>
+        </a>
+      </template>
+    </Menubar>
+  </div>
+  <main class="p-4 flex flex-col justify-around h-screen w-full max-w-7xl mx-auto">
     <RouterView/>
   </main>
 </template>
 
 <style scoped>
-.main-content {
-  @apply flex flex-col justify-around h-screen w-full max-w-(--breakpoint-xl) mx-auto
-}
-
-.main-nav {
-  @apply block w-full max-w-(--breakpoint-xl) px-6 py-3 mx-auto text-white bg-white border shadow-md rounded-xl border-white/80 bg-opacity-80 backdrop-blur-2xl backdrop-saturate-200
-}
-
-.nav-container {
-  @apply flex items-center justify-between text-blue-gray-900
-}
-
-.nav-menu-container {
-  @apply hidden lg:block
-}
-
-.main-menu-list {
-  @apply flex flex-col gap-2 my-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6
-}
-
-.menu-list-item {
-  @apply block p-1 font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900
-}
-
-.menu-item {
-  @apply flex items-center transition-colors hover:text-blue-500
-}
+/* No custom styles needed - using PrimeVue components with default Tailwind CSS */
 </style>
