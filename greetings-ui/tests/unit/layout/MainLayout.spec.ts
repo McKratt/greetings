@@ -28,17 +28,17 @@ describe('MainLayout', () => {
         // Check if the component renders
         expect(wrapper.exists()).toBe(true);
 
-        // Check if the navigation menu exists
-        expect(wrapper.find('nav').exists()).toBe(true);
+        // Check if the Menubar component exists
+        expect(wrapper.findComponent({name: 'Menubar'}).exists()).toBe(true);
 
         // Check if the main content area exists
         expect(wrapper.find('main').exists()).toBe(true);
 
         // Check if the RouterView exists
-        expect(wrapper.find('.router-view').exists()).toBe(true);
+        expect(wrapper.findComponent({name: 'RouterView'}).exists()).toBe(true);
     });
 
-    it('contains the correct navigation links', () => {
+    it('contains the correct navigation items', () => {
         const wrapper = mount(MainLayout, {
             global: {
                 components: {
@@ -48,17 +48,17 @@ describe('MainLayout', () => {
             }
         });
 
-        // Check if the navigation menu contains the expected links
-        const links = wrapper.findAll('a');
-        expect(links.length).toBe(2);
+        // Check if the component has the correct items in its data
+        const vm = wrapper.vm as any;
+        expect(vm.items.length).toBe(2);
 
-        // Check if the first link is to the Form page
-        expect(links[0].attributes('href')).toBe('/form');
-        expect(links[0].text()).toContain('Form');
+        // Check if the first item is for the Form page
+        expect(vm.items[0].route).toBe('/form');
+        expect(vm.items[0].label).toContain('Form');
 
-        // Check if the second link is to the Stats page
-        expect(links[1].attributes('href')).toBe('/stats');
-        expect(links[1].text()).toContain('Stats');
+        // Check if the second item is for the Stats page
+        expect(vm.items[1].route).toBe('/stats');
+        expect(vm.items[1].label).toContain('Stats');
     });
 
     it('has the correct CSS classes', () => {
@@ -71,16 +71,11 @@ describe('MainLayout', () => {
             }
         });
 
-        // Check if the navigation menu has the correct CSS classes
-        expect(wrapper.find('nav').classes()).toContain('main-nav');
-
-        // Check if the main content area has the correct CSS classes
-        expect(wrapper.find('main').classes()).toContain('main-content');
-
-        // Check if the navigation menu container has the correct CSS classes
-        expect(wrapper.find('.nav-container').exists()).toBe(true);
-
-        // Check if the navigation menu list has the correct CSS classes
-        expect(wrapper.find('.main-menu-list').exists()).toBe(true);
+        // Check if the main content area has the correct classes
+        const main = wrapper.find('main');
+        expect(main.exists()).toBe(true);
+        expect(main.classes()).toContain('p-4');
+        expect(main.classes()).toContain('flex');
+        expect(main.classes()).toContain('flex-col');
     });
 });

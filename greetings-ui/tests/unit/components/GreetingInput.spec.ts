@@ -49,8 +49,16 @@ describe('GreetingInput', () => {
         });
 
         const input = wrapper.find('input');
-        await input.setValue('');
+        // First set a non-empty value to ensure the watch is triggered
+        await input.setValue('test');
+        await wrapper.vm.$nextTick();
 
-        expect(wrapper.emitted('update')?.[0]).toEqual(['']);
+        // Then set it to empty
+        await input.setValue('');
+        await wrapper.vm.$nextTick();
+
+        expect(wrapper.emitted()).toHaveProperty('update');
+        // The second update event should contain the empty string
+        expect(wrapper.emitted('update')?.[1]).toEqual(['']);
     });
 });
