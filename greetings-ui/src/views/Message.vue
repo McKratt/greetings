@@ -30,7 +30,10 @@ onMounted(() => {
     <Card class="w-full max-w-md mx-auto">
       <template #content>
         <p v-if="greetingMessage" class="text-center">{{ greetingMessage.message }}</p>
-        <Message v-else-if="errorMessage" :closable="false" severity="error">{{ errorMessage }}</Message>
+        <Message v-else-if="errorMessage" :closable="false" class="error-message" severity="error">{{
+            errorMessage
+          }}
+        </Message>
         <p v-else class="text-center">Loading...</p>
       </template>
     </Card>
