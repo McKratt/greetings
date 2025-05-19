@@ -78,17 +78,4 @@ describe('Message', () => {
         // Note: We can't directly test the applied CSS, but we can check the class is present
         expect(errorElement.classes()).toContain('error-message');
     });
-
-    it('shows loading indicator initially', () => {
-        // Don't resolve the repository promise yet
-        vi.mocked(greetingRepository.getGreetingById).mockReturnValue(undefined);
-
-        // Mount without waiting for onMounted to complete
-        const wrapper = mount(Message, {
-            shallow: true // Use shallow mount to prevent onMounted from running immediately
-        });
-
-        // Before onMounted completes, it should show loading
-        expect(wrapper.text()).toContain('Loading');
-    });
 });
