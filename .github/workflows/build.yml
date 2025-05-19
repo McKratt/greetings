@@ -117,7 +117,7 @@ jobs:
     name: Deploy Greetings
     runs-on: ubuntu-latest
     needs: build_greetings
-    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/spring_boot_3')
+    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/vuejs')
     defaults:
       run:
         working-directory: ./greetings-service
@@ -145,7 +145,7 @@ jobs:
     name: Deploy Stats
     runs-on: ubuntu-latest
     needs: build_stats
-    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/spring_boot_3')
+    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/vuejs')
     defaults:
       run:
         working-directory: ./greetings-stat-service
