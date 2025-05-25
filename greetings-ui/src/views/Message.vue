@@ -26,18 +26,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="card flex justify-center">
-    <Card class="w-full max-w-md mx-auto">
-      <template #content>
-        <p v-if="greetingMessage" class="text-center">{{ greetingMessage.message }}</p>
-        <Message v-else-if="errorMessage" :closable="false" class="error-message" severity="error">{{
-            errorMessage
-          }}
-        </Message>
-        <p v-else class="text-center">Loading...</p>
-      </template>
-    </Card>
-  </div>
+  <Card class="w-full max-w-md mx-auto flex justify-center">
+    <template #content>
+      <p v-if="greetingMessage" class="text-center">{{ greetingMessage.message }}</p>
+      <Message v-else-if="errorMessage" :closable="false" class="error-message" severity="error">{{
+          errorMessage
+        }}
+      </Message>
+      <p v-else class="text-center">Loading...</p>
+    </template>
+  </Card>
 </template>
 
 <style scoped>

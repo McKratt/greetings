@@ -19,23 +19,15 @@ const router = useRouter();
 </script>
 
 <template>
-  <div class="card">
-    <Menubar :model="items">
-      <template #item="{ item, props, hasSubmenu }">
-        <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
-          <a :href="href" v-bind="props.action" @click="navigate">
-            <span :class="item.icon"/>
-            <span>{{ item.label }}</span>
-          </a>
-        </router-link>
-        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
-          <span :class="item.icon"/>
-          <span>{{ item.label }}</span>
-          <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down"/>
+  <Menubar :model="items">
+    <template #item="{ item, props }">
+      <router-link v-slot="{ href, navigate }" :to="item.route" custom>
+        <a :href="href" v-bind="props.action" @click="navigate">
+          <span :class="item.icon">{{ item.label }}</span>
         </a>
-      </template>
-    </Menubar>
-  </div>
+      </router-link>
+    </template>
+  </Menubar>
   <main class="p-4 flex flex-col justify-around h-screen w-full max-w-7xl mx-auto">
     <RouterView/>
   </main>

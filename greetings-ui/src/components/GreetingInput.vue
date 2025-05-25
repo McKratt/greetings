@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import InputText from 'primevue/inputtext';
+import FloatLabel from 'primevue/floatlabel';
 import {ref, watch} from 'vue';
 
 defineProps<{
@@ -16,10 +17,10 @@ watch(value, (newValue) => {
 </script>
 
 <template>
-  <div class="field">
-    <label class="font-bold block mb-2" for="name">{{ label }}</label>
+  <FloatLabel>
     <InputText id="name" v-model="value" class="w-full"/>
-  </div>
+    <label class="font-bold" for="name">{{ label }}</label>
+  </FloatLabel>
 </template>
 
 <style scoped>
