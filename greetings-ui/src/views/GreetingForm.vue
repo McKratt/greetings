@@ -29,13 +29,11 @@ function submit(): void {
 </script>
 
 <template>
-  <div class="card flex justify-center">
-    <form class="flex flex-col gap-4 w-full max-w-md mx-auto">
-      <GreetingInput label="Name" @update="updateName"/>
-      <GreetingDropdown :values="types" label="Choose a type" @typeSelected="updateType"/>
-      <Button label="Generate Message" @click="submit"/>
-    </form>
-  </div>
+  <form class="flex flex-col gap-4 w-full max-w-md mx-auto">
+    <GreetingInput label="Name" @update="updateName"/>
+    <GreetingDropdown :values="types" label="Choose a type" @typeSelected="updateType"/>
+    <Button label="Generate Message" @click="submit"/>
+  </form>
 </template>
 
 <style scoped>
