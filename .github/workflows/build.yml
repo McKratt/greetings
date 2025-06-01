@@ -27,7 +27,7 @@ jobs:
       - name: Build
         run: yarn install
       - name: Tests
-        run: yarn test
+        run: yarn test:coverage
       - name: Sonar
         uses: SonarSource/sonarqube-scan-action@master
         with:
