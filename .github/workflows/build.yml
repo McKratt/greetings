@@ -27,7 +27,7 @@ jobs:
       - name: Build
         run: yarn install
       - name: Tests
-        run: yarn test
+        run: yarn test:coverage
       - name: Sonar
         uses: sonarsource/sonarcloud-github-action@master
         with:
