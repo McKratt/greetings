@@ -1,0 +1,27 @@
+{
+  "name": "greeting-ui-e2e",
+  "version": "1.0.0",
+  "description": "End-to-end tests for the Greetings UI application using Cypress and Cucumber",
+  "main": "index.js",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
+  },
+  "dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^22.1.0",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.5",
+    "cypress": "^14.4.1",
+    "typescript": "^5.5.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0"
+  },
+  "cypress-cucumber-preprocessor": {
+    "json": {
+      "enabled": true
+    },
+    "e2e": {
+      "stepDefinitions": "cypress/e2e/step_definitions/[filepath].steps.ts"
+    }
+  }
+}

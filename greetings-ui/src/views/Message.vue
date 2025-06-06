@@ -5,10 +5,13 @@ import {useRoute} from 'vue-router';
 import {GreetingMessage} from "../models/GreetingMessage";
 import Message from 'primevue/message';
 import Card from 'primevue/card';
+import Select from 'primevue/select';
+import Button from 'primevue/button';
 
 const route = useRoute();
 const greetingMessage = ref<GreetingMessage | undefined>(undefined);
 const errorMessage = ref<string>('');
+const selectedType = ref<string>();
 
 onMounted(() => {
   const id = route.params.id as string;
@@ -28,8 +31,26 @@ onMounted(() => {
 <template>
   <Card class="w-full max-w-md mx-auto flex justify-center">
     <template #content>
-      <p v-if="greetingMessage" class="text-center">{{ greetingMessage.message }}</p>
-      <Message v-else-if="errorMessage" :closable="false" class="error-message" severity="error">{{
+      <div v-if="greetingMessage">
+        <p class="text-center" data-cy="greeting-message">{{ greetingMessage.message }}</p>
+        <div data-cy="greeting-created"></div>
+        <div class="mt-4">
+          <p>Current type: <span data-cy="greeting-type-display">{{ greetingMessage.type }}</span></p>
+          <div class="flex gap-2 mt-2">
+            <Select
+                id="updateType"
+                v-model="selectedType"
+                :options="['birthday', 'anniversary', 'christmas']"
+                class="w-full md:w-14rem"
+                data-cy="update-greeting-type"
+                placeholder="Select a new type"
+            />
+            <Button data-cy="update-greeting" label="Update"/>
+          </div>
+        </div>
+      </div>
+      <Message v-else-if="errorMessage" :closable="false" class="error-message" data-cy="error-message"
+               severity="error">{{
           errorMessage
         }}
       </Message>

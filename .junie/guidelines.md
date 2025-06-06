@@ -80,6 +80,29 @@ The project employs multiple testing approaches:
    - Consumer-driven contract tests with Pact
    - Both REST API and Kafka message contracts
 
+5. **End-to-End Tests**:
+    - Cypress tests in `greeting-ui-e2e` directory
+    - Uses TypeScript for better type safety and developer experience
+    - Implements Cucumber/Gherkin for BDD-style tests
+    - Tests the UI application against the feature files in `bdd/features`
+   - Project structure:
+     ```
+     greeting-ui-e2e/
+     ├── cypress/
+     │   ├── e2e/
+     │   │   └── step_definitions/
+     │   │       ├── GreetingsCreation.steps.ts
+     │   │       ├── GreetingsUpdate.steps.ts
+     │   │       └── GreetingsStats.steps.ts
+     │   └── support/
+     │       ├── commands.ts
+     │       └── e2e.ts
+     ├── cypress.config.ts
+     ├── package.json
+     ├── tsconfig.json
+     └── README.md
+     ```
+
 ### Running Tests
 
 #### Unit Tests
@@ -116,6 +139,96 @@ mvn test -Dtest=*Pact*
 cd greetings-service/greetings-bootstrap
 mvn test -Dtest=*Pact*
 ```
+
+#### End-to-End Tests
+
+```bash
+# Install dependencies
+cd greeting-ui-e2e
+yarn install
+
+# Run Cypress tests in headless mode (starts the UI application automatically)
+yarn test
+
+# Run Cypress tests with the Cypress UI (starts the UI application automatically)
+yarn test:open
+
+# If you want to run the UI application separately
+cd greetings-ui
+yarn dev
+
+# Then in another terminal
+cd greeting-ui-e2e
+yarn cypress:run  # For headless mode
+# or
+yarn cypress:open  # For Cypress UI
+```
+
+### Writing End-to-End Tests
+
+#### Feature Files
+
+The feature files are located in the `bdd/features` directory and use Gherkin syntax. For example:
+
+```gherkin
+Feature: Creation of a Greeting Message
+
+  Rule: There are three type of Greeting, Birthday, Anniversary and Christmas
+
+    Scenario: Simple Greeting
+      When I create an anniversary greeting for Charles
+      Then I get the message "Joyful Anniversary Charles !"
+      Then a Greeting is created
+```
+
+#### Step Definitions
+
+Step definitions are located in the `cypress/e2e/step_definitions` directory and are written in TypeScript. They map the
+Gherkin steps to Cypress commands. For example:
+
+```typescript
+import {When, Then} from '@badeball/cypress-cucumber-preprocessor';
+
+When('I create an anniversary greeting for Charles', () => {
+    cy.createGreeting('anniversary', 'Charles');
+});
+
+Then('I get the message {string}', (message: string) => {
+    cy.verifyGreetingMessage(message);
+});
+
+Then('a Greeting is created', () => {
+    cy.verifyGreetingCreated();
+});
+```
+
+#### Custom Commands
+
+Custom Cypress commands are defined in the `cypress/support/commands.ts` file. These commands encapsulate common actions
+and assertions used in the step definitions. For example:
+
+```typescript
+Cypress.Commands.add('createGreeting', (type: string, name: string) => {
+    cy.visit('/');
+    cy.get('[data-cy=greeting-type]').select(type);
+    cy.get('[data-cy=greeting-name]').type(name);
+    cy.get('[data-cy=create-greeting]').click();
+});
+```
+
+### End-to-End Testing Best Practices
+
+1. **Use TypeScript**: TypeScript provides better type safety and developer experience.
+2. **Use Custom Commands**: Encapsulate common actions and assertions in custom commands.
+3. **Use Data Attributes**: Use `data-cy` attributes to select elements in the UI.
+4. **Keep Step Definitions Simple**: Step definitions should be simple and focused on a single action or assertion.
+5. **Use Before and After Hooks**: Use hooks to set up and clean up test state.
+6. **Use Aliases**: Use Cypress aliases to store and retrieve values between steps.
+7. **Use Fixtures**: Use fixtures to provide test data.
+8. **Use Screenshots and Videos**: Enable screenshots and videos to help debug test failures.
+9. **Use Retry Ability**: Use Cypress's retry ability to handle asynchronous operations.
+10. **Follow Cypress Best Practices**: Refer to
+    the [Cypress Best Practices](https://docs.cypress.io/guides/references/best-practices) documentation.
 
 ### Example: Creating a Simple Test
 

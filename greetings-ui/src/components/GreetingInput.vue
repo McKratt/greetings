@@ -18,7 +18,7 @@ watch(value, (newValue) => {
 
 <template>
   <FloatLabel>
-    <InputText id="name" v-model="value" class="w-full"/>
+    <InputText id="name" v-model="value" class="w-full" data-cy="greeting-name"/>
     <label class="font-bold" for="name">{{ label }}</label>
   </FloatLabel>
 </template>
