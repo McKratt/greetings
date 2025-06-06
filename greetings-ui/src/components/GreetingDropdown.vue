@@ -27,5 +27,6 @@ watch(selectedType, (newValue) => {
       :options="values"
       class="w-full md:w-14rem"
       placeholder="Select a type"
+      data-cy="greeting-type"
   />
 </template>
