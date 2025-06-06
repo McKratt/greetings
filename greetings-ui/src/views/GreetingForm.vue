@@ -32,7 +32,7 @@ function submit(): void {
   <form class="flex flex-col gap-4 w-full max-w-md mx-auto">
     <GreetingInput label="Name" @update="updateName"/>
     <GreetingDropdown :values="types" label="Choose a type" @typeSelected="updateType"/>
-    <Button label="Generate Message" @click="submit"/>
+    <Button data-cy="create-greeting" label="Generate Message" @click="submit"/>
   </form>
 </template>
 
