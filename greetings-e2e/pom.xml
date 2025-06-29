@@ -11,15 +11,15 @@
         <maven.compiler.release>24</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <cucumber.version>7.22.1</cucumber.version>
-        <testcontainer.version>1.21.0</testcontainer.version>
+        <cucumber.version>7.23.0</cucumber.version>
+        <testcontainer.version>1.21.2</testcontainer.version>
         <assertj.version>3.27.3</assertj.version>
-        <rest-assured.version>5.5.2</rest-assured.version>
+        <rest-assured.version>5.5.5</rest-assured.version>
         <logback.version>1.5.18</logback.version>
         <awaitility.version>4.3.0</awaitility.version>
         <dbsetup.version>2.1.0</dbsetup.version>
-        <postgresql.version>42.7.5</postgresql.version>
-        <junit-bom.version>5.12.2</junit-bom.version>
+        <postgresql.version>42.7.7</postgresql.version>
+        <junit-bom.version>5.13.2</junit-bom.version>
         <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
         <maven-install-plugin.version>3.1.4</maven-install-plugin.version>
         <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
