@@ -11,6 +11,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.AfterAll;
 import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -27,8 +28,10 @@ public class E2eGreetingsCreationSteps {
 
     private static final DockerComposeContainer environment = new DockerComposeContainer(
             new File("src/test/resources/compose-test.yaml"))
-            .withExposedService("greetings_1", 8080)
-            .withExposedService("stats_1", 8080);
+            .withExposedService("greetings", 8080)
+            .withExposedService("stats", 8080)
+            .waitingFor("greetings", Wait.forListeningPort())
+            .waitingFor("stats", Wait.forListeningPort());
 
     static {
         environment.start();

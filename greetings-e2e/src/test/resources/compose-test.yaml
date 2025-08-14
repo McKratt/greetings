@@ -63,7 +63,6 @@ services:
       SPRING_DATASOURCE_USERNAME: greeting
       SPRING_DATASOURCE_PASSWORD: 123456
       SPRING_KAFKA_BOOTSTRAP-SERVERS: "kafka-kraft:29092"
-      JAVA_TOOL_OPTIONS: "--enable-preview"
       GREETINGS_MESSAGE_PRODUCER_TOPIC-NAME: "greetings-topic"
       GREETINGS_MESSAGE_PRODUCER_NUM-PARTITION: 1
       GREETINGS_MESSAGE_PRODUCER_REPLICATION: 1
@@ -85,4 +84,3 @@ services:
       SPRING_KAFKA_BOOTSTRAP-SERVERS: "kafka-kraft:29092"
       GREETINGS_MESSAGE_TOPIC: "greetings-topic"
       GREETINGS_STAT_REST_CLIENT_URL: "http://greetings:8080"
-      JAVA_TOOL_OPTIONS: "--enable-preview -Djava.net.preferIPv4Stack=true"
