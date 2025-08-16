@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.3</version>
+        <version>3.5.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>net.bakaar</groupId>
@@ -23,7 +23,6 @@
         <to-string-verifier.version>1.4.8</to-string-verifier.version>
         <wiremock.version>3.13.1</wiremock.version>
         <docker-maven-plugin.version>0.46.0</docker-maven-plugin.version>
-        <sonar.host.url>http://sonarcloud.io</sonar.host.url>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
         <sonar.organization>mckratt</sonar.organization>
         <sonar.coverage.exclusions>
