@@ -31,7 +31,7 @@ jobs:
       - name: Pact
         run: npm run pact
       - name: Sonar
-        uses: sonarsource/sonarcloud-github-action@master
+        uses: SonarSource/sonarqube-scan-action@master
         with:
           projectBaseDir: ./greetings-ui
   build_greetings:
