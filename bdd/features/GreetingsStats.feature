@@ -8,7 +8,7 @@ Feature: Statistics
       When I create a greeting
       Then the counter should be 1
 
-#    @e2e
+    @e2e
     Scenario: More greetings
       Given the christmas greetings counter is equal to 3
       When I create a christmas greeting

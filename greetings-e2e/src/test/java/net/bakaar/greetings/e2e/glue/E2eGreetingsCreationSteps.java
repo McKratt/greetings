@@ -98,6 +98,37 @@ public class E2eGreetingsCreationSteps {
         dbSetup.launch();
     }
 
+    @Given("the christmas greetings counter is equal to {int}")
+    public void the_christmas_greetings_counter_is_equal_to(Integer counter) {
+        // Create the specified number of Christmas greetings in the database
+        Operation operation = sequenceOf(DELETE_ALL);
+
+        for (int i = 1; i <= counter; i++) {
+            operation = sequenceOf(
+                    operation,
+                    insertInto("T_GREETINGS")
+                            .columns("PK_T_GREETINGS", "S_IDENTIFIER", "S_NAME", "FK_TYPE", "TS_CREATEDAT")
+                            .values(i, "test-identifier-" + i, "TestName" + i, 2, LocalDateTime.now())
+                            .build()
+            );
+        }
+
+        DbSetup dbSetup = new DbSetup(new DriverManagerDestination("jdbc:postgresql://localhost:15432/greetings", "greeting", "123456"), operation);
+        dbSetup.launch();
+
+        // Wait for stats service to process the existing greetings
+        await().until(() -> {
+            try {
+                var response = request.get(statsUrl);
+                if (response.statusCode() == 204) return false;
+                Integer actualCounter = response.jsonPath().get("counters.CHRISTMAS");
+                return actualCounter != null && actualCounter.equals(counter);
+            } catch (Exception e) {
+                return false;
+            }
+        });
+    }
+
     @When("I create a(n) {word} greeting for {word}")
     public void iCreateAGreetingForName(String type, String name) {
         response = request.body("""
@@ -119,6 +150,11 @@ public class E2eGreetingsCreationSteps {
     @When("I create a greeting")
     public void i_create_a_greeting() {
         iCreateAGreetingForName("CHRISTMAS", "Charles");
+    }
+
+    @When("I create a christmas greeting")
+    public void i_create_a_christmas_greeting() {
+        iCreateAGreetingForName("CHRISTMAS", "ChristmasTestUser");
     }
 
     @Then("the counter should be {int}")
