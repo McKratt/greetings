@@ -29,19 +29,22 @@
 - **Error Handling**: Clean exception handling (TODO: implement custom API responses)
 - **Documentation**: JavaDoc for public APIs and complex business logic
 
-## Frontend Code Style (Angular/TypeScript)
+## Frontend Code Style (Vue 3/TypeScript)
 
 ### Conventions
-- **Components**: PascalCase for class names, kebab-case for selectors
-- **Services**: PascalCase ending with "Service"
+- **Components**: PascalCase for component names, kebab-case for file names
+- **Composables**: camelCase starting with "use" (e.g., `useGreeting`)
 - **Variables**: camelCase
 - **Constants**: UPPER_SNAKE_CASE
-- **Files**: kebab-case for component files
+- **Files**: kebab-case or PascalCase for component files, camelCase for utilities
+- **Props**: camelCase in script, kebab-case in templates
+- **Events**: kebab-case
 
 ### Quality Tools
-- **Linting**: ESLint with TypeScript rules
-- **Testing**: Jest with coverage reporting
-- **Build**: Angular CLI with integrated linting
+- **Linting**: ESLint with TypeScript and Vue rules
+- **Testing**: Vitest with coverage reporting, Vue Test Utils
+- **E2E Testing**: Cypress with Cucumber/Gherkin
+- **Build**: Vite with TypeScript checking
 
 ## General Development Guidelines
 
@@ -51,7 +54,7 @@
 - CI/CD integration with GitHub Actions
 
 ### Quality Standards
-- Code coverage tracking with JaCoCo (backend) and Jest (frontend)
+- Code coverage tracking with JaCoCo (backend) and Vitest (frontend)
 - SonarCloud integration for quality gates
 - Parallel test execution enabled for performance
 

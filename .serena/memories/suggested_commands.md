@@ -51,7 +51,7 @@ cd greetings-service && mvn clean package -PbuildImage -DskipTests
 cd greetings-stat-service && mvn clean package -PbuildImage -DskipTests
 ```
 
-## Frontend (yarn)
+## Frontend (Vue 3 + Vite)
 
 ### Building & Running
 ```bash
@@ -61,23 +61,50 @@ cd greetings-ui
 yarn install
 
 # Start development server
-yarn run start
+yarn dev
 
 # Build for production
-yarn run build
+yarn build
 
-# Build and watch for changes
-yarn run watch
+# Preview production build
+yarn preview
+```
 
-### Testing
-# Run tests
+### Testing & Quality
+```bash
+# Run tests with coverage
+yarn test:coverage
+
+# Run tests in watch mode
+yarn test:watch
+
+# Run tests once
 yarn test
 
-# Run Pact tests
-yarn run pact
+# Run contract tests (if available)
+yarn pact
+```
 
-# Run linting
-yarn run lint
+## End-to-End Tests (Cypress)
+
+### Running E2E Tests
+```bash
+cd greeting-ui-e2e
+
+# Install dependencies
+yarn install
+
+# Run Cypress tests in headless mode (starts UI automatically)
+yarn test
+
+# Run Cypress tests with UI (starts UI automatically)
+yarn test:open
+
+# Run Cypress directly (headless)
+yarn cypress:run
+
+# Open Cypress UI
+yarn cypress:open
 ```
 
 ## System Commands (macOS/Darwin)
