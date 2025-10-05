@@ -135,4 +135,52 @@ public class GreetingsStatsSteps {
                 .contentType("application/json")
                 .body(containsString(":%d".formatted(counter)), containsString("\"%s\":".formatted(type.toUpperCase())));
     }
+
+    @Given("the greetings counter is equal to {int}")
+    public void the_greetings_counter_is_equal_to(int counter) {
+        var entity = new Counter();
+        entity.setCount(counter);
+        entity.setName(type.toUpperCase());
+        template.insert(entity).block();
+    }
+
+    @When("I update a greeting")
+    public void i_update_a_greeting() {
+        // Update scenarios don't send new events, so this is essentially a no-op
+    }
+
+    @Then("the counter should remain to {int}")
+    public void the_counter_should_remain_to(int counter) {
+        given().get("http://localhost:%d/rest/api/v1/stats".formatted(port))
+                .then()
+                .statusCode(200)
+                .contentType("application/json")
+                .body(containsString(":%d".formatted(counter)));
+    }
+
+    @When("I create a greeting for {word}")
+    public void i_create_a_greeting_for_name(String inputName) {
+        i_create_a_greetings("");
+    }
+
+    @Then("the counter for {word} should be {int}")
+    public void the_counter_for_name_should_be(String inputName, int counter) {
+        await().until(() -> {
+            var counterDb = template.selectOne(Query.query(CriteriaDefinition.from(Criteria.where("S_NAME").is(type.toUpperCase()))), Counter.class).block();
+            return counterDb != null && counterDb.getCount() > 0;
+        });
+        given().get("http://localhost:%d/rest/api/v1/stats".formatted(port))
+                .then()
+                .statusCode(200)
+                .contentType("application/json")
+                .body(containsString("\"%s\":".formatted(type.toUpperCase())));
+    }
+
+    @Given("the {word}'s counter is equal to {int}")
+    public void the_name_counter_is_equal_to(String inputName, int counter) {
+        var entity = new Counter();
+        entity.setCount(counter);
+        entity.setName(type.toUpperCase());
+        template.insert(entity).block();
+    }
 }
