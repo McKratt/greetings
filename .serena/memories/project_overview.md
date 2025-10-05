@@ -20,8 +20,9 @@ The project follows a microservices architecture with three main components:
    - Uses PostgreSQL database
    - Has client module for calling greetings-service
 
-3. **greetings-ui**: Angular-based frontend
-   - Angular 16 with TypeScript
+3. **greetings-ui**: Vue 3-based frontend
+   - Vue 3 with TypeScript and Vite
+   - Uses PrimeVue component library and Tailwind CSS
    - Interacts with both services via REST APIs
 
 ### Infrastructure

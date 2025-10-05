@@ -5,7 +5,7 @@
 ### 1. Code Quality Checks
 ```bash
 # Run linting (frontend)
-cd greetings-ui && yarn run lint
+cd greetings-ui && yarn lint
 
 # Check code formatting and style compliance
 # (Currently no explicit formatter configured - follow established patterns)
@@ -21,11 +21,14 @@ cd greetings-stat-service && mvn clean test -Pcoverage
 mvn verify -DskipUTs -Pcoverage
 
 # Frontend: Run tests with coverage
-cd greetings-ui && yarn test
+cd greetings-ui && yarn test:coverage
+
+# Frontend: Run tests in watch mode during development
+cd greetings-ui && yarn test:watch
 
 # Contract tests (if APIs changed)
 mvn test -Dtest=*Pact*
-cd greetings-ui && yarn run pact
+cd greetings-ui && yarn pact
 ```
 
 ### 3. Build Verification
@@ -34,7 +37,7 @@ cd greetings-ui && yarn run pact
 cd greetings-parent && mvn clean install
 
 # Verify frontend builds
-cd greetings-ui && yarn run build
+cd greetings-ui && yarn build
 
 # Test Docker image creation (if relevant)
 mvn clean package -PbuildImage -DskipTests
@@ -44,6 +47,12 @@ mvn clean package -PbuildImage -DskipTests
 ```bash
 # Run BDD tests
 mvn verify -Dcucumber.filter.tags="@e2e"
+
+# Run Cypress E2E tests
+cd greeting-ui-e2e && yarn test
+
+# Run Cypress E2E tests with UI
+cd greeting-ui-e2e && yarn test:open
 
 # Manual verification through REST endpoints if needed
 # (Use HttpTests.http or greetings-e2e/src/test/resources/StatsRequests.http)
@@ -95,7 +104,8 @@ git push
 - Run end-to-end message flow tests
 
 ### Frontend Changes
-- Run Jest tests with coverage
+- Run Vitest tests with coverage
 - Perform linting checks
 - Test API integration
+- Run Cypress E2E tests if user flows affected
 - Verify responsive design if UI changes
