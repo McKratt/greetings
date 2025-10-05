@@ -6,7 +6,7 @@ This document provides essential information for developers working on the Greet
 
 ### Prerequisites
 
-- Java 24 (Temurin distribution recommended)
+- Java 25 (Temurin distribution recommended)
 - Maven 3.8+
 - Node.js 18+ (for UI component)
 - Docker (for containerization and integration tests)

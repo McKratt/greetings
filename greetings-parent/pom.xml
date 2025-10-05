@@ -13,7 +13,7 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
     <properties>
-        <java.version>24</java.version>
+        <java.version>25</java.version>
         <cucumber.version>7.23.0</cucumber.version>
         <junit-bom.version>5.13.2</junit-bom.version>
         <testcontainer.version>1.21.2</testcontainer.version>
