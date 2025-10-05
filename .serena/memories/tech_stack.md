@@ -9,10 +9,12 @@
 - **Message Broker**: Apache Kafka
 
 ## Frontend
-- **Framework**: Angular 16
-- **Language**: TypeScript 4.9.3
+- **Framework**: Vue 3.5+
+- **Language**: TypeScript 5.5+
 - **Package Manager**: yarn
-- **Build Tool**: Angular CLI
+- **Build Tool**: Vite 6.3+
+- **UI Library**: PrimeVue 4.3+ with Tailwind CSS 4.1+
+- **Router**: Vue Router 4
 
 ## Testing Framework
 - **Unit Testing**: JUnit 5 (5.13.2), AssertJ, Mockito
@@ -20,7 +22,7 @@
 - **BDD Testing**: Cucumber (7.23.0)
 - **Contract Testing**: Pact (4.6.17)
 - **Mocking**: Wiremock (3.13.1)
-- **Frontend Testing**: Jest (Angular), Pact for contracts
+- **Frontend Testing**: Vitest (Vue), Vue Test Utils, Pact for contracts, Cypress for E2E
 - **Test Utilities**: Awaitility (4.3.0), ToStringVerifier (1.4.8)
 
 ## DevOps & Quality
