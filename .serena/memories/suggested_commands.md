@@ -51,35 +51,33 @@ cd greetings-service && mvn clean package -PbuildImage -DskipTests
 cd greetings-stat-service && mvn clean package -PbuildImage -DskipTests
 ```
 
-## Frontend (npm)
+## Frontend (yarn)
 
 ### Building & Running
 ```bash
 cd greetings-ui
 
 # Install dependencies
-npm install
+yarn install
 
 # Start development server
-npm run start
+yarn run start
 
 # Build for production
-npm run build
+yarn run build
 
-# Watch mode for development
-npm run watch
-```
+# Build and watch for changes
+yarn run watch
 
-### Testing & Quality
-```bash
-# Run tests with coverage
-npm test
+### Testing
+# Run tests
+yarn test
 
-# Run contract tests
-npm run pact
+# Run Pact tests
+yarn run pact
 
-# Lint code
-npm run lint
+# Run linting
+yarn run lint
 ```
 
 ## System Commands (macOS/Darwin)

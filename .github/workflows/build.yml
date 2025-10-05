@@ -25,11 +25,11 @@ jobs:
         with:
           node-version: 18
       - name: Build
-        run: npm install
+        run: yarn install
       - name: Tests
-        run: npm test
+        run: yarn test
       - name: Pact
-        run: npm run pact
+        run: yarn run pact
       - name: Sonar
         uses: SonarSource/sonarqube-scan-action@master
         with:

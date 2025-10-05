@@ -5,7 +5,7 @@
 ### 1. Code Quality Checks
 ```bash
 # Run linting (frontend)
-cd greetings-ui && npm run lint
+cd greetings-ui && yarn run lint
 
 # Check code formatting and style compliance
 # (Currently no explicit formatter configured - follow established patterns)
@@ -21,11 +21,11 @@ cd greetings-stat-service && mvn clean test -Pcoverage
 mvn verify -DskipUTs -Pcoverage
 
 # Frontend: Run tests with coverage
-cd greetings-ui && npm test
+cd greetings-ui && yarn test
 
 # Contract tests (if APIs changed)
 mvn test -Dtest=*Pact*
-cd greetings-ui && npm run pact
+cd greetings-ui && yarn run pact
 ```
 
 ### 3. Build Verification
@@ -34,7 +34,7 @@ cd greetings-ui && npm run pact
 cd greetings-parent && mvn clean install
 
 # Verify frontend builds
-cd greetings-ui && npm run build
+cd greetings-ui && yarn run build
 
 # Test Docker image creation (if relevant)
 mvn clean package -PbuildImage -DskipTests

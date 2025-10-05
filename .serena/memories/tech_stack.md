@@ -11,7 +11,7 @@
 ## Frontend
 - **Framework**: Angular 16
 - **Language**: TypeScript 4.9.3
-- **Package Manager**: npm
+- **Package Manager**: yarn
 - **Build Tool**: Angular CLI
 
 ## Testing Framework

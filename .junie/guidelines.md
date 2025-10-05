@@ -28,12 +28,13 @@ mvn clean install -Pcoverage
 ```
 
 #### Frontend (UI)
-The UI component uses npm for building:
+
+The UI component uses yarn for building:
 
 ```bash
 cd greetings-ui
-npm install
-npm run build
+yarn install
+yarn run build
 ```
 
 ### Docker Image Creation
