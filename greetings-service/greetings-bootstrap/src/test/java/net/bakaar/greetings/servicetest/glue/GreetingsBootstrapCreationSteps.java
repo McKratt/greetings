@@ -1,7 +1,5 @@
 package net.bakaar.greetings.servicetest.glue;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -24,6 +22,8 @@ import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.net.URI;
 import java.time.Duration;
@@ -97,7 +97,7 @@ public class GreetingsBootstrapCreationSteps {
     }
 
     @Then("a Greeting is created")
-    public void a_greeting_is_created() throws JsonProcessingException {
+    public void a_greeting_is_created() throws JacksonException {
         Consumer<String, GreetingsMessage> consumer = createConsumer();
         ConsumerRecord<String, GreetingsMessage> consumedRecord = KafkaTestUtils.getSingleRecord(consumer, messageProperties.getTopicName(), Duration.ofMillis(10000));
         var message = consumedRecord.value();

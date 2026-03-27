@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.4</version>
+        <version>4.0.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>net.bakaar</groupId>
@@ -14,15 +14,16 @@
     <packaging>pom</packaging>
     <properties>
         <java.version>25</java.version>
-        <cucumber.version>7.23.0</cucumber.version>
-        <junit-bom.version>5.13.2</junit-bom.version>
-        <testcontainer.version>1.21.2</testcontainer.version>
-        <pact.version>4.6.17</pact.version>
-        <jacoco.version>0.8.13</jacoco.version>
+        <cucumber.version>7.34.3</cucumber.version>
+        <junit-bom.version>6.0.3</junit-bom.version>
+        <testcontainers.version>2.0.4</testcontainers.version>
+        <pact.version>4.6.20</pact.version>
+        <jacoco.version>0.8.14</jacoco.version>
         <awaitility.version>4.3.0</awaitility.version>
         <to-string-verifier.version>1.4.8</to-string-verifier.version>
-        <wiremock.version>3.13.1</wiremock.version>
-        <docker-maven-plugin.version>0.46.0</docker-maven-plugin.version>
+        <wiremock.version>3.13.2</wiremock.version>
+        <rest-assured.version>6.0.0</rest-assured.version>
+        <docker-maven-plugin.version>0.48.1</docker-maven-plugin.version>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
         <sonar.organization>mckratt</sonar.organization>
         <sonar.coverage.exclusions>
@@ -43,6 +44,13 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
                 <groupId>io.cucumber</groupId>
                 <artifactId>cucumber-java</artifactId>
                 <version>${cucumber.version}</version>
@@ -58,24 +66,6 @@
                 <groupId>io.cucumber</groupId>
                 <artifactId>cucumber-junit-platform-engine</artifactId>
                 <version>${cucumber.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>junit-jupiter</artifactId>
-                <version>${testcontainer.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${testcontainer.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.awaitility</groupId>
-                <artifactId>awaitility</artifactId>
-                <version>${awaitility.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -101,11 +91,32 @@
                 <version>${to-string-verifier.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>io.rest-assured</groupId>
+                <artifactId>rest-assured-bom</artifactId>
+                <version>${rest-assured.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
                 <plugin>
                     <groupId>io.fabric8</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
@@ -126,7 +137,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
                     <configuration>
                         <skipTests>${skipUTs}</skipTests>
                         <perCoreThreadCount>true</perCoreThreadCount>
@@ -136,7 +146,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${maven-failsafe-plugin.version}</version>
                     <configuration>
                         <perCoreThreadCount>true</perCoreThreadCount>
                         <parallel>all</parallel>

@@ -19,8 +19,8 @@ import org.springframework.data.relational.core.query.CriteriaDefinition;
 import org.springframework.data.relational.core.query.Query;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
-import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.kafka.support.serializer.JacksonJsonDeserializer;
+import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 
@@ -79,7 +79,7 @@ public class GreetingsStatsSteps {
         var producerFactory = new DefaultKafkaProducerFactory<String, GreetingsMessage>(
                 KafkaTestUtils.producerProps(embeddedKafka));
         producerFactory.setKeySerializer(new StringSerializer());
-        producerFactory.setValueSerializer(new JsonSerializer<>());
+        producerFactory.setValueSerializer(new JacksonJsonSerializer<>());
         var producer = producerFactory.createProducer();
         var message = new GreetingsMessage(URI.create("https://bakaar.net/greetings/events/greeting-created"), """
                 {
@@ -112,9 +112,9 @@ public class GreetingsStatsSteps {
 
     private Consumer<String, GreetingsMessage> createConsumer() {
         var consumerProps = KafkaTestUtils.consumerProps("testGroup", "true", this.embeddedKafka);
-        consumerProps.put(VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        consumerProps.put(VALUE_DESERIALIZER_CLASS_CONFIG, JacksonJsonDeserializer.class);
         consumerProps.put(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "net.bakaar.*");
+        consumerProps.put(JacksonJsonDeserializer.TRUSTED_PACKAGES, "net.bakaar.*");
         var factory = new DefaultKafkaConsumerFactory<String, GreetingsMessage>(consumerProps);
         Consumer<String, GreetingsMessage> createdConsumer = factory.createConsumer();
         embeddedKafka.consumeFromAnEmbeddedTopic(createdConsumer, topic);

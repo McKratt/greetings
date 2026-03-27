@@ -109,6 +109,7 @@ public class StatsRestSteps {
         var greeting = new Greeting(type, name);
         given(repository.getGreetingForIdentifier(identifier)).willReturn(Mono.just(greeting));
         var event = new GreetingCreated(identifier);
+        given(statRepository.pop()).willReturn(CompletableFuture.completedFuture(new GreetingsStats(new HashMap<>())));
         StepVerifier.create(service.handle(event))
                 .verifyComplete();
     }
