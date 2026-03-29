@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
 import org.springframework.boot.r2dbc.autoconfigure.R2dbcAutoConfiguration;
-import org.springframework.boot.resttestclient.TestRestTemplate;
-import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.reactive.server.assertj.WebTestClientResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -19,7 +20,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @SpringBootTest(webEnvironment = RANDOM_PORT,
         properties = {"greetings.message.topic=''"})
-@AutoConfigureTestRestTemplate
+@AutoConfigureWebTestClient
 @EnableAutoConfiguration(exclude = {R2dbcAutoConfiguration.class, DataSourceAutoConfiguration.class})
 class ActuatorInfoIT {
     @MockitoBean
@@ -27,16 +28,15 @@ class ActuatorInfoIT {
     @MockitoBean
     private Flyway flyway;
     @Autowired
-    private TestRestTemplate template;
+    private WebTestClient template;
 
     @Test
     void should_return_version_number() {
         // Arrange
         // Act
-        var response = template.getForEntity("/actuator/info", String.class);
+        var response = WebTestClientResponse.from(template.get().uri("/actuator/info")
+                .exchange().returnResult());
         // Assert
-        assertThat(response).isNotNull();
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).contains("\"version\":\"2.0.0\"");
+        assertThat(response).hasStatus(HttpStatus.OK).bodyText().contains("\"version\":\"2.0.0\"");
     }
 }

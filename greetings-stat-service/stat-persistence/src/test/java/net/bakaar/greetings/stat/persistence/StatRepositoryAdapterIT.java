@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutionException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataR2dbcTest(properties = {
-        "spring.r2dbc.url=r2dbc:h2:mem:///test?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+        "spring.r2dbc.url=r2dbc:h2:mem:///test?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;"
 })
 @Import({StatRepositoryAdapter.class})
 @ContextConfiguration(classes = StatPersistenceTestApplication.class)

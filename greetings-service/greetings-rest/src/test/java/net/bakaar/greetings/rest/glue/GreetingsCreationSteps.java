@@ -11,6 +11,7 @@ import net.bakaar.greetings.rest.UpdateGreetingCommandDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.restclient.test.autoconfigure.AutoConfigureRestClient;
 import org.springframework.boot.resttestclient.TestRestTemplate;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @CucumberContextConfiguration
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @AutoConfigureRestClient
+@AutoConfigureTestRestTemplate
 public class GreetingsCreationSteps {
 
     @Autowired
