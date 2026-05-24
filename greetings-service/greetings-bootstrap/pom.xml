@@ -145,10 +145,10 @@
                         <version>${jib-maven-plugin.version}</version>
                         <configuration>
                             <from>
-                                <image>eclipse-temurin:24-jre-alpine</image>
+                                <image>eclipse-temurin:25-jre-alpine</image>
                             </from>
                             <to>
-                                <image>bakaar/greetings-service:${project.version}-sb3</image>
+                                <image>bakaar/greetings-service:${project.version}</image>
                                 <auth>
                                     <username>bakaar</username>
                                     <password>${env.REGISTRY_TOKEN}</password>

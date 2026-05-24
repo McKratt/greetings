@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.4</version>
+        <version>4.0.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>net.bakaar</groupId>
@@ -33,6 +33,7 @@
             jacoco-report/**
         </sonar.coverage.exclusions>
         <maven.compiler.proc>full</maven.compiler.proc>
+        <argLine/>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -141,6 +142,9 @@
                         <skipTests>${skipUTs}</skipTests>
                         <perCoreThreadCount>true</perCoreThreadCount>
                         <parallel>all</parallel>
+                        <argLine>@{argLine}
+                            -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+                        </argLine>
                     </configuration>
                 </plugin>
                 <plugin>
