@@ -1,81 +1,78 @@
 // Mock dependencies before imports
 vi.mock('vue-router', () => ({
-    useRoute: vi.fn(() => ({
-        params: {
-            id: '1'
-        }
-    }))
+    useRoute: vi.fn(() => ({params: {id: 'uuid-1'}}))
 }));
 
-// Mock the repository
-vi.mock('../../../src/composables/GreetingsRepository', () => ({
-    greetingRepository: {
-        getGreetingById: vi.fn()
+vi.mock('../../../src/services/greetings.service', () => ({
+    greetingsService: {
+        getGreetingById: vi.fn(),
+        updateGreeting: vi.fn(),
     }
 }));
 
 import {beforeEach, describe, expect, it, vi} from 'vitest';
 import {flushPromises, mount} from '@vue/test-utils';
-import Message from '../../../src/views/Message.vue';
-import {greetingRepository} from '../../../src/composables/GreetingsRepository';
+import MessageView from '../../../src/views/Message.vue';
+import {greetingsService} from '../../../src/services/greetings.service';
 import {useRoute} from 'vue-router';
 
 describe('Message', () => {
-    beforeEach(() => {
-        vi.clearAllMocks();
-    });
+    beforeEach(() => vi.clearAllMocks());
 
-    it('displays the greeting message when found', async () => {
-        // Setup mock to return a message
-        const testMessage = {id: '1', message: 'Hello John, happy BIRTHDAY!'};
-        vi.mocked(greetingRepository.getGreetingById).mockReturnValue(testMessage);
-
-        const wrapper = mount(Message);
+    it('displays the greeting message and type when found', async () => {
+        vi.mocked(greetingsService.getGreetingById).mockResolvedValue({
+            id: 'uuid-1', message: 'Happy Birthday John !', type: 'BIRTHDAY'
+        });
+        const wrapper = mount(MessageView);
         await flushPromises();
 
-        expect(greetingRepository.getGreetingById).toHaveBeenCalledWith('1');
-        expect(wrapper.text()).toContain('Hello John, happy BIRTHDAY!');
-        expect(wrapper.find('.error-message').exists()).toBe(false);
+        expect(wrapper.find('[data-cy=greeting-message]').text()).toBe('Happy Birthday John !');
+        expect(wrapper.find('[data-cy=greeting-type-display]').text()).toBe('BIRTHDAY');
     });
 
-    it('displays an error message when message not found', async () => {
-        // Setup mock to return undefined (message not found)
-        vi.mocked(greetingRepository.getGreetingById).mockReturnValue(undefined);
-
-        const wrapper = mount(Message);
+    it('displays error when message not found', async () => {
+        vi.mocked(greetingsService.getGreetingById).mockResolvedValue(undefined);
+        const wrapper = mount(MessageView);
         await flushPromises();
 
-        expect(greetingRepository.getGreetingById).toHaveBeenCalledWith('1');
-        expect(wrapper.find('.error-message').exists()).toBe(true);
-        expect(wrapper.find('.error-message').text()).toContain('No message found with ID: 1');
+        expect(wrapper.find('[data-cy=error-message]').exists()).toBe(true);
+        expect(wrapper.find('[data-cy=error-message]').text()).toContain('No message found with ID: uuid-1');
     });
 
-    it('displays an error message when no ID provided', async () => {
-        // Setup mock to return no ID
-        vi.mocked(useRoute).mockReturnValue({
-            params: {}
+    it('updates the displayed message when Update is clicked', async () => {
+        vi.mocked(greetingsService.getGreetingById).mockResolvedValue({
+            id: 'uuid-1', message: 'Happy Birthday John !', type: 'BIRTHDAY'
+        });
+        vi.mocked(greetingsService.updateGreeting).mockResolvedValue({
+            id: 'uuid-1', message: 'Joyful Anniversary John !', type: 'ANNIVERSARY'
         });
 
-        const wrapper = mount(Message);
+        const wrapper = mount(MessageView);
         await flushPromises();
 
-        expect(greetingRepository.getGreetingById).not.toHaveBeenCalled();
-        expect(wrapper.find('.error-message').exists()).toBe(true);
-        expect(wrapper.find('.error-message').text()).toContain('No message ID provided');
+        const select = wrapper.findComponent({name: 'Select'});
+        await select.vm.$emit('update:modelValue', 'ANNIVERSARY');
+        await wrapper.find('[data-cy=update-greeting]').trigger('click');
+        await flushPromises();
+
+        expect(greetingsService.updateGreeting).toHaveBeenCalledWith('uuid-1', 'ANNIVERSARY');
+        expect(wrapper.find('[data-cy=greeting-message]').text()).toBe('Joyful Anniversary John !');
     });
 
-    it('applies error styling to error messages', async () => {
-        // Setup mock to return undefined (message not found)
-        vi.mocked(greetingRepository.getGreetingById).mockReturnValue(undefined);
+    it('shows error when Update fails (e.g. CHRISTMAS restriction)', async () => {
+        vi.mocked(greetingsService.getGreetingById).mockResolvedValue({
+            id: 'uuid-1', message: 'Merry Christmas John !', type: 'CHRISTMAS'
+        });
+        vi.mocked(greetingsService.updateGreeting).mockRejectedValue(new Error('API error: 422'));
 
-        const wrapper = mount(Message);
+        const wrapper = mount(MessageView);
         await flushPromises();
 
-        const errorElement = wrapper.find('.error-message');
-        expect(errorElement.exists()).toBe(true);
+        const select = wrapper.findComponent({name: 'Select'});
+        await select.vm.$emit('update:modelValue', 'BIRTHDAY');
+        await wrapper.find('[data-cy=update-greeting]').trigger('click');
+        await flushPromises();
 
-        // Check that the error styling classes are applied
-        // Note: We can't directly test the applied CSS, but we can check the class is present
-        expect(errorElement.classes()).toContain('error-message');
+        expect(wrapper.find('[data-cy=error-message]').exists()).toBe(true);
     });
 });

@@ -2,7 +2,7 @@
 import {ref, watch} from 'vue';
 import Select from 'primevue/select';
 
-defineProps<{
+const props = defineProps<{
   label: string,
   values: string[]
 }>()
@@ -11,7 +11,7 @@ const emit = defineEmits<{
   (e: 'typeSelected', value: string): void
 }>()
 
-let selectedType = ref<string>();
+const selectedType = ref<string>();
 
 watch(selectedType, (newValue) => {
   if (newValue) {
@@ -25,8 +25,8 @@ watch(selectedType, (newValue) => {
       id="type"
       v-model="selectedType"
       :options="values"
+      :placeholder="props.label"
       class="w-full md:w-14rem"
-      placeholder="Select a type"
       data-cy="greeting-type"
   />
 </template>

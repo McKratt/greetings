@@ -1,7 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
 import GreetingForm from "./views/GreetingForm.vue";
 
-
 export default createRouter({
     history: createWebHistory(),
     routes: [
@@ -20,6 +19,10 @@ export default createRouter({
         {
             path: '/messages/:id',
             component: () => import('./views/Message.vue')
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            redirect: '/form',
         }
     ]
 })
