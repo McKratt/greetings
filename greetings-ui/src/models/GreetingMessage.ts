@@ -1,5 +1,5 @@
 export class GreetingMessage {
-    constructor(private _id: string, private _message: string) {
+    constructor(private _id: string, private _message: string, private _type: string) {
     }
 
     public get message() {
@@ -8,5 +8,9 @@ export class GreetingMessage {
 
     public get id() {
         return this._id;
+    }
+
+    public get type() {
+        return this._type;
     }
 }

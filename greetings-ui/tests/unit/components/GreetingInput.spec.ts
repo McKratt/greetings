@@ -61,4 +61,18 @@ describe('GreetingInput', () => {
         // The second update event should contain the empty string
         expect(wrapper.emitted('update')?.[1]).toEqual(['']);
     });
+
+    it('derives the input id from the label prop', () => {
+        const wrapper = mount(GreetingInput, { props: { label: 'Full Name' } });
+        const input = wrapper.find('input');
+        expect(input.attributes('id')).toBe('full-name');
+        const label = wrapper.find('label');
+        expect(label.attributes('for')).toBe('full-name');
+    });
+
+    it('uses different ids for different label props', () => {
+        const wrapper1 = mount(GreetingInput, { props: { label: 'Name' } });
+        const wrapper2 = mount(GreetingInput, { props: { label: 'Email' } });
+        expect(wrapper1.find('input').attributes('id')).not.toBe(wrapper2.find('input').attributes('id'));
+    });
 });
