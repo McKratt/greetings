@@ -3,28 +3,49 @@ import GreetingInput from "../components/GreetingInput.vue";
 import {Greeting} from "../models/greeting.model.ts";
 import {EventType} from "../models/event-type.model.ts";
 import GreetingDropdown from "../components/GreetingDropdown.vue";
-import {greetingRepository} from "../composables/GreetingsRepository.ts";
+import {greetingsService} from "../services/greetings.service.ts";
 import router from "../router.ts";
 import Button from 'primevue/button';
+import Message from 'primevue/message';
+import {ref} from 'vue';
 
-let name: string = '';
-let type: string = '';
+const name = ref('');
+const type = ref('');
+const errorMessage = ref('');
+const isLoading = ref(false);
 
-const types: string[] = Object.values(EventType) as string[]
+const types: string[] = Object.values(EventType) as string[];
 
 function updateName(value: string): void {
-  name = value.trim()
+  name.value = value.trim();
 }
 
 function updateType(value: string): void {
-  type = value.trim();
+  type.value = value.trim();
 }
 
-function submit(): void {
-  const payload: Greeting = new Greeting(EventType[type as keyof typeof EventType], name)
-  console.log(JSON.stringify(payload))
-  let message = greetingRepository.createGreeting(payload)
-  router.push(`/messages/${message.id}`)
+async function submit(): Promise<void> {
+  errorMessage.value = '';
+
+  if (!name.value) {
+    errorMessage.value = 'Name is required';
+    return;
+  }
+  if (!type.value) {
+    errorMessage.value = 'Please select a type';
+    return;
+  }
+
+  isLoading.value = true;
+  try {
+    const payload = new Greeting(EventType[type.value as keyof typeof EventType], name.value);
+    const message = await greetingsService.createGreeting(payload);
+    await router.push(`/messages/${message.id}`);
+  } catch {
+    errorMessage.value = 'Failed to create greeting. Please try again.';
+  } finally {
+    isLoading.value = false;
+  }
 }
 </script>
 
@@ -32,10 +53,10 @@ function submit(): void {
   <form class="flex flex-col gap-4 w-full max-w-md mx-auto">
     <GreetingInput label="Name" @update="updateName"/>
     <GreetingDropdown :values="types" label="Choose a type" @typeSelected="updateType"/>
-    <Button data-cy="create-greeting" label="Generate Message" @click="submit"/>
+    <Message v-if="errorMessage" :closable="false" severity="error">{{ errorMessage }}</Message>
+    <Button data-cy="create-greeting" label="Generate Message" :loading="isLoading" @click="submit"/>
   </form>
 </template>
 
 <style scoped>
-/* No custom styles needed - using PrimeVue components with default Tailwind CSS */
 </style>

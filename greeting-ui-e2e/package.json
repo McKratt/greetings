@@ -4,8 +4,10 @@
   "description": "End-to-end tests for the Greetings UI application using Cypress and Cucumber",
   "main": "index.js",
   "scripts": {
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "test": "cypress run",
+    "test:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^22.1.0",

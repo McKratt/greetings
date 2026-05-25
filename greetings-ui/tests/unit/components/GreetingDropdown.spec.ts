@@ -17,7 +17,7 @@ describe('GreetingDropdown', () => {
         expect(wrapper.findComponent({name: 'Select'}).exists()).toBe(true);
 
         // Check if the placeholder is set correctly
-        expect(wrapper.text()).toContain('Select a type');
+        expect(wrapper.text()).toContain('Test Dropdown');
 
         // Check if the values prop is passed correctly
         const selectComponent = wrapper.findComponent({name: 'Select'});
@@ -77,5 +77,13 @@ describe('GreetingDropdown', () => {
         // Check if the values prop is passed correctly
         const selectComponent = wrapper.findComponent({name: 'Select'});
         expect(selectComponent.props('options')).toEqual([]);
+    });
+
+    it('uses the label prop as the placeholder text', () => {
+        const wrapper = mount(GreetingDropdown, {
+            props: { label: 'Pick a greeting type', values: testValues }
+        });
+        const select = wrapper.findComponent({name: 'Select'});
+        expect(select.props('placeholder')).toBe('Pick a greeting type');
     });
 });

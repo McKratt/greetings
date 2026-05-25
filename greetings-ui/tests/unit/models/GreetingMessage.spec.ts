@@ -26,4 +26,16 @@ describe('GreetingMessage', () => {
         const greetingMessage = new GreetingMessage('42', 'Answer to everything');
         expect(greetingMessage.id).toBe('42');
     });
+
+    it('should return the correct type via getter', () => {
+        const msg = new GreetingMessage('1', 'Hello John!', 'BIRTHDAY');
+        expect(msg.type).toBe('BIRTHDAY');
+    });
+
+    it('should store type independently from message', () => {
+        const msg = new GreetingMessage('2', 'Merry Christmas Bob !', 'CHRISTMAS');
+        expect(msg.id).toBe('2');
+        expect(msg.message).toBe('Merry Christmas Bob !');
+        expect(msg.type).toBe('CHRISTMAS');
+    });
 });

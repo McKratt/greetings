@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import Menubar from 'primevue/menubar';
 import {ref} from 'vue';
-import {useRouter} from "vue-router";
 
 const items = ref([
   {
@@ -15,7 +14,6 @@ const items = ref([
     route: '/stats'
   }
 ]);
-const router = useRouter();
 </script>
 
 <template>
@@ -28,7 +26,7 @@ const router = useRouter();
       </router-link>
     </template>
   </Menubar>
-  <main class="p-4 flex flex-col justify-around h-screen w-full max-w-7xl mx-auto">
+  <main class="p-4 flex flex-col justify-around min-h-screen w-full max-w-7xl mx-auto">
     <RouterView/>
   </main>
 </template>
