@@ -10,7 +10,7 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.AfterAll;
-import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
 import java.io.File;
@@ -26,12 +26,10 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class E2eGreetingsCreationSteps {
 
-    private static final DockerComposeContainer environment = new DockerComposeContainer(
+    private static final ComposeContainer environment = new ComposeContainer(
             new File("src/test/resources/compose-test.yaml"))
-            .withExposedService("greetings", 8080)
-            .withExposedService("stats", 8080)
-            .waitingFor("greetings", Wait.forListeningPort())
-            .waitingFor("stats", Wait.forListeningPort());
+            .withExposedService("greetings", 8080, Wait.forListeningPort())
+            .withExposedService("stats", 8080, Wait.forListeningPort());
 
     static {
         environment.start();

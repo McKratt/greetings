@@ -1,12 +1,12 @@
 package net.bakaar.greetings.message.producer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import net.bakaar.greetings.domain.event.EventEmitter;
 import net.bakaar.greetings.domain.event.GreetingsEvent;
 import net.bakaar.greetings.message.GreetingsMessage;
 import org.springframework.kafka.core.KafkaTemplate;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.net.URI;
 
@@ -24,7 +24,7 @@ public class DirectEventEmitterAdapter implements EventEmitter {
                             URI.create("https://bakaar.net/greetings/events/greeting-created"),
                             mapper.writeValueAsString(event))
             );
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new ProducerException(e);
         }
     }

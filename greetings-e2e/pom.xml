@@ -11,19 +11,19 @@
         <maven.compiler.release>25</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <cucumber.version>7.23.0</cucumber.version>
-        <testcontainer.version>1.21.3</testcontainer.version>
-        <assertj.version>3.27.3</assertj.version>
-        <rest-assured.version>5.5.5</rest-assured.version>
-        <logback.version>1.5.18</logback.version>
+        <cucumber.version>7.34.3</cucumber.version>
+        <testcontainer.version>2.0.5</testcontainer.version>
+        <assertj.version>3.27.7</assertj.version>
+        <rest-assured.version>6.0.0</rest-assured.version>
+        <logback.version>1.5.32</logback.version>
         <awaitility.version>4.3.0</awaitility.version>
         <dbsetup.version>2.1.0</dbsetup.version>
-        <postgresql.version>42.7.7</postgresql.version>
-        <junit-bom.version>5.13.2</junit-bom.version>
-        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
+        <postgresql.version>42.7.10</postgresql.version>
+        <junit-bom.version>6.0.3</junit-bom.version>
+        <maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
         <maven-install-plugin.version>3.1.4</maven-install-plugin.version>
         <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
-        <mavan-compiler-plugin.version>3.14.0</mavan-compiler-plugin.version>
+        <mavan-compiler-plugin.version>3.15.0</mavan-compiler-plugin.version>
         <maven.compiler.proc>full</maven.compiler.proc>
         <argLine></argLine>
     </properties>
@@ -36,6 +36,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainer.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -44,12 +51,6 @@
             <artifactId>rest-assured</artifactId>
             <version>${rest-assured.version}</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-codec</groupId>
-                    <artifactId>commons-codec</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -71,14 +72,12 @@
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${testcontainer.version}</version>
+            <artifactId>testcontainers-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${testcontainer.version}</version>
+            <artifactId>testcontainers-postgresql</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

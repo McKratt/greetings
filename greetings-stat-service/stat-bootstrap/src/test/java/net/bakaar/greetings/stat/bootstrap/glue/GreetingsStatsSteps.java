@@ -1,5 +1,6 @@
 package net.bakaar.greetings.stat.bootstrap.glue;
 
+import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -19,8 +20,8 @@ import org.springframework.data.relational.core.query.CriteriaDefinition;
 import org.springframework.data.relational.core.query.Query;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
-import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.kafka.support.serializer.JacksonJsonDeserializer;
+import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 
@@ -65,6 +66,11 @@ public class GreetingsStatsSteps {
         assertThat(ety.getCount()).isEqualTo(counter);
     }
 
+    @After
+    public void afterEach() {
+        template.delete(Counter.class).all().block();
+    }
+
     @When("I create a greeting")
     public void i_create_a_greetings() {
         i_create_a_greetings("");
@@ -79,16 +85,17 @@ public class GreetingsStatsSteps {
         var producerFactory = new DefaultKafkaProducerFactory<String, GreetingsMessage>(
                 KafkaTestUtils.producerProps(embeddedKafka));
         producerFactory.setKeySerializer(new StringSerializer());
-        producerFactory.setValueSerializer(new JsonSerializer<>());
-        var producer = producerFactory.createProducer();
-        var message = new GreetingsMessage(URI.create("https://bakaar.net/greetings/events/greeting-created"), """
-                {
-                   "identifier": "%s",
-                   "raisedAt" : "2010-01-01T12:00:00+01:00"
-                }
-                """.formatted(identifier));
-        producer.send(new ProducerRecord<>(topic, identifier.toString(), message));
-        producer.flush();
+        producerFactory.setValueSerializer(new JacksonJsonSerializer<>());
+        try (var producer = producerFactory.createProducer()) {
+            var message = new GreetingsMessage(URI.create("https://bakaar.net/greetings/events/greeting-created"), """
+                    {
+                       "identifier": "%s",
+                       "raisedAt" : "2010-01-01T12:00:00+01:00"
+                    }
+                    """.formatted(identifier));
+            producer.send(new ProducerRecord<>(topic, identifier.toString(), message));
+            producer.flush();
+        }
         // Stub the answer from greetings service
         greetings.stubFor(get(urlEqualTo("/rest/api/v1/greetings/%s".formatted(identifier))).willReturn(aResponse()
                 .withStatus(200)
@@ -111,10 +118,10 @@ public class GreetingsStatsSteps {
     }
 
     private Consumer<String, GreetingsMessage> createConsumer() {
-        var consumerProps = KafkaTestUtils.consumerProps("testGroup", "true", this.embeddedKafka);
-        consumerProps.put(VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        var consumerProps = KafkaTestUtils.consumerProps(this.embeddedKafka, "testGroup", true);
+        consumerProps.put(VALUE_DESERIALIZER_CLASS_CONFIG, JacksonJsonDeserializer.class);
         consumerProps.put(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "net.bakaar.*");
+        consumerProps.put(JacksonJsonDeserializer.TRUSTED_PACKAGES, "net.bakaar.*");
         var factory = new DefaultKafkaConsumerFactory<String, GreetingsMessage>(consumerProps);
         Consumer<String, GreetingsMessage> createdConsumer = factory.createConsumer();
         embeddedKafka.consumeFromAnEmbeddedTopic(createdConsumer, topic);
@@ -125,7 +132,7 @@ public class GreetingsStatsSteps {
     public void the_counter_should_be(Integer counter) {
         await().until(() -> {
             var counterDb = template.selectOne(Query.query(CriteriaDefinition.from(Criteria.where("S_NAME").is(type.toUpperCase()))), Counter.class).block();
-            log.debug(type + " counter = " + (counterDb != null ? counterDb.getCount() : "unknown"));
+            log.debug("{} counter = {}", type, counterDb != null ? counterDb.getCount() : "unknown");
             return counterDb != null && counterDb.getCount() > 0;
         });
         given().get("http://localhost:%d/rest/api/v1/stats".formatted(port))

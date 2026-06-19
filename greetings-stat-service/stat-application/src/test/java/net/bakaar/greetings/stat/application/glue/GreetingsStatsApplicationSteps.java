@@ -29,7 +29,7 @@ public class GreetingsStatsApplicationSteps {
     private final StatRepository statRepository = mock(StatRepository.class);
     private final GreetingsRepository greetingsRepository = mock(GreetingsRepository.class);
     private final StatApplicationService service = new StatApplicationService(statRepository, greetingsRepository);
-    private GreetingsStats stats = new GreetingsStats(new HashMap<>(Map.of("BIRTHDAY", 0L, "ANNIVERSARY", 0L, "CHRISTMAS", 0L)));
+    private final GreetingsStats stats = new GreetingsStats(new HashMap<>(Map.of("BIRTHDAY", 0L, "ANNIVERSARY", 0L, "CHRISTMAS", 0L)));
     private String type = "ANNIVERSARY";
 
     @Given("the christmas greetings counter is equal to {long}")
@@ -74,8 +74,8 @@ public class GreetingsStatsApplicationSteps {
 
     @When("I update a greeting")
     public void i_update_a_greeting() {
-        // For update scenarios, we don't increment the counter
-        // This step is essentially a no-op since updates don't affect statistics
+        // get the stat object from DB
+        given(statRepository.pop()).willReturn(CompletableFuture.completedFuture(stats));
     }
 
     @Then("the counter should remain to {long}")

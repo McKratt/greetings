@@ -1,8 +1,5 @@
 package net.bakaar.greetings.stat.message.handler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.io.JsonEOFException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.bakaar.greetings.stat.application.StatApplicationService;
 import net.bakaar.greetings.stat.domain.GreetingCreated;
 import net.bakaar.greetings.stat.message.exception.JsonDeserializationException;
@@ -15,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.net.URI;
 
@@ -32,7 +31,7 @@ class CreatedGreetingEventPayloadHandlerTest {
     private StatApplicationService service;
 
     @Mock
-    private ObjectMapper jsonMapper;
+    private JsonMapper jsonMapper;
 
     @InjectMocks
     private CreatedGreetingEventPayloadHandler handler;
@@ -58,7 +57,7 @@ class CreatedGreetingEventPayloadHandlerTest {
     }
 
     @Test
-    void handle_should_call_jsonMapper_and_service() throws JsonProcessingException {
+    void handle_should_call_jsonMapper_and_service() {
         // Arrange
         var payload = "Payload";
         var event = mock(GreetingCreated.class);
@@ -74,9 +73,9 @@ class CreatedGreetingEventPayloadHandlerTest {
     }
 
     @Test
-    void handle_should_throw_exception() throws JsonProcessingException {
+    void handle_should_throw_exception() {
         // Arrange
-        var cause = new JsonEOFException(null, null, null);
+        var cause = mock(JacksonException.class);
         given(jsonMapper.readValue(anyString(), any(Class.class))).willThrow(cause);
         // Act
         StepVerifier.create(handler.handle("Whatever"))

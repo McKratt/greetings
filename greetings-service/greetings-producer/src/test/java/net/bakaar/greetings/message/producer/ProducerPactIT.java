@@ -6,8 +6,6 @@ import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
 import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.loader.PactFolder;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.bakaar.greetings.domain.Greeting;
 import net.bakaar.greetings.domain.event.EventEmitter;
 import net.bakaar.greetings.domain.event.GreetingCreated;
@@ -21,6 +19,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -49,7 +49,7 @@ class ProducerPactIT {
     }
 
     @PactVerifyProvider("A greetings created message")
-    String send_greeting_created_message() throws JsonProcessingException {
+    String send_greeting_created_message() throws JacksonException {
         var event = GreetingCreated.of(Greeting.of("birthday").to("toto").build());
         emitter.emit(event);
         var captor = ArgumentCaptor.forClass(GreetingsMessage.class);

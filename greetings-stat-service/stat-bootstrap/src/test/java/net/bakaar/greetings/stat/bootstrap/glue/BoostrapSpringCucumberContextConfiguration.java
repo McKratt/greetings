@@ -5,10 +5,12 @@ import io.cucumber.java.AfterAll;
 import io.cucumber.spring.CucumberContextConfiguration;
 import net.bakaar.greetings.stat.StatSpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.context.ImportTestcontainers;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import static net.bakaar.greetings.stat.bootstrap.glue.GreetingsStatsSteps.topic;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -18,15 +20,16 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(classes = {StatSpringBootApplication.class}, webEnvironment = RANDOM_PORT, properties = {
         "spring.profiles.active=test"
 })
+@ImportTestcontainers
 public class BoostrapSpringCucumberContextConfiguration {
 
     public static final WireMockServer greetings = new WireMockServer(0);
 
+    @ServiceConnection
     private static final PostgreSQLContainer dbContainer = new PostgreSQLContainer("postgres")
             .withDatabaseName("stats")
             .withUsername("foo")
             .withPassword("secret");
-
 
     static {
         dbContainer.start();
@@ -34,18 +37,13 @@ public class BoostrapSpringCucumberContextConfiguration {
     }
 
     @AfterAll
-    static void afterAll() {
+    public static void afterAll() {
         dbContainer.stop();
         greetings.stop();
     }
 
     @DynamicPropertySource
     static void registerProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.r2dbc.url",
-                () -> "r2dbc:postgresql://localhost:%d/%s".formatted(
-                        dbContainer.getFirstMappedPort(), dbContainer.getDatabaseName()));
-        registry.add("spring.r2dbc.password", dbContainer::getPassword);
-        registry.add("spring.r2dbc.username", dbContainer::getUsername);
         registry.add("spring.flyway.url", dbContainer::getJdbcUrl);
         registry.add("spring.flyway.user", dbContainer::getUsername);
         registry.add("spring.flyway.password", dbContainer::getPassword);

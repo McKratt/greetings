@@ -12,7 +12,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import reactor.core.publisher.Mono;
@@ -60,7 +60,7 @@ public class GreetingsStatsConsumerSteps {
         var producerFactory = new DefaultKafkaProducerFactory<String, GreetingsMessage>(
                 KafkaTestUtils.producerProps(embeddedKafka));
         producerFactory.setKeySerializer(new StringSerializer());
-        producerFactory.setValueSerializer(new JsonSerializer<>());
+        producerFactory.setValueSerializer(new JacksonJsonSerializer<>());
         var producer = producerFactory.createProducer();
         var message = new GreetingsMessage(URI.create("https://bakaar.net/greetings/events/greeting-created"), """
                 {
@@ -94,6 +94,7 @@ public class GreetingsStatsConsumerSteps {
 
     @When("I update a greeting")
     public void i_update_a_greeting() {
+        given(statRepository.pop()).willReturn(CompletableFuture.completedFuture(mockedStats));
         // Update scenarios don't send new events, so this is essentially a no-op
         // The counter should remain unchanged
     }
@@ -114,7 +115,7 @@ public class GreetingsStatsConsumerSteps {
         var producerFactory = new DefaultKafkaProducerFactory<String, GreetingsMessage>(
                 KafkaTestUtils.producerProps(embeddedKafka));
         producerFactory.setKeySerializer(new StringSerializer());
-        producerFactory.setValueSerializer(new JsonSerializer<>());
+        producerFactory.setValueSerializer(new JacksonJsonSerializer<>());
         var producer = producerFactory.createProducer();
         var message = new GreetingsMessage(URI.create("https://bakaar.net/greetings/events/greeting-created"), """
                 {

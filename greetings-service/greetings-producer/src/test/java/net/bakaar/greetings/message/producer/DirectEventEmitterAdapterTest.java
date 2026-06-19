@@ -1,7 +1,5 @@
 package net.bakaar.greetings.message.producer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.bakaar.greetings.domain.event.GreetingsEvent;
 import net.bakaar.greetings.message.GreetingsMessage;
 import org.junit.jupiter.api.Test;
@@ -11,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.core.KafkaTemplate;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -34,7 +34,7 @@ class DirectEventEmitterAdapterTest {
     private GreetingsEvent event;
 
     @Test
-    void should_transform_payload_to_json_and_call_kafka() throws JsonProcessingException {
+    void should_transform_payload_to_json_and_call_kafka() throws JacksonException {
         // Arrange
         var type = "https://bakaar.net/greetings/events/greeting-created";
         var payload = "I'm a payload";
@@ -53,9 +53,9 @@ class DirectEventEmitterAdapterTest {
     }
 
     @Test
-    void should_throw_a_runtimeException() throws JsonProcessingException {
+    void should_throw_a_runtimeException() throws JacksonException {
         // Arrange
-        var e = mock(JsonProcessingException.class);
+        var e = mock(JacksonException.class);
         given(jsonMapper.writeValueAsString(any())).willThrow(e);
         // Act
         var thrown = catchThrowable(() -> adapter.emit(event));

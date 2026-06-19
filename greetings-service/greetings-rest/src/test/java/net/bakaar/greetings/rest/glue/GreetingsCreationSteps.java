@@ -1,7 +1,5 @@
 package net.bakaar.greetings.rest.glue;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -11,13 +9,15 @@ import net.bakaar.greetings.domain.GreetingRepository;
 import net.bakaar.greetings.rest.IdentifiedGreetingMessage;
 import net.bakaar.greetings.rest.UpdateGreetingCommandDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.restclient.test.autoconfigure.AutoConfigureRestClient;
+import org.springframework.boot.resttestclient.TestRestTemplate;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import tools.jackson.databind.ObjectMapper;
 
 import java.net.URI;
 import java.util.UUID;
@@ -28,7 +28,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @CucumberContextConfiguration
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-@AutoConfigureMockMvc
+@AutoConfigureRestClient
+@AutoConfigureTestRestTemplate
 public class GreetingsCreationSteps {
 
     @Autowired
@@ -66,7 +67,7 @@ public class GreetingsCreationSteps {
     }
 
     @When("I change the type to {word}")
-    public void i_change_the_type_to(String type) throws JsonProcessingException {
+    public void i_change_the_type_to(String type) {
         var updateGreetingCommand = new UpdateGreetingCommandDTO();
         updateGreetingCommand.setNewType(type);
         var identifier = jsonMapper.readValue(response.getBody(), IdentifiedGreetingMessage.class).id();
@@ -85,7 +86,7 @@ public class GreetingsCreationSteps {
     }
 
     @Then("a Greeting is created")
-    public void a_greeting_is_created() throws JsonProcessingException {
+    public void a_greeting_is_created() {
         var identifier = jsonMapper.readValue(response.getBody(), IdentifiedGreetingMessage.class).id();
         var greeting = repository.find(UUID.fromString(identifier));
         assertThat(greeting).isNotEmpty();

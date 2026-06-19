@@ -4,13 +4,11 @@ package net.bakaar.greetings.domain;
 import lombok.RequiredArgsConstructor;
 import net.bakaar.greetings.domain.exception.GreetingWrongTypeException;
 
-import static java.lang.String.format;
-
 @RequiredArgsConstructor
 public enum GreetingType {
-    BIRTHDAY(name -> format("Happy Birthday %s !", name)),
-    ANNIVERSARY(name -> format("Joyful Anniversary %s !", name)),
-    CHRISTMAS(name -> format("Merry Christmas %s !", name));
+    BIRTHDAY(name -> "Happy Birthday %s !".formatted(name)),
+    ANNIVERSARY(name -> "Joyful Anniversary %s !".formatted(name)),
+    CHRISTMAS(name -> "Merry Christmas %s !".formatted(name));
 
     private final MessageCreator messageCreator;
 

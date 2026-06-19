@@ -10,13 +10,13 @@ import org.springframework.data.relational.core.mapping.Table;
 @Setter
 @Accessors(chain = true)
 @Getter
-@Table("T_COUNTER")
+@Table("t_counter")
 public class Counter {
     @Id
-    @Column("PK_T_COUNTER")
+    @Column("pk_t_counter")
     private long id;
-    @Column("S_NAME")
+    @Column("s_name")
     private String name;
-    @Column("L_COUNT")
+    @Column("l_count")
     private long count = 0;
 }

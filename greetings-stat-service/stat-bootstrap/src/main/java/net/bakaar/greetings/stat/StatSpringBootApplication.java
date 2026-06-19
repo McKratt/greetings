@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication(proxyBeanMethods = false)
 @EnableTransactionManagement
 public class StatSpringBootApplication {
-    public static void main(String[] args) {
+    static void main() {
         SpringApplication.run(StatSpringBootApplication.class);
     }
 }
