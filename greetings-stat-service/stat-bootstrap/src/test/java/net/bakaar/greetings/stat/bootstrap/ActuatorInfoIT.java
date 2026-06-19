@@ -37,6 +37,6 @@ class ActuatorInfoIT {
         var response = WebTestClientResponse.from(template.get().uri("/actuator/info")
                 .exchange().returnResult());
         // Assert
-        assertThat(response).hasStatus(HttpStatus.OK).bodyText().contains("\"version\":\"2.0.0\"");
+        assertThat(response).hasStatus(HttpStatus.OK).bodyText().contains("\"version\":\"2.1.0\"");
     }
 }

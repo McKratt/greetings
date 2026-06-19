@@ -33,6 +33,6 @@ class ActuatorInfoIT {
         // Assert
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).contains("\"version\":\"2.0.0\"");
+        assertThat(response.getBody()).contains("\"version\":\"2.1.0\"");
     }
 }
