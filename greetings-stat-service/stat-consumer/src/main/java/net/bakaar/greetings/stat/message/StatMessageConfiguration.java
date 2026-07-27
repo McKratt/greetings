@@ -1,7 +1,5 @@
 package net.bakaar.greetings.stat.message;
 
-import tools.jackson.databind.DeserializationFeature;
-import tools.jackson.databind.ObjectMapper;
 import net.bakaar.greetings.stat.application.StatApplicationService;
 import net.bakaar.greetings.stat.message.handler.CreatedGreetingEventPayloadHandler;
 import net.bakaar.greetings.stat.message.handler.GreetingMessagePayloadHandler;
@@ -35,7 +33,7 @@ public class StatMessageConfiguration {
         return new GreetingsMessageProcessor();
     }
 
-    private ObjectMapper createJsonMapper() {
+    private JsonMapper createJsonMapper() {
         return JsonMapper.builder().build();
     }
 }
