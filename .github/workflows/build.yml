@@ -4,6 +4,7 @@
 name: Build + Sonar Analysis + Deploy To DockerHub
 
 on:
+  workflow_dispatch:
   push:
     branches: [ master, vuejs ]
   pull_request:
