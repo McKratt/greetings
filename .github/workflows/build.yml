@@ -48,7 +48,7 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
       - name: Cache Maven packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.m2
           key: ${{ runner.os }}-greetings-m2-${{ hashFiles('**/pom.xml') }}
@@ -88,7 +88,7 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
       - name: Cache Maven packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.m2
           key: ${{ runner.os }}-stats-m2-${{ hashFiles('**/pom.xml') }}
@@ -131,7 +131,7 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
       - name: Cache Maven packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.m2
           key: ${{ runner.os }}-greetings-m2-${{ hashFiles('**/pom.xml') }}
@@ -159,7 +159,7 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
       - name: Cache Maven packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.m2
           key: ${{ runner.os }}-stats-m2-${{ hashFiles('**/pom.xml') }}
