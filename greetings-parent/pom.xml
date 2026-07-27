@@ -14,18 +14,18 @@
     <packaging>pom</packaging>
     <properties>
         <java.version>25</java.version>
-        <cucumber.version>7.34.3</cucumber.version>
         <junit-bom.version>6.1.2</junit-bom.version>
+        <cucumber.version>7.34.6</cucumber.version>
         <testcontainers.version>2.0.4</testcontainers.version>
         <pact.version>4.6.20</pact.version>
-        <jacoco.version>0.8.14</jacoco.version>
+        <jacoco.version>0.8.15</jacoco.version>
         <awaitility.version>4.3.0</awaitility.version>
         <to-string-verifier.version>1.4.8</to-string-verifier.version>
         <wiremock.version>3.13.2</wiremock.version>
         <rest-assured.version>6.0.0</rest-assured.version>
         <docker-maven-plugin.version>0.48.1</docker-maven-plugin.version>
         <sonar-maven-plugin.version>5.7.0.6970</sonar-maven-plugin.version>
-        <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
+        <sonar.moduleKey>${sonar.projectName}:${project.artifactId}</sonar.moduleKey>
         <sonar.organization>mckratt</sonar.organization>
         <sonar.coverage.exclusions>
             **/*Properties.java,
