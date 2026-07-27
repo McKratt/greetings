@@ -18,7 +18,7 @@
         <logback.version>1.5.32</logback.version>
         <awaitility.version>4.3.0</awaitility.version>
         <dbsetup.version>2.1.0</dbsetup.version>
-        <postgresql.version>42.7.10</postgresql.version>
+        <postgresql.version>42.7.13</postgresql.version>
         <junit-bom.version>6.0.3</junit-bom.version>
         <maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
         <maven-install-plugin.version>3.1.4</maven-install-plugin.version>
