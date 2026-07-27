@@ -17,7 +17,7 @@
         <cucumber.version>7.34.6</cucumber.version>
         <junit-bom.version>6.1.2</junit-bom.version>
         <testcontainers.version>2.0.5</testcontainers.version>
-        <pact.version>4.6.20</pact.version>
+        <pact.version>4.7.3</pact.version>
         <jacoco.version>0.8.15</jacoco.version>
         <awaitility.version>4.3.0</awaitility.version>
         <to-string-verifier.version>1.4.8</to-string-verifier.version>
