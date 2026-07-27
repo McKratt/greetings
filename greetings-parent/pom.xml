@@ -22,7 +22,7 @@
         <awaitility.version>4.3.0</awaitility.version>
         <to-string-verifier.version>1.4.8</to-string-verifier.version>
         <wiremock.version>3.13.2</wiremock.version>
-        <rest-assured.version>6.0.0</rest-assured.version>
+        <rest-assured.version>6.0.1</rest-assured.version>
         <docker-maven-plugin.version>0.48.1</docker-maven-plugin.version>
         <sonar-maven-plugin.version>5.7.0.6970</sonar-maven-plugin.version>
         <sonar.moduleKey>${sonar.projectName}:${project.artifactId}</sonar.moduleKey>
