@@ -14,7 +14,7 @@
         <cucumber.version>7.34.6</cucumber.version>
         <testcontainer.version>2.0.5</testcontainer.version>
         <assertj.version>3.27.7</assertj.version>
-        <rest-assured.version>6.0.0</rest-assured.version>
+        <rest-assured.version>6.0.1</rest-assured.version>
         <logback.version>1.5.32</logback.version>
         <awaitility.version>4.3.0</awaitility.version>
         <dbsetup.version>2.1.0</dbsetup.version>
