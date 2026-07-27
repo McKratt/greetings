@@ -24,6 +24,7 @@
         <wiremock.version>3.13.2</wiremock.version>
         <rest-assured.version>6.0.0</rest-assured.version>
         <docker-maven-plugin.version>0.48.1</docker-maven-plugin.version>
+        <sonar-maven-plugin.version>5.7.0.6970</sonar-maven-plugin.version>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
         <sonar.organization>mckratt</sonar.organization>
         <sonar.coverage.exclusions>
@@ -154,6 +155,11 @@
                         <perCoreThreadCount>true</perCoreThreadCount>
                         <parallel>all</parallel>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
