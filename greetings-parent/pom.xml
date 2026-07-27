@@ -25,7 +25,7 @@
         <rest-assured.version>6.0.0</rest-assured.version>
         <docker-maven-plugin.version>0.48.1</docker-maven-plugin.version>
         <sonar-maven-plugin.version>5.7.0.6970</sonar-maven-plugin.version>
-        <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
+        <sonar.moduleKey>${sonar.projectName}:${project.artifactId}</sonar.moduleKey>
         <sonar.organization>mckratt</sonar.organization>
         <sonar.coverage.exclusions>
             **/*Properties.java,
