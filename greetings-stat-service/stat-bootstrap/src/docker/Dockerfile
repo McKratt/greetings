@@ -1,11 +1,11 @@
-FROM eclipse-temurin:25-alpine-3.23 AS builder
+FROM eclipse-temurin:25-jdk-alpine-3.23 AS builder
 RUN mkdir /opt/app
 ARG JAR_FILE=target/*-exec.jar
 COPY ${JAR_FILE} /opt/app/application.jar
 WORKDIR /opt/app
 RUN java -Djarmode=tools -jar application.jar extract --layers --destination /opt/app/extract
 
-FROM eclipse-temurin:25-alpine-3.23
+FROM eclipse-temurin:25-jre-alpine-3.23
 ENV JAVA_OPTS=""
 
 WORKDIR /opt/app
