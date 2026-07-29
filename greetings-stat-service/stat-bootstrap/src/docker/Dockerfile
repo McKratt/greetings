@@ -1,16 +1,17 @@
-FROM eclipse-temurin:25.0.3_9-jre-alpine-3.23 AS builder
+FROM eclipse-temurin:25-alpine-3.23 AS builder
 RUN mkdir /opt/app
 ARG JAR_FILE=target/*-exec.jar
 COPY ${JAR_FILE} /opt/app/application.jar
 WORKDIR /opt/app
-RUN java -Djarmode=layertools -jar application.jar extract
+RUN java -Djarmode=tools -jar application.jar extract --layers --destination /opt/app/extract
 
-FROM eclipse-temurin:25.0.3_9-jre-alpine-3.23
+FROM eclipse-temurin:25-alpine-3.23
 ENV JAVA_OPTS=""
 
 WORKDIR /opt/app
-COPY --from=builder /opt/app/dependencies/ ./
-COPY --from=builder /opt/app/spring-boot-loader/ ./
-COPY --from=builder /opt/app/application/ ./
+COPY --from=builder /opt/app/extract/dependencies/ ./
+COPY --from=builder /opt/app/extract/spring-boot-loader/ ./
+COPY --from=builder /opt/app/extract/application/ ./
+
 ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
 CMD ${JAVA_OPTS}

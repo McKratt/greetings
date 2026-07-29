@@ -110,7 +110,7 @@ public class GreetingsBootstrapCreationSteps {
 
     @NotNull
     private Consumer<String, GreetingsMessage> createConsumer() {
-        var consumerProps = KafkaTestUtils.consumerProps("testGroup", "true", this.embeddedKafka);
+        var consumerProps = KafkaTestUtils.consumerProps(this.embeddedKafka, "testGroup", true);
         consumerProps.put(VALUE_DESERIALIZER_CLASS_CONFIG, JacksonJsonDeserializer.class);
         consumerProps.put(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         consumerProps.put(JacksonJsonDeserializer.TRUSTED_PACKAGES, "net.bakaar.*");
