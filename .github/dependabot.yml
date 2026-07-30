@@ -15,19 +15,57 @@ updates:
     directory: "/greetings-parent" # Location of package manifests
     schedule:
       interval: "weekly"
+    groups:
+      libraries:
+        exclude-patterns:
+          - "org.springframework.*"
+        patterns:
+          - "*"
+      spring:
+        patterns:
+          - "org.springframework.*:*"
   - package-ecosystem: "maven" # See documentation for possible values
     directory: "/greetings-service" # Location of package manifests
+    exclude-paths:
+      - ../greetings-parent
     schedule:
       interval: "weekly"
+    groups:
+      libraries:
+        exclude-patterns:
+          - "org.springframework.*"
+        patterns:
+          - "*"
+      spring:
+        patterns:
+          - "org.springframework.*:*"
   - package-ecosystem: "maven" # See documentation for possible values
     directory: "/greetings-stat-service" # Location of package manifests
     schedule:
       interval: "weekly"
+    groups:
+      libraries:
+        exclude-patterns:
+          - "org.springframework.*"
+        patterns:
+          - "*"
+      spring:
+        patterns:
+          - "org.springframework.*:*"
   - package-ecosystem: "maven" # See documentation for possible values
     directory: "/greetings-e2e" # Location of package manifests
     schedule:
       interval: "weekly"
+    groups:
+      libraries:
+        exclude-patterns:
+          - "org.springframework.*"
+        patterns:
+          - "*"
+      spring:
+        patterns:
+          - "org.springframework.*:*"
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/greetings-ui" # Location of package manifests
     schedule:
-      interval: "weekly"     
+      interval: "weekly"
