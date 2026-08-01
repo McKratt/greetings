@@ -1,11 +1,7 @@
 package net.bakaar.greetings.e2e;
 
-import org.junit.platform.suite.api.ConfigurationParameter;
-import org.junit.platform.suite.api.IncludeEngines;
-import org.junit.platform.suite.api.SelectFile;
-import org.junit.platform.suite.api.Suite;
+import org.junit.platform.suite.api.*;
 
-import static io.cucumber.core.options.Constants.FILTER_TAGS_PROPERTY_NAME;
 import static io.cucumber.core.options.Constants.GLUE_PROPERTY_NAME;
 
 @Suite
@@ -14,6 +10,6 @@ import static io.cucumber.core.options.Constants.GLUE_PROPERTY_NAME;
 @SelectFile("../bdd/features/GreetingsUpdate.feature")
 @SelectFile("../bdd/features/GreetingsStats.feature")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "net.bakaar.greetings.e2e.glue")
-@ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "@e2e")
+@IncludeTags({"e2e"})
 public class E2eCucumberLauncherTest {
 }

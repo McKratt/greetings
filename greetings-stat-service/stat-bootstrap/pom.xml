@@ -10,7 +10,7 @@
     </parent>
     <artifactId>stat-bootstrap</artifactId>
     <properties>
-        <image.name>bakaar/greetings-stat-service:${project.version}-sb3-aot</image.name>
+        <image.name>bakaar/greetings-stat-service:${project.version}</image.name>
         <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}
         </sonar.coverage.jacoco.xmlReportPaths>
     </properties>
