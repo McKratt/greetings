@@ -24,7 +24,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static net.bakaar.greetings.stat.message.glue.ConsumerSpringCucumberContextConfiguration.topic;
+import static net.bakaar.greetings.stat.message.glue.ConsumerSpringCucumberContextConfiguration.TOPIC;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.mockito.BDDMockito.given;
@@ -68,7 +68,7 @@ public class GreetingsStatsConsumerSteps {
                    "raisedAt" : "2010-01-01T12:00:00+01:00"
                 }
                 """.formatted(identifier));
-        producer.send(new ProducerRecord<>(topic, identifier.toString(), message));
+        producer.send(new ProducerRecord<>(TOPIC, identifier.toString(), message));
         producer.flush();
 
     }
@@ -123,7 +123,7 @@ public class GreetingsStatsConsumerSteps {
                    "raisedAt" : "2010-01-01T12:00:00+01:00"
                 }
                 """.formatted(identifier));
-        producer.send(new ProducerRecord<>(topic, identifier.toString(), message));
+        producer.send(new ProducerRecord<>(TOPIC, identifier.toString(), message));
         producer.flush();
     }
 

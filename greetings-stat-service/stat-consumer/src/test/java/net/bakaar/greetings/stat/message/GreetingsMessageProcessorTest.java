@@ -42,8 +42,7 @@ class GreetingsMessageProcessorTest {
         var handler2 = mock(GreetingMessagePayloadHandler.class);
         // The handler2 may not be interrogated depending on the order in the Set.
         lenient().when(handler2.canHandle(type)).thenReturn(false);
-        // FIXME once lenient BDD is implemented : https://github.com/mockito/mockito/issues/1597
-//        given(handler2.canHandle(type)).willReturn(false);
+        // FIXME once lenient BDD is implemented : https://github.com/mockito/mockito/issues/1597 -> given(handler2.canHandle(type)).willReturn(false);
         ReflectionTestUtils.setField(processor, "handlers", Set.of(handler2, handler));
         // Act
         processor.processMessage(message, ack);

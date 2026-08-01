@@ -54,7 +54,6 @@ public class GreetingsBootstrapCreationSteps {
     @Autowired
     private JdbcTemplate dbTemplate;
     @Autowired
-    // FIXME replace that by a container
     private EmbeddedKafkaBroker embeddedKafka;
     @Autowired
     private GreetingsProducerProperties messageProperties;

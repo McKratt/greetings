@@ -18,7 +18,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 })
 public class ConsumerSpringCucumberContextConfiguration {
     @Value("${greetings.message.topic}")
-    public static final String topic = "stat_topic";
+    public static final String TOPIC = "stat_topic";
     @MockitoBean
     private GreetingsRepository greetingsRepository;
     @MockitoBean
@@ -26,7 +26,7 @@ public class ConsumerSpringCucumberContextConfiguration {
 
     @DynamicPropertySource
     static void registerProperties(DynamicPropertyRegistry registry) {
-        registry.add("greetings.message.topic", () -> topic);
+        registry.add("greetings.message.topic", () -> TOPIC);
         registry.add("spring.kafka.bootstrap-servers", () -> "${spring.embedded.kafka.brokers}");
         registry.add("greetings.stat.rest.client.url", () -> "http://localhost:${wiremock.server.port}/rest/api/v1/greetings");
     }

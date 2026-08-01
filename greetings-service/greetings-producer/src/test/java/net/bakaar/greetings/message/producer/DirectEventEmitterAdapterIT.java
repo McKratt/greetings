@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.kafka.support.serializer.JacksonJsonDeserializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
@@ -57,10 +57,10 @@ class DirectEventEmitterAdapterIT {
         var event = GreetingCreated.of(greeting);
         emitter.emit(event);
         // Assert
-        var consumerProps = KafkaTestUtils.consumerProps("testGroup", "true", this.embeddedKafka);
-        consumerProps.put(VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        var consumerProps = KafkaTestUtils.consumerProps(this.embeddedKafka, "testGroup", true);
+        consumerProps.put(VALUE_DESERIALIZER_CLASS_CONFIG, JacksonJsonDeserializer.class);
         consumerProps.put(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "net.bakaar.*");
+        consumerProps.put(JacksonJsonDeserializer.TRUSTED_PACKAGES, "net.bakaar.*");
         var factory = new DefaultKafkaConsumerFactory<String, GreetingsMessage>(consumerProps);
         var consumer = factory.createConsumer();
         embeddedKafka.consumeFromAnEmbeddedTopic(consumer, TEST_TOPIC);

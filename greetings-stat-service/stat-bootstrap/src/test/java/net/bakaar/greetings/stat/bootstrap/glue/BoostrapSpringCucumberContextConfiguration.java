@@ -12,11 +12,11 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
-import static net.bakaar.greetings.stat.bootstrap.glue.GreetingsStatsSteps.topic;
+import static net.bakaar.greetings.stat.bootstrap.glue.GreetingsStatsSteps.TOPIC;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @CucumberContextConfiguration
-@EmbeddedKafka(partitions = 1, topics = topic)
+@EmbeddedKafka(partitions = 1, topics = TOPIC)
 @SpringBootTest(classes = {StatSpringBootApplication.class}, webEnvironment = RANDOM_PORT, properties = {
         "spring.profiles.active=test"
 })
@@ -47,7 +47,7 @@ public class BoostrapSpringCucumberContextConfiguration {
         registry.add("spring.flyway.url", dbContainer::getJdbcUrl);
         registry.add("spring.flyway.user", dbContainer::getUsername);
         registry.add("spring.flyway.password", dbContainer::getPassword);
-        registry.add("greetings.message.topic", () -> topic);
+        registry.add("greetings.message.topic", () -> TOPIC);
         registry.add("spring.kafka.bootstrap-servers", () -> "${spring.embedded.kafka.brokers}");
         registry.add("greetings.stat.rest.client.url", () -> "http://localhost:" + greetings.port());
     }

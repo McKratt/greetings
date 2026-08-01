@@ -42,7 +42,7 @@ import static org.hamcrest.Matchers.containsString;
 @Slf4j
 public class GreetingsStatsSteps {
 
-    public static final String topic = "test-topic";
+    public static final String TOPIC = "test-topic";
     private final UUID identifier = UUID.randomUUID();
     private static Consumer<String, GreetingsMessage> consumer;
     private final String name = "Lucius";
@@ -93,7 +93,7 @@ public class GreetingsStatsSteps {
                        "raisedAt" : "2010-01-01T12:00:00+01:00"
                     }
                     """.formatted(identifier));
-            producer.send(new ProducerRecord<>(topic, identifier.toString(), message));
+            producer.send(new ProducerRecord<>(TOPIC, identifier.toString(), message));
             producer.flush();
         }
         // Stub the answer from greetings service
@@ -110,7 +110,7 @@ public class GreetingsStatsSteps {
         if (consumer == null) {
             consumer = createConsumer(); // It could only be one consumer
         }
-        ConsumerRecord<String, GreetingsMessage> consumedRecord = KafkaTestUtils.getSingleRecord(consumer, topic, Duration.ofMillis(10000));
+        ConsumerRecord<String, GreetingsMessage> consumedRecord = KafkaTestUtils.getSingleRecord(consumer, TOPIC, Duration.ofMillis(10000));
         var testMessage = consumedRecord.value();
         assertThat(testMessage).isNotNull();
         assertThat(testMessage.type()).isEqualTo(URI.create("https://bakaar.net/greetings/events/greeting-created"));
@@ -124,7 +124,7 @@ public class GreetingsStatsSteps {
         consumerProps.put(JacksonJsonDeserializer.TRUSTED_PACKAGES, "net.bakaar.*");
         var factory = new DefaultKafkaConsumerFactory<String, GreetingsMessage>(consumerProps);
         Consumer<String, GreetingsMessage> createdConsumer = factory.createConsumer();
-        embeddedKafka.consumeFromAnEmbeddedTopic(createdConsumer, topic);
+        embeddedKafka.consumeFromAnEmbeddedTopic(createdConsumer, TOPIC);
         return createdConsumer;
     }
 

@@ -9,7 +9,6 @@ import au.com.dius.pact.core.model.PactSpecVersion;
 import au.com.dius.pact.core.model.annotations.Pact;
 import au.com.dius.pact.core.model.messaging.Message;
 import au.com.dius.pact.core.model.messaging.MessagePact;
-import tools.jackson.databind.ObjectMapper;
 import net.bakaar.greetings.message.GreetingsMessage;
 import net.bakaar.greetings.stat.application.StatApplicationService;
 import net.bakaar.greetings.stat.domain.GreetingCreated;
@@ -25,8 +24,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import reactor.core.publisher.Mono;
+import tools.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,9 +51,6 @@ class StatConsumerMessagePactIT {
     private GreetingMessagePayloadHandler handler;
     @MockitoBean
     private StatApplicationService service;
-    // FIXME, find the ObjectMapper, injected in the JsonDeserializer
-//    @Autowired
-//    private ObjectMapper jsonMapper;
 
     @Pact(consumer = "stat-service")
     MessagePact createPact(MessagePactBuilder builder) {
@@ -70,12 +66,12 @@ class StatConsumerMessagePactIT {
 
     @Test
     @PactTestFor(pactMethod = "createPact")
-    void message_should_be_sent(List<Message> messages) throws IOException {
+    void message_should_be_sent(List<Message> messages) {
         // Arrange
         assertThat(processor).as("Processor should not be null").isNotNull();
         assertThat(messages).hasSize(1);
         given(service.handle(any())).willReturn(Mono.empty());
-        var message = jsonMapper.readValue(messages.get(0).getContents().valueAsString(), GreetingsMessage.class);
+        var message = jsonMapper.readValue(messages.getFirst().getContents().valueAsString(), GreetingsMessage.class);
         // Act
         processor.processMessage(message, mock(Acknowledgment.class));
         // Assert
