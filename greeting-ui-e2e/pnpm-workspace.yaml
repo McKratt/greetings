@@ -1,0 +1,6 @@
+# Dependencies whose install scripts must run (pnpm blocks them by default).
+# cypress downloads its binary in a postinstall step.
+allowBuilds:
+  '@badeball/cypress-cucumber-preprocessor': true
+  cypress: true
+  esbuild: true

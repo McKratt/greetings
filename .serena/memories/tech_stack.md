@@ -11,7 +11,7 @@
 ## Frontend
 - **Framework**: Vue 3.5+
 - **Language**: TypeScript 5.5+
-- **Package Manager**: yarn
+- **Package Manager**: pnpm
 - **Build Tool**: Vite 6.3+
 - **UI Library**: PrimeVue 4.3+ with Tailwind CSS 4.1+
 - **Router**: Vue Router 4

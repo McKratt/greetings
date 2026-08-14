@@ -12,16 +12,16 @@ A Vue 3 application for creating and viewing greeting messages. Built with Vue 3
 
 ```bash
 # Install dependencies
-yarn install
+pnpm install
 
 # Start development server
-yarn dev
+pnpm dev
 
 # Build for production
-yarn build
+pnpm build
 
 # Preview production build
-yarn preview
+pnpm preview
 ```
 
 ## Running Tests
@@ -30,10 +30,10 @@ The project uses Vitest for unit testing. To run the tests:
 
 ```bash
 # Run tests once
-yarn test
+pnpm test
 
 # Run tests in watch mode
-yarn test:watch
+pnpm test:watch
 ```
 
 ### Test Coverage

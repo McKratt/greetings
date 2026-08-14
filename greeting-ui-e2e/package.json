@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "End-to-end tests for the Greetings UI application using Cypress and Cucumber",
   "main": "index.js",
+  "packageManager": "pnpm@11.21.0",
   "scripts": {
     "test": "cypress run",
     "test:open": "cypress open",
