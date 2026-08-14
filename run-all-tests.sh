@@ -62,9 +62,9 @@ check_prerequisites() {
         exit 1
     fi
     
-    # Check yarn
-    if ! command -v yarn &> /dev/null; then
-        print_error "yarn is not installed. Please install yarn"
+    # Check pnpm
+    if ! command -v pnpm &> /dev/null; then
+        print_error "pnpm is not installed. Please install pnpm"
         exit 1
     fi
     
@@ -142,19 +142,19 @@ build_ui() {
     
     # Install dependencies
     print_step "Installing UI dependencies..."
-    yarn install || { print_error "Failed to install UI dependencies"; exit 1; }
+    pnpm install --frozen-lockfile || { print_error "Failed to install UI dependencies"; exit 1; }
 
     # Run tests
     print_step "Running UI tests..."
-    yarn test || { print_error "UI tests failed"; exit 1; }
+    pnpm test || { print_error "UI tests failed"; exit 1; }
 
     # Run Pact tests
     print_step "Running UI Pact tests..."
-    yarn run pact || { print_error "UI Pact tests failed"; exit 1; }
+    pnpm run pact || { print_error "UI Pact tests failed"; exit 1; }
 
     # Build UI
     print_step "Building UI..."
-    yarn run build || { print_error "UI build failed"; exit 1; }
+    pnpm run build || { print_error "UI build failed"; exit 1; }
     
     cd ..
     print_success "UI build and tests completed"

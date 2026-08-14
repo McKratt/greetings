@@ -5,7 +5,7 @@
 ### 1. Code Quality Checks
 ```bash
 # Run linting (frontend)
-cd greetings-ui && yarn lint
+cd greetings-ui && pnpm lint
 
 # Check code formatting and style compliance
 # (Currently no explicit formatter configured - follow established patterns)
@@ -21,14 +21,14 @@ cd greetings-stat-service && mvn clean test -Pcoverage
 mvn verify -DskipUTs -Pcoverage
 
 # Frontend: Run tests with coverage
-cd greetings-ui && yarn test:coverage
+cd greetings-ui && pnpm test:coverage
 
 # Frontend: Run tests in watch mode during development
-cd greetings-ui && yarn test:watch
+cd greetings-ui && pnpm test:watch
 
 # Contract tests (if APIs changed)
 mvn test -Dtest=*Pact*
-cd greetings-ui && yarn pact
+cd greetings-ui && pnpm pact
 ```
 
 ### 3. Build Verification
@@ -37,7 +37,7 @@ cd greetings-ui && yarn pact
 cd greetings-parent && mvn clean install
 
 # Verify frontend builds
-cd greetings-ui && yarn build
+cd greetings-ui && pnpm build
 
 # Test Docker image creation (if relevant)
 mvn clean package -PbuildImage -DskipTests
@@ -49,10 +49,10 @@ mvn clean package -PbuildImage -DskipTests
 mvn verify -Dcucumber.filter.tags="@e2e"
 
 # Run Cypress E2E tests
-cd greeting-ui-e2e && yarn test
+cd greeting-ui-e2e && pnpm test
 
 # Run Cypress E2E tests with UI
-cd greeting-ui-e2e && yarn test:open
+cd greeting-ui-e2e && pnpm test:open
 
 # Manual verification through REST endpoints if needed
 # (Use HttpTests.http or greetings-e2e/src/test/resources/StatsRequests.http)

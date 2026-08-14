@@ -58,31 +58,31 @@ cd greetings-stat-service && mvn clean package -PbuildImage -DskipTests
 cd greetings-ui
 
 # Install dependencies
-yarn install
+pnpm install
 
 # Start development server
-yarn dev
+pnpm dev
 
 # Build for production
-yarn build
+pnpm build
 
 # Preview production build
-yarn preview
+pnpm preview
 ```
 
 ### Testing & Quality
 ```bash
 # Run tests with coverage
-yarn test:coverage
+pnpm test:coverage
 
 # Run tests in watch mode
-yarn test:watch
+pnpm test:watch
 
 # Run tests once
-yarn test
+pnpm test
 
 # Run contract tests (if available)
-yarn pact
+pnpm pact
 ```
 
 ## End-to-End Tests (Cypress)
@@ -92,19 +92,19 @@ yarn pact
 cd greeting-ui-e2e
 
 # Install dependencies
-yarn install
+pnpm install
 
 # Run Cypress tests in headless mode (starts UI automatically)
-yarn test
+pnpm test
 
 # Run Cypress tests with UI (starts UI automatically)
-yarn test:open
+pnpm test:open
 
 # Run Cypress directly (headless)
-yarn cypress:run
+pnpm cypress:run
 
 # Open Cypress UI
-yarn cypress:open
+pnpm cypress:open
 ```
 
 ## System Commands (macOS/Darwin)

@@ -35,13 +35,13 @@ greeting-ui-e2e/
 ## Prerequisites
 
 - Node.js 18+
-- Yarn
+- pnpm
 
 ## Installation
 
 ```bash
 # Install dependencies
-yarn install
+pnpm install
 ```
 
 ## Running Tests
@@ -53,7 +53,7 @@ The tests can be run in two modes:
 This will start the UI application automatically, run the tests, and then shut down the UI application:
 
 ```bash
-yarn test
+pnpm test
 ```
 
 ### Interactive Mode
@@ -61,20 +61,20 @@ yarn test
 This will start the UI application automatically and open the Cypress UI, allowing you to run tests interactively:
 
 ```bash
-yarn test:open
+pnpm test:open
 ```
 
 ### Running Tests Against an Already Running UI Application
 
-If you already have the UI application running (e.g., with `cd ../greetings-ui && yarn dev`), you can run the tests
+If you already have the UI application running (e.g., with `cd ../greetings-ui && pnpm dev`), you can run the tests
 directly:
 
 ```bash
 # Run tests in headless mode
-yarn cypress:run
+pnpm cypress:run
 
 # Run tests in interactive mode
-yarn cypress:open
+pnpm cypress:open
 ```
 
 ## Writing Tests

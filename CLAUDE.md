@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - Java 25 (Temurin distribution recommended)
 - Maven 3.8+
-- Node.js 18+ and Yarn (for UI)
+- Node.js 18+ and pnpm (for UI)
 - Docker (required for integration tests via Testcontainers)
 
 ## Build Commands
@@ -34,9 +34,9 @@ mvn clean package -PbuildImage -DskipTests
 
 ```bash
 cd greetings-ui
-yarn install
-yarn run build   # includes lint
-yarn start       # dev server at http://localhost:4200
+pnpm install
+pnpm run build   # includes lint
+pnpm start       # dev server at http://localhost:4200
 ```
 
 ## Testing
@@ -73,8 +73,8 @@ mvn test -Dtest=*Pact*
 
 ```bash
 cd greetings-ui
-yarn test          # Jest unit tests with coverage
-yarn run pact      # Pact consumer contract tests (runs serially)
+pnpm test          # Jest unit tests with coverage
+pnpm run pact      # Pact consumer contract tests (runs serially)
 ```
 
 ### Full test suite

@@ -1,0 +1,4 @@
+# Native dependencies whose install scripts must run (pnpm blocks them by default).
+allowBuilds:
+  '@tailwindcss/oxide': true
+  esbuild: true

@@ -13,25 +13,34 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: greetings-ui/package.json
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'yarn'
+          cache: 'pnpm'
+          cache-dependency-path: |
+            greetings-ui/pnpm-lock.yaml
+            greeting-ui-e2e/pnpm-lock.yaml
 
       - name: Install UI dependencies
         working-directory: ./greetings-ui
-        run: yarn install
+        run: pnpm install --frozen-lockfile
 
       - name: Install E2E dependencies
         working-directory: ./greeting-ui-e2e
-        run: yarn install
+        run: pnpm install --frozen-lockfile
 
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
           working-directory: ./greeting-ui-e2e
-          start: yarn test
+          install: false
+          start: pnpm test
           wait-on: 'http://localhost:5173'
           wait-on-timeout: 120
           browser: chrome
