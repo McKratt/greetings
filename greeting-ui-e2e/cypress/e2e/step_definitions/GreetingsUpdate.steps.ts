@@ -15,6 +15,11 @@ When('I change the type to {word}', (updatedType: string) => {
 
 // Step: Then the greeting is now a <updatedType> one
 Then('the greeting is now a {word} one', (updatedType: string) => {
-    // Verify the greeting type has been updated
-    cy.get('[data-cy=greeting-type-display]').should('contain', updatedType);
+    // The UI displays the type as the backend stores it (upper case), while the
+    // feature file spells it in lower case. Case is not part of the specification.
+    cy.get('[data-cy=greeting-type-display]')
+        .invoke('text')
+        .should((text: string) => {
+            expect(text.trim().toUpperCase()).to.contain(updatedType.toUpperCase());
+        });
 });

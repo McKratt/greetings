@@ -13,6 +13,4 @@ Then('a Greeting is created', () => {
     cy.verifyGreetingCreated();
 });
 
-Then('I get an error', () => {
-    cy.verifyErrorMessage();
-});
+// 'I get an error' is shared with GreetingsUpdate and lives in common.steps.ts

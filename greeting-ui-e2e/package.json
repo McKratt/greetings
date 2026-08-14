@@ -24,7 +24,10 @@
       "enabled": true
     },
     "e2e": {
-      "stepDefinitions": "cypress/e2e/step_definitions/[filepath].steps.ts"
+      "stepDefinitions": [
+        "cypress/e2e/step_definitions/[filepath].steps.ts",
+        "cypress/e2e/step_definitions/common.steps.ts"
+      ]
     }
   }
 }

@@ -25,6 +25,27 @@ describe('Stats', () => {
         expect(wrapper.text()).toContain('2');
     });
 
+    it('displays the total number of greetings across every type', async () => {
+        vi.mocked(getStats).mockResolvedValue({
+            counters: {BIRTHDAY: 10, ANNIVERSARY: 5, CHRISTMAS: 2}
+        });
+        const wrapper = mount(Stats);
+        await flushPromises();
+
+        expect(wrapper.get('[data-cy=greeting-counter]').text()).toBe('17');
+    });
+
+    it('exposes a counter per type', async () => {
+        vi.mocked(getStats).mockResolvedValue({
+            counters: {BIRTHDAY: 10, CHRISTMAS: 2}
+        });
+        const wrapper = mount(Stats);
+        await flushPromises();
+
+        expect(wrapper.get('[data-cy=birthday-counter]').text()).toBe('10');
+        expect(wrapper.get('[data-cy=christmas-counter]').text()).toBe('2');
+    });
+
     it('displays empty state when no stats available (204)', async () => {
         vi.mocked(getStats).mockResolvedValue(null);
         const wrapper = mount(Stats);
