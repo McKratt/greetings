@@ -53,7 +53,7 @@ async function submit(): Promise<void> {
   <form class="flex flex-col gap-4 w-full max-w-md mx-auto">
     <GreetingInput label="Name" @update="updateName"/>
     <GreetingDropdown :values="types" label="Choose a type" @typeSelected="updateType"/>
-    <Message v-if="errorMessage" :closable="false" severity="error">{{ errorMessage }}</Message>
+    <Message v-if="errorMessage" :closable="false" data-cy="error-message" severity="error">{{ errorMessage }}</Message>
     <Button data-cy="create-greeting" label="Generate Message" :loading="isLoading" @click="submit"/>
   </form>
 </template>

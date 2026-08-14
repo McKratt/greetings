@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {getStats} from "../api/stats.api.ts";
-import {onMounted, ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import Message from 'primevue/message';
 import Card from 'primevue/card';
 
@@ -13,6 +13,8 @@ const statsRows = ref<StatRow[]>([]);
 const isLoading = ref(true);
 const errorMessage = ref('');
 const isEmpty = ref(false);
+
+const totalCount = computed(() => statsRows.value.reduce((sum, row) => sum + row.count, 0));
 
 onMounted(async () => {
   try {
@@ -46,6 +48,9 @@ onMounted(async () => {
 
     <Card v-else>
       <template #content>
+        <p class="mb-3">
+          Total greetings: <span class="font-mono font-semibold" data-cy="greeting-counter">{{ totalCount }}</span>
+        </p>
         <table class="w-full text-left">
           <thead>
             <tr class="border-b">
@@ -56,7 +61,7 @@ onMounted(async () => {
           <tbody>
             <tr v-for="row in statsRows" :key="row.type" class="border-b last:border-0">
               <td class="py-2 pr-4">{{ row.type }}</td>
-              <td class="py-2 font-mono">{{ row.count }}</td>
+              <td :data-cy="`${row.type.toLowerCase()}-counter`" class="py-2 font-mono">{{ row.count }}</td>
             </tr>
           </tbody>
         </table>
