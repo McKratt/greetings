@@ -22,12 +22,12 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONARCLOUDKEY }}
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           package_json_file: greetings-ui/package.json
       - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
           cache: 'pnpm'
           cache-dependency-path: greetings-ui/pnpm-lock.yaml
       - name: Build
@@ -35,7 +35,7 @@ jobs:
       - name: Tests
         run: pnpm test:coverage
       - name: Sonar
-        uses: SonarSource/sonarqube-scan-action@master
+        uses: SonarSource/sonarqube-scan-action@v8
         with:
           projectBaseDir: ./greetings-ui
   build_greetings:
