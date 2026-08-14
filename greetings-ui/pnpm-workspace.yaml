@@ -2,3 +2,7 @@
 allowBuilds:
   '@tailwindcss/oxide': true
   esbuild: true
+minimumReleaseAgeExclude:
+  - '@primevue/core@5.0.1'
+  - '@primevue/icons@5.0.1'
+  - primevue@5.0.1

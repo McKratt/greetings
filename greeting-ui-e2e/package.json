@@ -11,13 +11,13 @@
     "cypress:open": "cypress open"
   },
   "dependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "^22.1.0",
-    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.5",
-    "cypress": "^14.4.1",
-    "typescript": "^5.5.3"
+    "@badeball/cypress-cucumber-preprocessor": "^26.0.0",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
+    "cypress": "^15.20.1",
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@types/node": "^20.10.0"
+    "@types/node": "^26.2.0"
   },
   "cypress-cucumber-preprocessor": {
     "json": {
