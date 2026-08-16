@@ -1,7 +1,7 @@
 import {EventType} from "./event-type.model.ts";
 
 export class Greeting {
-    constructor(private _type: EventType, private _name: string) {
+    constructor(private readonly _type: EventType, private readonly _name: string) {
     }
 
     public get type(): EventType {

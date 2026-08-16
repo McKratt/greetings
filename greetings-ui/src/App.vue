@@ -6,6 +6,4 @@ import MainLayout from "./layout/MainLayout.vue";
   <MainLayout/>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped />
