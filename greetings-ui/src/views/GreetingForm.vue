@@ -58,5 +58,4 @@ async function submit(): Promise<void> {
   </form>
 </template>
 
-<style scoped>
-</style>
+<style scoped />

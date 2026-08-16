@@ -1,5 +1,5 @@
 export class GreetingMessage {
-    constructor(private _id: string, private _message: string, private _type: string) {
+    constructor(private readonly _id: string, private readonly _message: string, private readonly _type: string) {
     }
 
     public get message() {

@@ -99,5 +99,4 @@ async function handleUpdate(): Promise<void> {
   </Card>
 </template>
 
-<style scoped>
-</style>
+<style scoped />

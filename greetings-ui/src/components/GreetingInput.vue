@@ -24,5 +24,4 @@ watch(value, (newValue) => {
   </FloatLabel>
 </template>
 
-<style scoped>
-</style>
+<style scoped />
