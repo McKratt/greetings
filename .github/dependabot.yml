@@ -14,7 +14,7 @@ updates:
   - package-ecosystem: "maven" # See documentation for possible values
     directory: "/greetings-parent" # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: "daily"
     groups:
       libraries:
         exclude-patterns:
@@ -29,7 +29,7 @@ updates:
     exclude-paths:
       - /greetings-parent
     schedule:
-      interval: "weekly"
+      interval: "daily"
     groups:
       libraries:
         exclude-patterns:
@@ -44,7 +44,7 @@ updates:
     exclude-paths:
       - /greetings-parent
     schedule:
-      interval: "weekly"
+      interval: "daily"
     groups:
       libraries:
         exclude-patterns:
@@ -57,7 +57,7 @@ updates:
   - package-ecosystem: "maven" # See documentation for possible values
     directory: "/greetings-e2e" # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: "daily"
     groups:
       libraries:
         exclude-patterns:
@@ -70,4 +70,4 @@ updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/greetings-ui" # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: "daily"
