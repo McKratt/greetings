@@ -4,6 +4,11 @@ import createBundler from "@bahmutov/cypress-esbuild-preprocessor";
 import createEsbuildPlugin from "@badeball/cypress-cucumber-preprocessor/esbuild";
 
 export default defineConfig({
+    reporter: "mocha-junit-reporter",
+    reporterOptions: {
+        mochaFile: "results/junit-[hash].xml",
+        toConsole: true,
+    },
   e2e: {
     specPattern: "../bdd/**/*.feature",
     async setupNodeEvents(

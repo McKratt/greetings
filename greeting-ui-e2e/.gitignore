@@ -41,3 +41,6 @@ pnpm-debug.log*
 
 # Cucumber
 cucumber-report.json
+
+# Test reports
+results/
