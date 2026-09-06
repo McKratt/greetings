@@ -26,8 +26,6 @@ updates:
           - "org.springframework.*:*"
   - package-ecosystem: "maven" # See documentation for possible values
     directory: "/greetings-service" # Location of package manifests
-    exclude-paths:
-      - /greetings-parent
     schedule:
       interval: "daily"
     groups:
@@ -41,8 +39,6 @@ updates:
           - "org.springframework.*:*"
   - package-ecosystem: "maven" # See documentation for possible values
     directory: "/greetings-stat-service" # Location of package manifests
-    exclude-paths:
-      - /greetings-parent
     schedule:
       interval: "daily"
     groups:
