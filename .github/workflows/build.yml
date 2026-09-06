@@ -236,7 +236,7 @@ jobs:
   cypress:
     name: Cypress Tests
     runs-on: ubuntu-latest
-    needs: [ deploy_stats, deploy_greetings ]
+    needs: [ deploy_stats, deploy_greetings, build_greetings_ui ]
     if: success()
     permissions:
       checks: write
