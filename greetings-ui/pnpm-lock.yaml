@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@primeuix/themes':
-        specifier: ^3.0.0
-        version: 3.0.0
+        specifier: ^3.0.1
+        version: 3.0.1
       '@tailwindcss/vite':
         specifier: ^4.3.3
         version: 4.3.3(vite@8.2.2(jiti@2.7.0)(yaml@2.9.0))
@@ -272,11 +272,15 @@ packages:
   '@primeuix/styles@3.0.0':
     resolution: {integrity: sha512-nFsG2V0kbn3Q/fr0EV0Lxy2cKeW1F+WFXyxWI1CxWAAXW34mTCLkDd6OFbN5dP9hrSJOVaeXWzTdoonh1sdklQ==}
 
-  '@primeuix/themes@3.0.0':
-    resolution: {integrity: sha512-lNMOhorzu4vHRKbTDIU2/raS7/Z6Oyq2WXGfFDVhOwAIVDF4e7hCX75jlgfC7bo4D0Bl5f+oW5HPGZpG52r6lw==}
+  '@primeuix/themes@3.0.1':
+    resolution: {integrity: sha512-UmHzvA16DKb3dcE+2J8NbgK6eI5zFJQbCaNBW1YyY+ADZEVId4H275TPTcwlZ/8ywt0AFpunEPiyLQE1oub9pA==}
 
   '@primeuix/utils@0.8.1':
     resolution: {integrity: sha512-tMtdkSUEl8/6Lc5iNOp7zXMFKJGLyf7mxvS/Hf5GzHVfa2dvsnVmEn0I/i3+80oEmnsVlHhr9+8aM5cKw7vbHA==}
+    engines: {node: '>=12.11.0'}
+
+  '@primeuix/utils@0.8.2':
+    resolution: {integrity: sha512-4Cz5HY1XHqJwhq1ieml6l5IDkWt41Amdw/t2rAQxNXv7WwAhgb8QrnjJM6scW9h1D0PjQgm9Z3RgNlWCU+WZng==}
     engines: {node: '>=12.11.0'}
 
   '@primevue/core@5.0.1':
@@ -1985,17 +1989,19 @@ snapshots:
   '@primeuix/styled@1.0.0':
     dependencies:
       '@primeui/license-manager': 1.1.0
-      '@primeuix/utils': 0.8.1
+      '@primeuix/utils': 0.8.2
 
   '@primeuix/styles@3.0.0':
     dependencies:
       '@primeuix/styled': 1.0.0
 
-  '@primeuix/themes@3.0.0':
+  '@primeuix/themes@3.0.1':
     dependencies:
       '@primeuix/styled': 1.0.0
 
   '@primeuix/utils@0.8.1': {}
+
+  '@primeuix/utils@0.8.2': {}
 
   '@primevue/core@5.0.1(vue@3.5.42(typescript@6.0.3))':
     dependencies:
