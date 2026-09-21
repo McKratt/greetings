@@ -14,7 +14,7 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@primeuix/themes": "^3.0.0",
+    "@primeuix/themes": "^3.0.1",
     "@tailwindcss/vite": "^4.3.3",
     "primevue": "^5.0.1",
     "tailwindcss-primeui": "^0.6.1",
