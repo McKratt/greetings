@@ -27,7 +27,7 @@
     "@vitest/coverage-v8": "^4.1.11",
     "@vue/test-utils": "^2.5.1",
     "eslint": "^10.10.0",
-    "eslint-plugin-vue": "^10.11.0",
+    "eslint-plugin-vue": "^10.11.1",
     "jsdom": "^30.1.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
