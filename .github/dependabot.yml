@@ -67,9 +67,3 @@ updates:
     directory: "/greetings-ui" # Location of package manifests
     schedule:
       interval: "daily"
-  - package-ecosystem: "docker"
-    directories:
-      - "/greetings-service/greetings-bootstrap/src/docker"
-      - "/greetings-stat-service/stat-bootstrap/src/docker"
-    schedule:
-      interval: "weekly"
