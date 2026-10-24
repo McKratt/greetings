@@ -36,16 +36,10 @@ echo ""
 print_step "Building Docker images (version ${VERSION})"
 echo ""
 
-# --- greetings-service (Jib) ---
-# Install all modules to local repo first (skip the bound jib:build which pushes to the registry)
-print_step "Installing greetings-service modules..."
-mvn -f greetings-service/pom.xml install -DskipTests -Djib.skip=true -q
-
-# Build local Docker image with jib:dockerBuild using the buildImage profile config
-print_step "Building Docker image ${GREETINGS_IMAGE}..."
-mvn -f greetings-service/greetings-bootstrap/pom.xml -PbuildImage jib:dockerBuild -q
-# Jib dockerBuild prefixes with localhost/ — retag so Docker Compose can resolve it
-docker tag "localhost/${GREETINGS_IMAGE}" "${GREETINGS_IMAGE}"
+# --- greetings-service (fabric8) ---
+print_step "Packaging and building Docker image ${GREETINGS_IMAGE}..."
+mvn -f greetings-service/pom.xml package -PbuildImage -DskipTests \
+    -Dimage.name="${GREETINGS_IMAGE}" -q
 print_success "${GREETINGS_IMAGE} ready"
 
 echo ""
