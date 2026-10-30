@@ -19,7 +19,7 @@
     "primevue": "^5.0.4",
     "tailwindcss-primeui": "^0.6.1",
     "vue": "^3.5.44",
-    "vue-router": "^5.3.1"
+    "vue-router": "^5.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
