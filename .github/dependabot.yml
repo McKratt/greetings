@@ -28,6 +28,19 @@ updates:
     directory: "/greetings-service" # Location of package manifests
     schedule:
       interval: "daily"
+    # Versions are managed in greetings-parent, which has its own entry above
+    ignore:
+      - dependency-name: "org.springframework.boot:spring-boot-starter-parent"
+      - dependency-name: "org.junit:junit-bom"
+      - dependency-name: "org.testcontainers:testcontainers-bom"
+      - dependency-name: "io.cucumber:*"
+      - dependency-name: "au.com.dius.pact.*:*"
+      - dependency-name: "org.wiremock:wiremock-standalone"
+      - dependency-name: "com.jparams:to-string-verifier"
+      - dependency-name: "io.rest-assured:rest-assured-bom"
+      - dependency-name: "org.jacoco:jacoco-maven-plugin"
+      - dependency-name: "io.fabric8:docker-maven-plugin"
+      - dependency-name: "org.sonarsource.scanner.maven:sonar-maven-plugin"
     groups:
       libraries:
         exclude-patterns:
@@ -41,6 +54,19 @@ updates:
     directory: "/greetings-stat-service" # Location of package manifests
     schedule:
       interval: "daily"
+    # Versions are managed in greetings-parent, which has its own entry above
+    ignore:
+      - dependency-name: "org.springframework.boot:spring-boot-starter-parent"
+      - dependency-name: "org.junit:junit-bom"
+      - dependency-name: "org.testcontainers:testcontainers-bom"
+      - dependency-name: "io.cucumber:*"
+      - dependency-name: "au.com.dius.pact.*:*"
+      - dependency-name: "org.wiremock:wiremock-standalone"
+      - dependency-name: "com.jparams:to-string-verifier"
+      - dependency-name: "io.rest-assured:rest-assured-bom"
+      - dependency-name: "org.jacoco:jacoco-maven-plugin"
+      - dependency-name: "io.fabric8:docker-maven-plugin"
+      - dependency-name: "org.sonarsource.scanner.maven:sonar-maven-plugin"
     groups:
       libraries:
         exclude-patterns:
