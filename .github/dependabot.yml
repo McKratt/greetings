@@ -67,3 +67,11 @@ updates:
     directory: "/greetings-ui" # Location of package manifests
     schedule:
       interval: "daily"
+    groups:
+      vue:
+        patterns:
+          - "vue"
+          - "vue-*"
+          - "@vue/*"
+          - "@vitejs/plugin-vue"
+          - "eslint-plugin-vue"
