@@ -27,8 +27,6 @@
         <sonar-maven-plugin.version>5.8.0.7211</sonar-maven-plugin.version>
         <pitest-maven.version>1.30.2</pitest-maven.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
-        <!-- Set to true in modules without unit tests (e.g. bootstrap modules) -->
-        <skipPitest>false</skipPitest>
         <sonar.moduleKey>${sonar.projectName}:${project.artifactId}</sonar.moduleKey>
         <sonar.organization>mckratt</sonar.organization>
         <sonar.coverage.exclusions>
@@ -211,7 +209,6 @@
                             </dependency>
                         </dependencies>
                         <configuration>
-                            <skip>${skipPitest}</skip>
                             <targetClasses>
                                 <param>net.bakaar.*</param>
                             </targetClasses>
@@ -220,10 +217,6 @@
                                 <param>**.*Configuration</param>
                                 <param>**.*Properties</param>
                             </excludedClasses>
-                            <!-- Integration tests (Spring context, Testcontainers, Kafka) are too slow for mutation testing -->
-                            <excludedTestClasses>
-                                <param>**.*IT</param>
-                            </excludedTestClasses>
                             <mutators>
                                 <mutator>DEFAULTS</mutator>
                             </mutators>
@@ -233,6 +226,9 @@
                             </outputFormats>
                             <timestampedReports>false</timestampedReports>
                             <failWhenNoMutations>false</failWhenNoMutations>
+                            <!-- All tests are used, including integration tests (Spring context, Testcontainers,
+                                 Kafka): leave headroom so slow test start-up is not reported as a timeout -->
+                            <timeoutConstant>10000</timeoutConstant>
                             <jvmArgs>
                                 <jvmArg>-XX:+EnableDynamicAgentLoading</jvmArg>
                             </jvmArgs>
