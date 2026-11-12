@@ -92,6 +92,8 @@
         </dependency>
     </dependencies>
     <properties>
+        <!-- Only integration tests here: nothing for mutation testing to run -->
+        <skipPitest>true</skipPitest>
         <image.name>bakaar/greetings-service:${project.version}</image.name>
         <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}
         </sonar.coverage.jacoco.xmlReportPaths>
