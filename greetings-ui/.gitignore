@@ -25,3 +25,6 @@ coverage
 *.sw?
 #Junie
 **.output.txt
+# Stryker mutation testing
+.stryker-tmp
+reports
