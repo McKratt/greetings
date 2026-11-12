@@ -77,6 +77,21 @@ pnpm test          # Jest unit tests with coverage
 pnpm run pact      # Pact consumer contract tests (runs serially)
 ```
 
+### Mutation tests
+
+```bash
+# Java (PIT) — from greetings-service/ or greetings-stat-service/
+mvn -Pmutation test-compile org.pitest:pitest-maven:mutationCoverage
+# reports: <module>/target/pit-reports/index.html
+
+# UI (Stryker)
+cd greetings-ui
+pnpm test:mutation   # report: reports/mutation/mutation.html
+```
+
+The `Mutation Tests` workflow (`.github/workflows/mutation-tests.yml`) runs both every Monday at 02:00 UTC or on demand,
+and publishes the results in the run summary.
+
 ### Full test suite
 
 ```bash
