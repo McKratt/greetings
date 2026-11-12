@@ -17,7 +17,8 @@ jobs:
   pitest:
     name: Mutation Tests ${{ matrix.project }}
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    # All tests run, integration tests included: GitHub-hosted runners allow up to 6 hours per job
+    timeout-minutes: 360
     strategy:
       fail-fast: false
       matrix:
