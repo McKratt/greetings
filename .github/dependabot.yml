@@ -101,3 +101,12 @@ updates:
           - "@vue/*"
           - "@vitejs/plugin-vue"
           - "eslint-plugin-vue"
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "tailwindcss-*"
+          - "@tailwindcss/*"
+      prime:
+        patterns:
+          - "primevue"
+          - "@primeuix/*"
